@@ -1,0 +1,1272 @@
+
+####################################################################################################
+# Starting pipeline at Mon Jun 05 14:37:16 EDT 2017
+# Input files:  null
+# Output Log:  .bpipe/logs/6850.log
+# Stage compare [1348]
+# Stage compare [1372]
+# Stage compare [1403]
+# Stage compare [1132]
+# Stage compare [1405]
+# Stage compare [1349]
+# Stage compare [1336]
+# Stage compare [Cali_mp]
+# Stage compare [1361]
+# Stage compare [1356]
+# Stage compare [1158]
+# Stage compare [1409]
+# Stage compare [1401]
+# Stage compare [1407]
+# Stage compare [1368]
+# Stage compare [1374]
+# Stage compare [1136]
+# Stage compare [1402]
+# Stage compare [1157]
+# Stage compare [1371]
+# Stage compare [1364]
+# Stage compare [1370]
+# Stage compare [1137]
+# Stage compare [1351]
+# Stage compare [1143]
+# Stage compare [1410]
+# Stage compare [1415]
+# Stage compare [1142]
+# Stage compare [1347]
+# Stage compare [1363]
+# Stage compare [1369]
+# Stage compare [1404]
+# Stage compare [1339]
+# Stage compare [1353]
+# Stage compare [1360]
+# Stage compare [1156]
+# Stage compare [1414]
+# Stage compare [1367]
+# Stage compare [1346]
+# Stage compare [1376]
+# Stage compare [1413]
+# Stage compare [1362]
+# Stage compare [1408]
+# Stage compare [1406]
+# Stage compare [1366]
+# Stage compare [1311]
+# Stage compare [1357]
+# Stage compare [1411]
+# Stage compare [1350]
+# Stage compare [1120]
+# Stage compare [1112]
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1132.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1132.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1361.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1361.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1336.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1336.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1348.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1348.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1372.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1372.removed.missed.csv
+# Stage compare [1144]
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1402.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1402.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1349.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1349.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1136.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1136.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1403.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1403.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1405.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1405.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1409.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1409.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1158.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1158.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1353.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1353.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1137.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1137.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1407.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1407.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1364.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1364.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1143.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1143.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1339.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1339.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1401.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1401.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1356.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1356.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1370.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1370.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1404.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1404.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1347.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1347.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1112.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1112.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1351.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1351.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1157.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1157.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1142.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1142.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1374.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1374.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1368.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1368.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1357.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1357.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/Cali_mp.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/Cali_mp.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1369.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1369.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1415.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1415.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1120.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1120.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1311.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1311.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1363.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1363.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1410.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1410.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1411.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1411.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1350.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1350.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1414.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1414.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1371.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1371.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1360.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1360.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1376.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1376.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1362.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1362.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1408.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1408.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1367.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1367.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1346.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1346.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1366.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1366.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1406.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1406.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1156.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1156.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1144.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1144.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1413.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1413.removed.missed.csv
+# ########## Finished at Mon Jun 05 14:38:59 EDT 2017 Duration = 1 minutes, 43.445 seconds ###########
+
+
+####################################################################################################
+# Starting pipeline at Wed Jun 07 11:01:52 EDT 2017
+# Input files:  null
+# Output Log:  .bpipe/logs/41202.log
+# Stage compare [1351]
+# Stage compare [1347]
+# Stage compare [1142]
+# Stage compare [1357]
+# Stage compare [1366]
+# Stage compare [1348]
+# Stage compare [1156]
+# Stage compare [1364]
+# Stage compare [1349]
+# Stage compare [1353]
+# Stage compare [1363]
+# Stage compare [1136]
+# Stage compare [1402]
+# Stage compare [1362]
+# Stage compare [1407]
+# Stage compare [1311]
+# Stage compare [1367]
+# Stage compare [Cali_mp]
+# Stage compare [1158]
+# Stage compare [1374]
+# Stage compare [1369]
+# Stage compare [1372]
+# Stage compare [1415]
+# Stage compare [1413]
+# Stage compare [1360]
+# Stage compare [1405]
+# Stage compare [1120]
+# Stage compare [1411]
+# Stage compare [1410]
+# Stage compare [1112]
+# Stage compare [1144]
+# Stage compare [1401]
+# Stage compare [1408]
+# Stage compare [1157]
+# Stage compare [1403]
+# Stage compare [1143]
+# Stage compare [1356]
+# Stage compare [1371]
+# Stage compare [1368]
+# Stage compare [1336]
+# Stage compare [1132]
+# Stage compare [1137]
+# Stage compare [1406]
+# Stage compare [1414]
+# Stage compare [1404]
+# Stage compare [1339]
+# Stage compare [1350]
+# Stage compare [1361]
+# Stage compare [1370]
+# Stage compare [1376]
+# Stage compare [1409]
+# Stage compare [1346]
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1351.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1351.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1402.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1402.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1136.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1136.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1366.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1366.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1374.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1374.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/Cali_mp.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/Cali_mp.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1372.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1372.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1156.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1156.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1364.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1364.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1367.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1367.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1360.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1360.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1405.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1405.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1158.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1158.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1311.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1311.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1403.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1403.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1414.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1414.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1157.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1157.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1404.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1404.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1347.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1347.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1401.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1401.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1112.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1112.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1410.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1410.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1348.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1348.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1346.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1346.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1368.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1368.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1336.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1336.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1362.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1362.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1142.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1142.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1353.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1353.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1349.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1349.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1407.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1407.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1363.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1363.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1370.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1370.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1120.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1120.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1361.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1361.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1371.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1371.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1415.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1415.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1132.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1132.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1408.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1408.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1339.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1339.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1350.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1350.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1406.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1406.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1413.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1413.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1357.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1357.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1411.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1411.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1144.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1144.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1137.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1137.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1409.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1409.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1143.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1143.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1376.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1376.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1356.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1356.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1369.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1369.removed.missed.csv
+# ########## Finished at Wed Jun 07 11:10:34 EDT 2017 Duration = 8 minutes, 41.628 seconds ###########
+
+
+####################################################################################################
+# Starting pipeline at Tue Jun 13 10:39:15 EDT 2017
+# Input files:  null
+# Output Log:  .bpipe/logs/6610.log
+# Stage compare [1407]
+# Stage compare [1336]
+# Stage compare [1370]
+# Stage compare [1402]
+# Stage compare [1132]
+# Stage compare [1405]
+# Stage compare [1157]
+# Stage compare [1372]
+# Stage compare [1362]
+# Stage compare [1363]
+# Stage compare [1156]
+# Stage compare [1339]
+# Stage compare [1348]
+# Stage compare [Cali_mp]
+# Stage compare [1364]
+# Stage compare [1404]
+# Stage compare [1368]
+# Stage compare [1413]
+# Stage compare [1360]
+# Stage compare [1374]
+# Stage compare [1350]
+# Stage compare [1357]
+# Stage compare [1144]
+# Stage compare [1136]
+# Stage compare [1367]
+# Stage compare [1403]
+# Stage compare [1349]
+# Stage compare [1120]
+# Stage compare [1401]
+# Stage compare [1347]
+# Stage compare [1353]
+# Stage compare [1411]
+# Stage compare [1158]
+# Stage compare [1369]
+# Stage compare [1346]
+# Stage compare [1366]
+# Stage compare [1137]
+# Stage compare [1356]
+# Stage compare [1414]
+# Stage compare [1371]
+# Stage compare [1143]
+# Stage compare [1406]
+# Stage compare [1409]
+# Stage compare [1311]
+# Stage compare [1408]
+# Stage compare [1410]
+# Stage compare [1351]
+# Stage compare [1361]
+# Stage compare [1376]
+# Stage compare [1112]
+# Stage compare [1415]
+# Stage compare [1142]
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1406.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1406.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1336.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1336.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/Cali_mp.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/Cali_mp.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1142.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1142.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1403.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1403.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1364.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1364.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1363.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1363.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1405.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1405.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1349.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1349.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1407.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1407.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1410.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1410.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1367.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1367.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1132.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1132.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1143.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1143.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1353.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1353.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1112.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1112.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1120.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1120.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1347.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1347.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1371.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1371.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1360.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1360.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1137.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1137.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1370.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1370.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1136.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1136.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1350.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1350.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1374.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1374.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1357.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1357.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1415.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1415.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1339.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1339.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1361.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1361.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1372.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1372.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1157.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1157.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1369.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1369.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1144.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1144.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1409.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1409.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1311.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1311.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1404.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1404.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1408.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1408.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1413.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1413.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1366.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1366.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1348.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1348.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1368.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1368.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1156.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1156.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1158.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1158.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1346.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1346.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1362.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1362.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1414.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1414.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1411.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1411.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1376.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1376.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1402.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1402.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1351.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1351.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1356.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1356.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1401.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1401.removed.missed.csv
+# ########## Finished at Tue Jun 13 11:16:50 EDT 2017 Duration = 37 minutes, 35.145 seconds ##########
+
+
+####################################################################################################
+# Starting pipeline at Tue Jun 13 11:22:30 EDT 2017
+# Input files:  null
+# Output Log:  .bpipe/logs/17825.log
+# Stage compare [1348]
+# Stage compare [1364]
+# Stage compare [1407]
+# Stage compare [1409]
+# Stage compare [1156]
+# Stage compare [1157]
+# Stage compare [1402]
+# Stage compare [1370]
+# Stage compare [1339]
+# Stage compare [1372]
+# Stage compare [1132]
+# Stage compare [1371]
+# Stage compare [1403]
+# Stage compare [1350]
+# Stage compare [1143]
+# Stage compare [Cali_mp]
+# Stage compare [1404]
+# Stage compare [1137]
+# Stage compare [1406]
+# Stage compare [1374]
+# Stage compare [1357]
+# Stage compare [1361]
+# Stage compare [1349]
+# Stage compare [1414]
+# Stage compare [1410]
+# Stage compare [1136]
+# Stage compare [1142]
+# Stage compare [1336]
+# Stage compare [1405]
+# Stage compare [1360]
+# Stage compare [1362]
+# Stage compare [1120]
+# Stage compare [1351]
+# Stage compare [1415]
+# Stage compare [1363]
+# Stage compare [1347]
+# Stage compare [1368]
+# Stage compare [1401]
+# Stage compare [1413]
+# Stage compare [1366]
+# Stage compare [1112]
+# Stage compare [1346]
+# Stage compare [1411]
+# Stage compare [1144]
+# Stage compare [1408]
+# Stage compare [1369]
+# Stage compare [1356]
+# Stage compare [1367]
+# Stage compare [1311]
+# Stage compare [1376]
+# Stage compare [1353]
+# Stage compare [1158]
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1137.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1137.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1360.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1360.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/Final_variants/1112.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/parsed_fa/Cali_pool.removed.parsed.fasta comparison/1112.removed.missed.csv
+# Stage combine
+python ~/variant_pipeline/scripts/combine.py ./comparison missed.csv ../all.missed.csv
+# ########## Finished at Tue Jun 13 11:25:00 EDT 2017 Duration = 2 minutes, 30.027 seconds ###########
+
+
+####################################################################################################
+# Starting pipeline at Tue Jun 13 11:51:44 EDT 2017
+# Input files:  null
+# Output Log:  .bpipe/logs/26515.log
+# Stage compare [1339]
+# Stage compare [1409]
+# Stage compare [1371]
+# Stage compare [1364]
+# Stage compare [1403]
+# Stage compare [1372]
+# Stage compare [1410]
+# Stage compare [1405]
+# Stage compare [1407]
+# Stage compare [1404]
+# Stage compare [1132]
+# Stage compare [Cali_mp]
+# Stage compare [1350]
+# Stage compare [1406]
+# Stage compare [1157]
+# Stage compare [1143]
+# Stage compare [1137]
+# Stage compare [1370]
+# Stage compare [1351]
+# Stage compare [1336]
+# Stage compare [1413]
+# Stage compare [1360]
+# Stage compare [1414]
+# Stage compare [1349]
+# Stage compare [1348]
+# Stage compare [1402]
+# Stage compare [1156]
+# Stage compare [1142]
+# Stage compare [1366]
+# Stage compare [1401]
+# Stage compare [1361]
+# Stage compare [1362]
+# Stage compare [1136]
+# Stage compare [1347]
+# Stage compare [1346]
+# Stage compare [1120]
+# Stage compare [1112]
+# Stage compare [1311]
+# Stage compare [1369]
+# Stage compare [1376]
+# Stage compare [1356]
+# Stage compare [1158]
+# Stage compare [1357]
+# Stage compare [1368]
+# Stage compare [1144]
+# Stage compare [1353]
+# Stage compare [1374]
+# Stage compare [1411]
+# Stage compare [1367]
+# Stage compare [1408]
+# Stage compare [1415]
+# Stage compare [1363]
+# Stage combine
+python /scratch/alauring_fluxm/mccrone/HIVE/scripts/scripts/combine.py ./comparison missed.csv ../all.missed.csv
+# ################ Finished at Tue Jun 13 11:51:52 EDT 2017 Duration = 8.338 seconds #################
+
+
+####################################################################################################
+# Starting pipeline at Mon Jun 19 13:31:17 EDT 2017
+# Input files:  [/scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam]
+# Output Log:  .bpipe/logs/9290.log
+# Stage post_align
+# Stage deepsnv [1374]
+# Stage deepsnv [1353]
+# Stage deepsnv [1368]
+# Stage deepsnv [1406]
+# Stage deepsnv [1411]
+# Stage deepsnv [1132]
+# Stage deepsnv [1372]
+# Stage deepsnv [1369]
+# Stage deepsnv [1410]
+# Stage deepsnv [1415]
+# Stage deepsnv [1360]
+# Stage deepsnv [Cali_mp]
+# Stage deepsnv [Cali_pool]
+# Stage deepsnv [1362]
+# Stage deepsnv [1336]
+# Stage deepsnv [1136]
+# Stage deepsnv [1367]
+# Stage deepsnv [1407]
+# Stage deepsnv [1137]
+# Stage deepsnv [1143]
+# Stage deepsnv [1158]
+# Stage deepsnv [1405]
+# Stage deepsnv [1364]
+# Stage deepsnv [1157]
+# Stage deepsnv [1366]
+# Stage deepsnv [1402]
+# Stage deepsnv [1347]
+# Stage deepsnv [1339]
+# Stage deepsnv [1376]
+# Stage deepsnv [1156]
+# Stage deepsnv [1408]
+# Stage deepsnv [1371]
+# Stage deepsnv [1351]
+# Stage deepsnv [1413]
+# Stage deepsnv [1349]
+# Stage deepsnv [1403]
+# Stage deepsnv [1357]
+# Stage deepsnv [1144]
+# Stage deepsnv [1350]
+# Stage deepsnv [1346]
+# Stage deepsnv [1120]
+# Stage deepsnv [1401]
+# Stage deepsnv [1142]
+# Stage deepsnv [1112]
+# Stage deepsnv [1404]
+# Stage deepsnv [1348]
+# Stage deepsnv [1414]
+# Stage deepsnv [1370]
+# Stage deepsnv [1363]
+# Stage deepsnv [1356]
+# Stage deepsnv [1409]
+# Stage deepsnv [1311]
+# Stage deepsnv [1361]
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1374.removed.csv deepSNV/1374.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1367.removed.csv deepSNV/1367.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1349.removed.csv deepSNV/1349.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1132.removed.csv deepSNV/1132.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1144.removed.csv deepSNV/1144.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1158.removed.csv deepSNV/1158.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1347.removed.csv deepSNV/1347.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1157.removed.csv deepSNV/1157.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1364.removed.csv deepSNV/1364.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1336.removed.csv deepSNV/1336.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1348.removed.csv deepSNV/1348.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1156.removed.csv deepSNV/1156.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1415.removed.csv deepSNV/1415.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1339.removed.csv deepSNV/1339.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1351.removed.csv deepSNV/1351.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1346.removed.csv deepSNV/1346.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1357.removed.csv deepSNV/1357.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1406.removed.csv deepSNV/1406.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/Cali_pool.removed.csv deepSNV/Cali_pool.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1404.removed.csv deepSNV/1404.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1408.removed.csv deepSNV/1408.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1403.removed.csv deepSNV/1403.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1311.removed.csv deepSNV/1311.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1405.removed.csv deepSNV/1405.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1366.removed.csv deepSNV/1366.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1413.removed.csv deepSNV/1413.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1362.removed.csv deepSNV/1362.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1137.removed.csv deepSNV/1137.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1369.removed.csv deepSNV/1369.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1376.removed.csv deepSNV/1376.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1112.removed.csv deepSNV/1112.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/Cali_mp.removed.csv deepSNV/Cali_mp.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1360.removed.csv deepSNV/1360.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1411.removed.csv deepSNV/1411.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1143.removed.csv deepSNV/1143.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1368.removed.csv deepSNV/1368.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1371.removed.csv deepSNV/1371.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1410.removed.csv deepSNV/1410.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1142.removed.csv deepSNV/1142.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1407.removed.csv deepSNV/1407.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1136.removed.csv deepSNV/1136.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1361.removed.csv deepSNV/1361.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1350.removed.csv deepSNV/1350.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1402.removed.csv deepSNV/1402.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1372.removed.csv deepSNV/1372.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1370.removed.csv deepSNV/1370.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1409.removed.csv deepSNV/1409.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1120.removed.csv deepSNV/1120.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1356.removed.csv deepSNV/1356.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1353.removed.csv deepSNV/1353.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1414.removed.csv deepSNV/1414.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1401.removed.csv deepSNV/1401.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1363.removed.csv deepSNV/1363.removed.fasta
+# Stage parse [1336]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1336.removed.fasta parsed_fa/1336.removed.parsed.fasta
+# Stage parse [1156]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1156.removed.fasta parsed_fa/1156.removed.parsed.fasta
+# Stage parse [1362]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1362.removed.fasta parsed_fa/1362.removed.parsed.fasta
+# Stage parse [1137]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1137.removed.fasta parsed_fa/1137.removed.parsed.fasta
+# Stage parse [1368]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1368.removed.fasta parsed_fa/1368.removed.parsed.fasta
+# Stage parse [1347]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1347.removed.fasta parsed_fa/1347.removed.parsed.fasta
+# Stage parse [1369]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1369.removed.fasta parsed_fa/1369.removed.parsed.fasta
+# Stage parse [1364]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1364.removed.fasta parsed_fa/1364.removed.parsed.fasta
+# Stage parse [1157]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1157.removed.fasta parsed_fa/1157.removed.parsed.fasta
+# Stage parse [1144]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1144.removed.fasta parsed_fa/1144.removed.parsed.fasta
+# Stage parse [1143]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1143.removed.fasta parsed_fa/1143.removed.parsed.fasta
+# Stage parse [1349]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1349.removed.fasta parsed_fa/1349.removed.parsed.fasta
+# Stage parse [1351]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1351.removed.fasta parsed_fa/1351.removed.parsed.fasta
+# Stage parse [1348]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1348.removed.fasta parsed_fa/1348.removed.parsed.fasta
+# Stage parse [1366]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1366.removed.fasta parsed_fa/1366.removed.parsed.fasta
+# Stage parse [1132]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1132.removed.fasta parsed_fa/1132.removed.parsed.fasta
+# Stage parse [1367]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1367.removed.fasta parsed_fa/1367.removed.parsed.fasta
+# Stage parse [1311]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1311.removed.fasta parsed_fa/1311.removed.parsed.fasta
+# Stage parse [1158]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1158.removed.fasta parsed_fa/1158.removed.parsed.fasta
+# Stage parse [1371]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1371.removed.fasta parsed_fa/1371.removed.parsed.fasta
+# Stage parse [1112]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1112.removed.fasta parsed_fa/1112.removed.parsed.fasta
+# Stage parse [1339]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1339.removed.fasta parsed_fa/1339.removed.parsed.fasta
+# Stage reference_base_and_quality [1336]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam deepSNV/1336.removed.csv Variants/1336.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1156]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam deepSNV/1156.removed.csv Variants/1156.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1362]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam deepSNV/1362.removed.csv Variants/1362.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1137]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam deepSNV/1137.removed.csv Variants/1137.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1368]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam deepSNV/1368.removed.csv Variants/1368.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1347]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam deepSNV/1347.removed.csv Variants/1347.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1369]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam deepSNV/1369.removed.csv Variants/1369.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1364]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam deepSNV/1364.removed.csv Variants/1364.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1157]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam deepSNV/1157.removed.csv Variants/1157.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1144]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam deepSNV/1144.removed.csv Variants/1144.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1143]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam deepSNV/1143.removed.csv Variants/1143.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1349]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam deepSNV/1349.removed.csv Variants/1349.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1351]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam deepSNV/1351.removed.csv Variants/1351.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1348]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam deepSNV/1348.removed.csv Variants/1348.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1366]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam deepSNV/1366.removed.csv Variants/1366.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1132]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam deepSNV/1132.removed.csv Variants/1132.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1367]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam deepSNV/1367.removed.csv Variants/1367.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1311]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam deepSNV/1311.removed.csv Variants/1311.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1158]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam deepSNV/1158.removed.csv Variants/1158.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1371]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam deepSNV/1371.removed.csv Variants/1371.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1112]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam deepSNV/1112.removed.csv Variants/1112.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1339]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam deepSNV/1339.removed.csv Variants/1339.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage parse [1360]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1360.removed.fasta parsed_fa/1360.removed.parsed.fasta
+# Stage parse [1374]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1374.removed.fasta parsed_fa/1374.removed.parsed.fasta
+# Stage parse [1405]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1405.removed.fasta parsed_fa/1405.removed.parsed.fasta
+# Stage parse [1413]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1413.removed.fasta parsed_fa/1413.removed.parsed.fasta
+# Stage parse [1415]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1415.removed.fasta parsed_fa/1415.removed.parsed.fasta
+# Stage parse [1408]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1408.removed.fasta parsed_fa/1408.removed.parsed.fasta
+# Stage parse [1376]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1376.removed.fasta parsed_fa/1376.removed.parsed.fasta
+# Stage parse [1411]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1411.removed.fasta parsed_fa/1411.removed.parsed.fasta
+# Stage parse [1403]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1403.removed.fasta parsed_fa/1403.removed.parsed.fasta
+# Stage parse [Cali_mp]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/Cali_mp.removed.fasta parsed_fa/Cali_mp.removed.parsed.fasta
+# Stage parse [1404]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1404.removed.fasta parsed_fa/1404.removed.parsed.fasta
+# Stage parse [1346]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1346.removed.fasta parsed_fa/1346.removed.parsed.fasta
+# Stage parse [1356]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1356.removed.fasta parsed_fa/1356.removed.parsed.fasta
+# Stage parse [1409]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1409.removed.fasta parsed_fa/1409.removed.parsed.fasta
+# Stage parse [1372]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1372.removed.fasta parsed_fa/1372.removed.parsed.fasta
+# Stage parse [1120]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1120.removed.fasta parsed_fa/1120.removed.parsed.fasta
+# Stage parse [1363]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1363.removed.fasta parsed_fa/1363.removed.parsed.fasta
+# Stage parse [1136]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1136.removed.fasta parsed_fa/1136.removed.parsed.fasta
+# Stage parse [1361]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1361.removed.fasta parsed_fa/1361.removed.parsed.fasta
+# Stage parse [1402]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1402.removed.fasta parsed_fa/1402.removed.parsed.fasta
+# Stage reference_base_and_quality [1360]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam deepSNV/1360.removed.csv Variants/1360.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1374]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam deepSNV/1374.removed.csv Variants/1374.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1405]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam deepSNV/1405.removed.csv Variants/1405.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1413]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam deepSNV/1413.removed.csv Variants/1413.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1415]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam deepSNV/1415.removed.csv Variants/1415.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1408]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam deepSNV/1408.removed.csv Variants/1408.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage parse [1407]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1407.removed.fasta parsed_fa/1407.removed.parsed.fasta
+# Stage reference_base_and_quality [1376]
+# Stage reference_base_and_quality [1411]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam deepSNV/1376.removed.csv Variants/1376.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam deepSNV/1411.removed.csv Variants/1411.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1403]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam deepSNV/1403.removed.csv Variants/1403.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [Cali_mp]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam deepSNV/Cali_mp.removed.csv Variants/Cali_mp.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1404]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam deepSNV/1404.removed.csv Variants/1404.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1346]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam deepSNV/1346.removed.csv Variants/1346.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1356]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam deepSNV/1356.removed.csv Variants/1356.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1409]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam deepSNV/1409.removed.csv Variants/1409.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1372]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam deepSNV/1372.removed.csv Variants/1372.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1120]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam deepSNV/1120.removed.csv Variants/1120.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1363]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam deepSNV/1363.removed.csv Variants/1363.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1136]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam deepSNV/1136.removed.csv Variants/1136.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1361]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam deepSNV/1361.removed.csv Variants/1361.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1402]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam deepSNV/1402.removed.csv Variants/1402.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage parse [1406]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1406.removed.fasta parsed_fa/1406.removed.parsed.fasta
+# Stage parse [1142]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1142.removed.fasta parsed_fa/1142.removed.parsed.fasta
+# Stage parse [1353]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1353.removed.fasta parsed_fa/1353.removed.parsed.fasta
+# Stage parse [1350]
+# Stage reference_base_and_quality [1407]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1350.removed.fasta parsed_fa/1350.removed.parsed.fasta
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam deepSNV/1407.removed.csv Variants/1407.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage parse [1357]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1357.removed.fasta parsed_fa/1357.removed.parsed.fasta
+# Stage parse [1414]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1414.removed.fasta parsed_fa/1414.removed.parsed.fasta
+# Stage parse [1401]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1401.removed.fasta parsed_fa/1401.removed.parsed.fasta
+# Stage parse [Cali_pool]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/Cali_pool.removed.fasta parsed_fa/Cali_pool.removed.parsed.fasta
+# Stage parse [1370]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1370.removed.fasta parsed_fa/1370.removed.parsed.fasta
+# Stage parse [1410]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/cali09.fa deepSNV/1410.removed.fasta parsed_fa/1410.removed.parsed.fasta
+# Stage reference_base_and_quality [1406]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam deepSNV/1406.removed.csv Variants/1406.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1142]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam deepSNV/1142.removed.csv Variants/1142.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1353]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam deepSNV/1353.removed.csv Variants/1353.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1350]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam deepSNV/1350.removed.csv Variants/1350.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1357]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam deepSNV/1357.removed.csv Variants/1357.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1414]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam deepSNV/1414.removed.csv Variants/1414.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1401]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam deepSNV/1401.removed.csv Variants/1401.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [Cali_pool]
+# Stage reference_base_and_quality [1370]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam deepSNV/1370.removed.csv Variants/1370.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage reference_base_and_quality [1410]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam deepSNV/1410.removed.csv Variants/1410.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage sift [1369.removed]
+# Stage sift [1347.removed]
+# Stage sift [1360.removed]
+# Stage sift [1112.removed]
+# Stage sift [1144.removed]
+# Stage sift [1156.removed]
+# Stage sift [1336.removed]
+# Stage sift [1157.removed]
+# Stage sift [1348.removed]
+# Stage sift [1339.removed]
+# Stage sift [1132.removed]
+# Stage sift [1406.removed]
+# Stage sift [1371.removed]
+# Stage sift [1311.removed]
+# Stage sift [1346.removed]
+# Stage sift [1374.removed]
+# Stage sift [1376.removed]
+# Stage sift [1120.removed]
+# Stage sift [1362.removed]
+# Stage sift [1367.removed]
+# Stage sift [1349.removed]
+# Stage sift [1136.removed]
+# Stage sift [1401.removed]
+# Stage sift [1368.removed]
+# Stage sift [1409.removed]
+# Stage sift [1142.removed]
+# Stage sift [1370.removed]
+# Stage sift [1351.removed]
+# Stage sift [1158.removed]
+# Stage sift [1407.removed]
+# Stage sift [1350.removed]
+# Stage sift [1405.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1369.removed.ref.sum.csv Filter_var/1369.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage sift [1363.removed]
+# Stage sift [1137.removed]
+# Stage sift [1353.removed]
+# Stage sift [1408.removed]
+# Stage sift [1364.removed]
+# Stage sift [1357.removed]
+# Stage sift [1413.removed]
+# Stage sift [1143.removed]
+# Stage sift [1403.removed]
+# Stage sift [1372.removed]
+# Stage sift [1404.removed]
+# Stage sift [1411.removed]
+# Stage sift [1415.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1360.removed.ref.sum.csv Filter_var/1360.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1347.removed.ref.sum.csv Filter_var/1347.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1144.removed.ref.sum.csv Filter_var/1144.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1112.removed.ref.sum.csv Filter_var/1112.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1156.removed.ref.sum.csv Filter_var/1156.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage sift [1414.removed]
+# Stage sift [1356.removed]
+# Stage sift [1402.removed]
+# Stage sift [1366.removed]
+# Stage sift [1410.removed]
+# Stage sift [Cali_mp.removed]
+# Stage sift [1361.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1336.removed.ref.sum.csv Filter_var/1336.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1409.removed.ref.sum.csv Filter_var/1409.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1413.removed.ref.sum.csv Filter_var/1413.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1408.removed.ref.sum.csv Filter_var/1408.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1371.removed.ref.sum.csv Filter_var/1371.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1157.removed.ref.sum.csv Filter_var/1157.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1404.removed.ref.sum.csv Filter_var/1404.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1368.removed.ref.sum.csv Filter_var/1368.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1415.removed.ref.sum.csv Filter_var/1415.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1374.removed.ref.sum.csv Filter_var/1374.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1132.removed.ref.sum.csv Filter_var/1132.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1339.removed.ref.sum.csv Filter_var/1339.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1348.removed.ref.sum.csv Filter_var/1348.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1353.removed.ref.sum.csv Filter_var/1353.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1403.removed.ref.sum.csv Filter_var/1403.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1351.removed.ref.sum.csv Filter_var/1351.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1407.removed.ref.sum.csv Filter_var/1407.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1357.removed.ref.sum.csv Filter_var/1357.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1142.removed.ref.sum.csv Filter_var/1142.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1346.removed.ref.sum.csv Filter_var/1346.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1120.removed.ref.sum.csv Filter_var/1120.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1411.removed.ref.sum.csv Filter_var/1411.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1362.removed.ref.sum.csv Filter_var/1362.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1350.removed.ref.sum.csv Filter_var/1350.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1363.removed.ref.sum.csv Filter_var/1363.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1136.removed.ref.sum.csv Filter_var/1136.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1401.removed.ref.sum.csv Filter_var/1401.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1367.removed.ref.sum.csv Filter_var/1367.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1406.removed.ref.sum.csv Filter_var/1406.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1376.removed.ref.sum.csv Filter_var/1376.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1349.removed.ref.sum.csv Filter_var/1349.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1372.removed.ref.sum.csv Filter_var/1372.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1311.removed.ref.sum.csv Filter_var/1311.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1414.removed.ref.sum.csv Filter_var/1414.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1143.removed.ref.sum.csv Filter_var/1143.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1137.removed.ref.sum.csv Filter_var/1137.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1402.removed.ref.sum.csv Filter_var/1402.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1356.removed.ref.sum.csv Filter_var/1356.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1405.removed.ref.sum.csv Filter_var/1405.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1366.removed.ref.sum.csv Filter_var/1366.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1158.removed.ref.sum.csv Filter_var/1158.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1370.removed.ref.sum.csv Filter_var/1370.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1364.removed.ref.sum.csv Filter_var/1364.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1410.removed.ref.sum.csv Filter_var/1410.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/Cali_mp.removed.ref.sum.csv Filter_var/Cali_mp.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1361.removed.ref.sum.csv Filter_var/1361.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1142.removed.ref.sum]
+# Stage classification [1158.removed.ref.sum]
+# Stage classification [1120.removed.ref.sum]
+# Stage classification [1136.removed.ref.sum]
+# Stage classification [1143.removed.ref.sum]
+# Stage classification [1157.removed.ref.sum]
+# Stage classification [1144.removed.ref.sum]
+# Stage classification [1156.removed.ref.sum]
+# Stage classification [1339.removed.ref.sum]
+# Stage classification [1336.removed.ref.sum]
+# Stage classification [1112.removed.ref.sum]
+# Stage classification [1311.removed.ref.sum]
+# Stage classification [1374.removed.ref.sum]
+# Stage classification [1132.removed.ref.sum]
+# Stage classification [1370.removed.ref.sum]
+# Stage classification [1363.removed.ref.sum]
+# Stage classification [1137.removed.ref.sum]
+# Stage classification [1372.removed.ref.sum]
+# Stage classification [1369.removed.ref.sum]
+# Stage classification [1368.removed.ref.sum]
+# Stage classification [1351.removed.ref.sum]
+# Stage classification [1366.removed.ref.sum]
+# Stage classification [1362.removed.ref.sum]
+# Stage classification [1364.removed.ref.sum]
+# Stage classification [1367.removed.ref.sum]
+# Stage classification [1346.removed.ref.sum]
+# Stage classification [1356.removed.ref.sum]
+# Stage classification [1348.removed.ref.sum]
+# Stage classification [1353.removed.ref.sum]
+# Stage classification [1361.removed.ref.sum]
+# Stage classification [1360.removed.ref.sum]
+# Stage classification [1347.removed.ref.sum]
+# Stage classification [1349.removed.ref.sum]
+# Stage classification [1402.removed.ref.sum]
+# Stage classification [1357.removed.ref.sum]
+# Stage classification [1350.removed.ref.sum]
+# Stage classification [1376.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1144.removed.ref.sum.filtered.csv Final_variants/1144.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1372.removed.ref.sum.filtered.csv Final_variants/1372.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1112.removed.ref.sum.filtered.csv Final_variants/1112.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1339.removed.ref.sum.filtered.csv Final_variants/1339.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1363.removed.ref.sum.filtered.csv Final_variants/1363.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1401.removed.ref.sum]
+# Stage classification [1403.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1143.removed.ref.sum.filtered.csv Final_variants/1143.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1371.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1157.removed.ref.sum.filtered.csv Final_variants/1157.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1142.removed.ref.sum.filtered.csv Final_variants/1142.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1120.removed.ref.sum.filtered.csv Final_variants/1120.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1156.removed.ref.sum.filtered.csv Final_variants/1156.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1158.removed.ref.sum.filtered.csv Final_variants/1158.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1136.removed.ref.sum.filtered.csv Final_variants/1136.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1361.removed.ref.sum.filtered.csv Final_variants/1361.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1137.removed.ref.sum.filtered.csv Final_variants/1137.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1132.removed.ref.sum.filtered.csv Final_variants/1132.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1370.removed.ref.sum.filtered.csv Final_variants/1370.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1311.removed.ref.sum.filtered.csv Final_variants/1311.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1369.removed.ref.sum.filtered.csv Final_variants/1369.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1402.removed.ref.sum.filtered.csv Final_variants/1402.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1346.removed.ref.sum.filtered.csv Final_variants/1346.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1368.removed.ref.sum.filtered.csv Final_variants/1368.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1351.removed.ref.sum.filtered.csv Final_variants/1351.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1374.removed.ref.sum.filtered.csv Final_variants/1374.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1349.removed.ref.sum.filtered.csv Final_variants/1349.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1336.removed.ref.sum.filtered.csv Final_variants/1336.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1350.removed.ref.sum.filtered.csv Final_variants/1350.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1362.removed.ref.sum.filtered.csv Final_variants/1362.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1366.removed.ref.sum.filtered.csv Final_variants/1366.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1356.removed.ref.sum.filtered.csv Final_variants/1356.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1353.removed.ref.sum.filtered.csv Final_variants/1353.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1364.removed.ref.sum.filtered.csv Final_variants/1364.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1347.removed.ref.sum.filtered.csv Final_variants/1347.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1367.removed.ref.sum.filtered.csv Final_variants/1367.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1376.removed.ref.sum.filtered.csv Final_variants/1376.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1403.removed.ref.sum.filtered.csv Final_variants/1403.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1360.removed.ref.sum.filtered.csv Final_variants/1360.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1408.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1401.removed.ref.sum.filtered.csv Final_variants/1401.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1405.removed.ref.sum]
+# Stage classification [1404.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1371.removed.ref.sum.filtered.csv Final_variants/1371.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1406.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1357.removed.ref.sum.filtered.csv Final_variants/1357.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1348.removed.ref.sum.filtered.csv Final_variants/1348.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1410.removed.ref.sum]
+# Stage classification [Cali_mp.removed.ref.sum]
+# Stage classification [1414.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1404.removed.ref.sum.filtered.csv Final_variants/1404.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage classification [1409.removed.ref.sum]
+# Stage classification [1411.removed.ref.sum]
+# Stage classification [1407.removed.ref.sum]
+# Stage classification [1415.removed.ref.sum]
+# Stage classification [1413.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1406.removed.ref.sum.filtered.csv Final_variants/1406.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1408.removed.ref.sum.filtered.csv Final_variants/1408.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1410.removed.ref.sum.filtered.csv Final_variants/1410.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1413.removed.ref.sum.filtered.csv Final_variants/1413.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1414.removed.ref.sum.filtered.csv Final_variants/1414.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1407.removed.ref.sum.filtered.csv Final_variants/1407.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/Cali_mp.removed.ref.sum.filtered.csv Final_variants/Cali_mp.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1415.removed.ref.sum.filtered.csv Final_variants/1415.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1405.removed.ref.sum.filtered.csv Final_variants/1405.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1409.removed.ref.sum.filtered.csv Final_variants/1409.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Cali_pool.removed.parsed.fasta Filter_var/1411.removed.ref.sum.filtered.csv Final_variants/1411.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/cali09.options.yaml
+# Stage combine
+python /home/mccrone/variant_pipeline/scripts/combine.py ./Final_variants AA.csv ../all.variants.csv
+python /home/mccrone/variant_pipeline/scripts/combine.py ./deepSNV cov.csv ../all.coverage.csv
+# Stage quality_report
+multiqc ./
+# ##### Finished at Mon Jun 19 17:15:32 EDT 2017 Duration = 3 hours, 44 minutes, 15.247 seconds ######
+
+
+####################################################################################################
+# Starting pipeline at Thu Jun 22 11:20:26 EDT 2017
+# Input files:  [/scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1112.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1120.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1132.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1136.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1137.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1142.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1143.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1144.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1156.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1157.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1158.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1311.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1336.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1339.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1346.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1347.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1348.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1349.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1350.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1351.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1353.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1356.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1357.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1360.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1361.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1362.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1363.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1364.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1366.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1367.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1368.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1369.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1370.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1371.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1372.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1374.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1376.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1401.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1402.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1403.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1404.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1405.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1406.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1407.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1408.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1409.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1410.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1411.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1413.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1414.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/1415.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_mp.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/cali09/04_removed_duplicates/Cali_pool.removed.bam]
+# Output Log:  .bpipe/logs/42982.log
+# Stage post_align
+# Stage deepsnv [1347]
+# Stage deepsnv [1132]
+# Stage deepsnv [1353]
+# Stage deepsnv [1136]
+# Stage deepsnv [1363]
+# Stage deepsnv [1112]
+# Stage deepsnv [1350]
+# Stage deepsnv [1351]
+# Stage deepsnv [1368]
+# Stage deepsnv [1348]
+# Stage deepsnv [1413]
+# Stage deepsnv [1364]
+# Stage deepsnv [1361]
+# Stage deepsnv [1414]
+# Stage deepsnv [1367]
+# Stage deepsnv [1336]
+# Stage deepsnv [1374]
+# Stage deepsnv [1356]
+# Stage deepsnv [1362]
+# Stage deepsnv [Cali_pool]
+# Stage deepsnv [1403]
+# Stage deepsnv [1408]
+# Stage deepsnv [1360]
+# Stage deepsnv [1357]
+# Stage deepsnv [1339]
+# Stage deepsnv [1144]
+# Stage deepsnv [1158]
+# Stage deepsnv [1401]
+# Stage deepsnv [1372]
+# Stage deepsnv [1407]
+# Stage deepsnv [1120]
+# Stage deepsnv [1156]
+# Stage deepsnv [1142]
+# Stage deepsnv [1404]
+# Stage deepsnv [1137]
+# Stage deepsnv [1157]
+# Stage deepsnv [1415]
+# Stage deepsnv [1406]
+# Stage deepsnv [1311]
+# Stage deepsnv [1411]
+# Stage deepsnv [1402]
+# Stage deepsnv [Cali_mp]
+# Stage deepsnv [1349]
+# Stage deepsnv [1409]
+# Stage deepsnv [1371]
+# Stage deepsnv [1410]
+# Stage deepsnv [1346]
+# Stage deepsnv [1405]
+# Stage deepsnv [1369]
+# Stage deepsnv [1370]
+# Stage deepsnv [1366]
+# Stage deepsnv [1376]
+# Stage deepsnv [1143]
+# Stage parse [Cali_mp]
+# Stage parse [1351]
+# Stage parse [1112]
+# Stage parse [1339]
+# Stage parse [1409]
+# Stage parse [Cali_pool]
+# Stage parse [1158]
+# Stage parse [1414]
+# Stage parse [1349]
+# Stage parse [1364]
+# Stage parse [1374]
+# Stage parse [1361]
+# Stage parse [1363]
+# Stage parse [1350]
+# Stage parse [1405]
+# Stage parse [1371]
+# Stage parse [1357]
+# Stage parse [1413]
+# Stage parse [1401]
+# Stage parse [1410]
+# Stage parse [1156]
+# Stage parse [1411]
+# Stage parse [1366]
+# Stage parse [1360]
+# Stage parse [1311]
+# Stage parse [1368]
+# Stage parse [1353]
+# Stage parse [1415]
+# Stage parse [1348]
+# Stage parse [1120]
+# Stage parse [1376]
+# Stage parse [1367]
+# Stage parse [1406]
+# Stage parse [1356]
+# Stage parse [1346]
+# Stage parse [1347]
+# Stage parse [1336]
+# Stage parse [1157]
+# Stage parse [1137]
+# Stage parse [1143]
+# Stage parse [1408]
+# Stage parse [1132]
+# Stage parse [1372]
+# Stage parse [1144]
+# Stage parse [1404]
+# Stage parse [1142]
+# Stage parse [1362]
+# Stage parse [1369]
+# Stage parse [1403]
+# Stage parse [1407]
+# Stage parse [1136]
+# Stage parse [1370]
+# Stage parse [1402]
+# Stage reference_base_and_quality [1364]
+# Stage reference_base_and_quality [1350]
+# Stage reference_base_and_quality [1112]
+# Stage reference_base_and_quality [1413]
+# Stage reference_base_and_quality [Cali_mp]
+# Stage reference_base_and_quality [1401]
+# Stage reference_base_and_quality [1368]
+# Stage reference_base_and_quality [1132]
+# Stage reference_base_and_quality [1404]
+# Stage reference_base_and_quality [1156]
+# Stage reference_base_and_quality [1349]
+# Stage reference_base_and_quality [1351]
+# Stage reference_base_and_quality [1357]
+# Stage reference_base_and_quality [1339]
+# Stage reference_base_and_quality [1414]
+# Stage reference_base_and_quality [1363]
+# Stage reference_base_and_quality [1371]
+# Stage reference_base_and_quality [1136]
+# Stage reference_base_and_quality [1369]
+# Stage reference_base_and_quality [1372]
+# Stage reference_base_and_quality [1405]
+# Stage reference_base_and_quality [1402]
+# Stage reference_base_and_quality [1353]
+# Stage reference_base_and_quality [1143]
+# Stage reference_base_and_quality [1362]
+# Stage reference_base_and_quality [1347]
+# Stage reference_base_and_quality [1374]
+# Stage reference_base_and_quality [1361]
+# Stage reference_base_and_quality [1410]
+# Stage reference_base_and_quality [1346]
+# Stage reference_base_and_quality [Cali_pool]
+# Stage reference_base_and_quality [1409]
+# Stage reference_base_and_quality [1370]
+# Stage reference_base_and_quality [1408]
+# Stage reference_base_and_quality [1366]
+# Stage reference_base_and_quality [1158]
+# Stage reference_base_and_quality [1415]
+# Stage reference_base_and_quality [1336]
+# Stage reference_base_and_quality [1367]
+# Stage reference_base_and_quality [1356]
+# Stage reference_base_and_quality [1157]
+# Stage reference_base_and_quality [1406]
+# Stage reference_base_and_quality [1403]
+# Stage reference_base_and_quality [1348]
+# Stage reference_base_and_quality [1376]
+# Stage reference_base_and_quality [1407]
+# Stage reference_base_and_quality [1120]
+# Stage reference_base_and_quality [1137]
+# Stage reference_base_and_quality [1142]
+# Stage reference_base_and_quality [1311]
+# Stage reference_base_and_quality [1144]
+# Stage reference_base_and_quality [1360]
+# Stage reference_base_and_quality [1411]
+# Stage sift [1405.removed]
+# Stage sift [1374.removed]
+# Stage sift [1132.removed]
+# Stage sift [1136.removed]
+# Stage sift [1371.removed]
+# Stage sift [1347.removed]
+# Stage sift [1361.removed]
+# Stage sift [1351.removed]
+# Stage sift [1369.removed]
+# Stage sift [1348.removed]
+# Stage sift [1120.removed]
+# Stage sift [1339.removed]
+# Stage sift [1137.removed]
+# Stage sift [1404.removed]
+# Stage sift [1413.removed]
+# Stage sift [1408.removed]
+# Stage sift [1407.removed]
+# Stage sift [1414.removed]
+# Stage sift [1403.removed]
+# Stage sift [1142.removed]
+# Stage sift [1143.removed]
+# Stage sift [1401.removed]
+# Stage sift [1366.removed]
+# Stage sift [1368.removed]
+# Stage sift [1356.removed]
+# Stage sift [1346.removed]
+# Stage sift [1409.removed]
+# Stage sift [1364.removed]
+# Stage sift [1353.removed]
+# Stage sift [1144.removed]
+# Stage sift [1376.removed]
+# Stage sift [1336.removed]
+# Stage sift [1406.removed]
+# Stage sift [1350.removed]
+# Stage sift [1370.removed]
+# Stage sift [1311.removed]
+# Stage sift [1357.removed]
+# Stage sift [1349.removed]
+# Stage sift [1360.removed]
+# Stage sift [1402.removed]
+# Stage sift [1112.removed]
+# Stage sift [1156.removed]
+# Stage sift [1372.removed]
+# Stage sift [1157.removed]
+# Stage sift [1367.removed]
+# Stage sift [1411.removed]
+# Stage sift [1158.removed]
+# Stage sift [1410.removed]
+# Stage sift [1362.removed]
+# Stage sift [Cali_mp.removed]
+# Stage sift [1363.removed]
+# Stage sift [1415.removed]
+# Stage classification [1143.removed.ref.sum]
+# Stage classification [1132.removed.ref.sum]
+# Stage classification [1120.removed.ref.sum]
+# Stage classification [1136.removed.ref.sum]
+# Stage classification [1347.removed.ref.sum]
+# Stage classification [1142.removed.ref.sum]
+# Stage classification [1144.removed.ref.sum]
+# Stage classification [1112.removed.ref.sum]
+# Stage classification [1156.removed.ref.sum]
+# Stage classification [1157.removed.ref.sum]
+# Stage classification [1311.removed.ref.sum]
+# Stage classification [1336.removed.ref.sum]
+# Stage classification [1351.removed.ref.sum]
+# Stage classification [1137.removed.ref.sum]
+# Stage classification [1349.removed.ref.sum]
+# Stage classification [1346.removed.ref.sum]
+# Stage classification [1348.removed.ref.sum]
+# Stage classification [1357.removed.ref.sum]
+# Stage classification [1350.removed.ref.sum]
+# Stage classification [1158.removed.ref.sum]
+# Stage classification [1363.removed.ref.sum]
+# Stage classification [1339.removed.ref.sum]
+# Stage classification [1364.removed.ref.sum]
+# Stage classification [1367.removed.ref.sum]
+# Stage classification [1360.removed.ref.sum]
+# Stage classification [1362.removed.ref.sum]
+# Stage classification [1361.removed.ref.sum]
+# Stage classification [1403.removed.ref.sum]
+# Stage classification [1353.removed.ref.sum]
+# Stage classification [1414.removed.ref.sum]
+# Stage classification [1411.removed.ref.sum]
+# Stage classification [1372.removed.ref.sum]
+# Stage classification [1410.removed.ref.sum]
+# Stage classification [1369.removed.ref.sum]
+# Stage classification [1409.removed.ref.sum]
+# Stage classification [1413.removed.ref.sum]
+# Stage classification [1408.removed.ref.sum]
+# Stage classification [1370.removed.ref.sum]
+# Stage classification [1368.removed.ref.sum]
+# Stage classification [1401.removed.ref.sum]
+# Stage classification [1366.removed.ref.sum]
+# Stage classification [1374.removed.ref.sum]
+# Stage classification [1405.removed.ref.sum]
+# Stage classification [1406.removed.ref.sum]
+# Stage classification [1404.removed.ref.sum]
+# Stage classification [1356.removed.ref.sum]
+# Stage classification [1402.removed.ref.sum]
+# Stage classification [1376.removed.ref.sum]
+# Stage classification [1407.removed.ref.sum]
+# Stage classification [Cali_mp.removed.ref.sum]
+# Stage classification [1371.removed.ref.sum]
+# Stage classification [1415.removed.ref.sum]
+# Stage combine
+python /home/mccrone/variant_pipeline/scripts/combine.py ./Final_variants AA.csv ../all.variants.csv
+python /home/mccrone/variant_pipeline/scripts/combine.py ./deepSNV cov.csv ../all.coverage.csv
+# Stage quality_report
+multiqc ./
+# ################ Finished at Thu Jun 22 11:21:18 EDT 2017 Duration = 51.732 seconds ################
+

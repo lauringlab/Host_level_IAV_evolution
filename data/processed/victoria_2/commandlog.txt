@@ -1,0 +1,383 @@
+
+####################################################################################################
+# Starting pipeline at Tue Jun 13 14:29:58 EDT 2017
+# Input files:  null
+# Output Log:  .bpipe/logs/8960.log
+# Stage compare [1229]
+# Stage compare [1232]
+# Stage compare [1317]
+# Stage compare [1313]
+# Stage compare [1228]
+# Stage compare [1310]
+# Stage compare [1307]
+# Stage compare [1238]
+# Stage compare [1242]
+# Stage compare [1231]
+# Stage compare [1303]
+# Stage compare [1240]
+# Stage compare [1323]
+# Stage compare [1245]
+# Stage compare [1237]
+# Stage compare [1230]
+# Stage compare [1305]
+# Stage compare [1321]
+# Stage compare [1225]
+# Stage compare [1340]
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1242.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1242.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1242.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1310.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1310.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1310.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1231.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1231.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1231.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1321.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1321.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1321.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1229.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1229.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1229.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1303.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1303.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1303.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1307.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1307.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1307.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1313.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1313.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1313.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1238.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1238.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1238.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1232.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1232.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1232.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1317.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1317.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1317.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1230.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1230.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1230.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1323.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1323.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1323.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1245.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1245.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1245.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1240.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1240.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1240.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1228.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1228.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1228.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1305.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1305.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1305.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1237.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1237.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1237.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1340.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1340.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1340.removed.missed.csv
+julia /scratch/alauring_fluxm/mccrone/HIVE/scripts/checking_deepsnv.jl  /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1225.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/Final_variants/1225.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.regions.main.jl.csv /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/parsed_fa/Vic_pool.removed.parsed.fasta comparison/1225.removed.missed.csv
+# Stage combine
+python /scratch/alauring_fluxm/mccrone/HIVE/scripts/combine.py ./comparison missed.csv ../all.missed.csv
+# ########## Finished at Tue Jun 13 14:52:06 EDT 2017 Duration = 22 minutes, 8.120 seconds ###########
+
+
+####################################################################################################
+# Starting pipeline at Mon Jun 19 20:46:47 EDT 2017
+# Input files:  [/scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1225.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1228.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1229.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1230.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1231.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1232.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1237.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1238.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1240.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1242.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1245.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1303.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1305.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1307.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1310.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1313.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1317.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1321.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1323.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1340.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam]
+# Output Log:  .bpipe/logs/55847.log
+# Stage post_align
+# Stage deepsnv [1225]
+# Stage deepsnv [1231]
+# Stage deepsnv [1245]
+# Stage deepsnv [1317]
+# Stage deepsnv [1303]
+# Stage deepsnv [1313]
+# Stage deepsnv [1232]
+# Stage deepsnv [1228]
+# Stage deepsnv [1321]
+# Stage deepsnv [1230]
+# Stage deepsnv [1229]
+# Stage deepsnv [1240]
+# Stage deepsnv [1323]
+# Stage deepsnv [1242]
+# Stage deepsnv [1238]
+# Stage deepsnv [1305]
+# Stage deepsnv [1307]
+# Stage deepsnv [1310]
+# Stage deepsnv [Vic_pool]
+# Stage deepsnv [1237]
+# Stage deepsnv [1340]
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1323.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1323.removed.csv deepSNV/1323.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1305.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1305.removed.csv deepSNV/1305.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1230.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1230.removed.csv deepSNV/1230.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1245.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1245.removed.csv deepSNV/1245.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1317.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1317.removed.csv deepSNV/1317.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1232.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1232.removed.csv deepSNV/1232.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1229.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1229.removed.csv deepSNV/1229.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1340.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1340.removed.csv deepSNV/1340.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1321.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1321.removed.csv deepSNV/1321.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1228.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1228.removed.csv deepSNV/1228.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1313.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1313.removed.csv deepSNV/1313.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1310.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1310.removed.csv deepSNV/1310.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/Vic_pool.removed.csv deepSNV/Vic_pool.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1238.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1238.removed.csv deepSNV/1238.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1237.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1237.removed.csv deepSNV/1237.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1303.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1303.removed.csv deepSNV/1303.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1225.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1225.removed.csv deepSNV/1225.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1231.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1231.removed.csv deepSNV/1231.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1307.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1307.removed.csv deepSNV/1307.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1240.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1240.removed.csv deepSNV/1240.removed.fasta
+Rscript  /home/mccrone/variant_pipeline/scripts/deepSNV.R /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1242.removed.bam /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam bonferroni 0.1 fisher two.sided 0.5 deepSNV/1242.removed.csv deepSNV/1242.removed.fasta
+# Stage parse [1245]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1245.removed.fasta parsed_fa/1245.removed.parsed.fasta
+# Stage reference_base_and_quality [1245]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1245.removed.bam deepSNV/1245.removed.csv Variants/1245.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1323]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1323.removed.fasta parsed_fa/1323.removed.parsed.fasta
+# Stage reference_base_and_quality [1323]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1323.removed.bam deepSNV/1323.removed.csv Variants/1323.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1305]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1305.removed.fasta parsed_fa/1305.removed.parsed.fasta
+# Stage reference_base_and_quality [1305]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1305.removed.bam deepSNV/1305.removed.csv Variants/1305.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1225]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1225.removed.fasta parsed_fa/1225.removed.parsed.fasta
+# Stage reference_base_and_quality [1225]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1225.removed.bam deepSNV/1225.removed.csv Variants/1225.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1317]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1317.removed.fasta parsed_fa/1317.removed.parsed.fasta
+# Stage reference_base_and_quality [1317]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1317.removed.bam deepSNV/1317.removed.csv Variants/1317.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1340]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1340.removed.fasta parsed_fa/1340.removed.parsed.fasta
+# Stage reference_base_and_quality [1340]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1340.removed.bam deepSNV/1340.removed.csv Variants/1340.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1238]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1238.removed.fasta parsed_fa/1238.removed.parsed.fasta
+# Stage reference_base_and_quality [1238]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1238.removed.bam deepSNV/1238.removed.csv Variants/1238.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1242]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1242.removed.fasta parsed_fa/1242.removed.parsed.fasta
+# Stage reference_base_and_quality [1242]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1242.removed.bam deepSNV/1242.removed.csv Variants/1242.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1230]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1230.removed.fasta parsed_fa/1230.removed.parsed.fasta
+# Stage reference_base_and_quality [1230]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1230.removed.bam deepSNV/1230.removed.csv Variants/1230.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1240]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1240.removed.fasta parsed_fa/1240.removed.parsed.fasta
+# Stage reference_base_and_quality [1240]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1240.removed.bam deepSNV/1240.removed.csv Variants/1240.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [Vic_pool]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/Vic_pool.removed.fasta parsed_fa/Vic_pool.removed.parsed.fasta
+# Stage reference_base_and_quality [Vic_pool]
+# Stage parse [1229]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1229.removed.fasta parsed_fa/1229.removed.parsed.fasta
+# Stage reference_base_and_quality [1229]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1229.removed.bam deepSNV/1229.removed.csv Variants/1229.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1321]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1321.removed.fasta parsed_fa/1321.removed.parsed.fasta
+# Stage reference_base_and_quality [1321]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1321.removed.bam deepSNV/1321.removed.csv Variants/1321.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1231]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1231.removed.fasta parsed_fa/1231.removed.parsed.fasta
+# Stage parse [1303]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1303.removed.fasta parsed_fa/1303.removed.parsed.fasta
+# Stage reference_base_and_quality [1231]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1231.removed.bam deepSNV/1231.removed.csv Variants/1231.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage reference_base_and_quality [1303]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1303.removed.bam deepSNV/1303.removed.csv Variants/1303.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1307]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1307.removed.fasta parsed_fa/1307.removed.parsed.fasta
+# Stage reference_base_and_quality [1307]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1307.removed.bam deepSNV/1307.removed.csv Variants/1307.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1237]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1237.removed.fasta parsed_fa/1237.removed.parsed.fasta
+# Stage reference_base_and_quality [1237]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1237.removed.bam deepSNV/1237.removed.csv Variants/1237.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1313]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1313.removed.fasta parsed_fa/1313.removed.parsed.fasta
+# Stage reference_base_and_quality [1313]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1313.removed.bam deepSNV/1313.removed.csv Variants/1313.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1310]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1310.removed.fasta parsed_fa/1310.removed.parsed.fasta
+# Stage reference_base_and_quality [1310]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1310.removed.bam deepSNV/1310.removed.csv Variants/1310.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1232]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1232.removed.fasta parsed_fa/1232.removed.parsed.fasta
+# Stage reference_base_and_quality [1232]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1232.removed.bam deepSNV/1232.removed.csv Variants/1232.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage parse [1228]
+python /home/mccrone/variant_pipeline/scripts/parse_consensus.py /scratch/alauring_fluxm/mccrone/HIVE/data/reference/victoria.fa deepSNV/1228.removed.fasta parsed_fa/1228.removed.parsed.fasta
+# Stage reference_base_and_quality [1228]
+python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1228.removed.bam deepSNV/1228.removed.csv Variants/1228.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage sift [1232.removed]
+# Stage sift [1305.removed]
+# Stage sift [1228.removed]
+# Stage sift [1231.removed]
+# Stage sift [1245.removed]
+# Stage sift [1238.removed]
+# Stage sift [1303.removed]
+# Stage sift [1240.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1232.removed.ref.sum.csv Filter_var/1232.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage sift [1242.removed]
+# Stage sift [1237.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1245.removed.ref.sum.csv Filter_var/1245.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage sift [1340.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1228.removed.ref.sum.csv Filter_var/1228.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage sift [1317.removed]
+# Stage sift [1321.removed]
+# Stage sift [1313.removed]
+# Stage sift [1323.removed]
+# Stage sift [1310.removed]
+# Stage sift [1230.removed]
+# Stage sift [1307.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1231.removed.ref.sum.csv Filter_var/1231.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage sift [1225.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1238.removed.ref.sum.csv Filter_var/1238.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage sift [1229.removed]
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1237.removed.ref.sum.csv Filter_var/1237.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1313.removed.ref.sum.csv Filter_var/1313.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1240.removed.ref.sum.csv Filter_var/1240.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1305.removed.ref.sum.csv Filter_var/1305.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1340.removed.ref.sum.csv Filter_var/1340.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1242.removed.ref.sum.csv Filter_var/1242.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1317.removed.ref.sum.csv Filter_var/1317.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1303.removed.ref.sum.csv Filter_var/1303.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1230.removed.ref.sum.csv Filter_var/1230.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1310.removed.ref.sum.csv Filter_var/1310.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1321.removed.ref.sum.csv Filter_var/1321.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1225.removed.ref.sum.csv Filter_var/1225.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1229.removed.ref.sum.csv Filter_var/1229.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1307.removed.ref.sum.csv Filter_var/1307.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/1323.removed.ref.sum.csv Filter_var/1323.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage classification [1231.removed.ref.sum]
+# Stage classification [1245.removed.ref.sum]
+# Stage classification [1238.removed.ref.sum]
+# Stage classification [1323.removed.ref.sum]
+# Stage classification [1228.removed.ref.sum]
+# Stage classification [1237.removed.ref.sum]
+# Stage classification [1242.removed.ref.sum]
+# Stage classification [1307.removed.ref.sum]
+# Stage classification [1310.removed.ref.sum]
+# Stage classification [1240.removed.ref.sum]
+# Stage classification [1313.removed.ref.sum]
+# Stage classification [1321.removed.ref.sum]
+# Stage classification [1305.removed.ref.sum]
+# Stage classification [1340.removed.ref.sum]
+# Stage classification [1317.removed.ref.sum]
+# Stage classification [1303.removed.ref.sum]
+# Stage classification [1232.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1321.removed.ref.sum.filtered.csv Final_variants/1321.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage classification [1229.removed.ref.sum]
+# Stage classification [1225.removed.ref.sum]
+# Stage classification [1230.removed.ref.sum]
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1245.removed.ref.sum.filtered.csv Final_variants/1245.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1310.removed.ref.sum.filtered.csv Final_variants/1310.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1238.removed.ref.sum.filtered.csv Final_variants/1238.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1242.removed.ref.sum.filtered.csv Final_variants/1242.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1231.removed.ref.sum.filtered.csv Final_variants/1231.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1307.removed.ref.sum.filtered.csv Final_variants/1307.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1237.removed.ref.sum.filtered.csv Final_variants/1237.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1228.removed.ref.sum.filtered.csv Final_variants/1228.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1323.removed.ref.sum.filtered.csv Final_variants/1323.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1240.removed.ref.sum.filtered.csv Final_variants/1240.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1313.removed.ref.sum.filtered.csv Final_variants/1313.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1340.removed.ref.sum.filtered.csv Final_variants/1340.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1232.removed.ref.sum.filtered.csv Final_variants/1232.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1317.removed.ref.sum.filtered.csv Final_variants/1317.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1303.removed.ref.sum.filtered.csv Final_variants/1303.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1305.removed.ref.sum.filtered.csv Final_variants/1305.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1230.removed.ref.sum.filtered.csv Final_variants/1230.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1229.removed.ref.sum.filtered.csv Final_variants/1229.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/Vic_pool.removed.parsed.fasta Filter_var/1225.removed.ref.sum.filtered.csv Final_variants/1225.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/vic.2.options.yaml
+# Stage combine
+python /home/mccrone/variant_pipeline/scripts/combine.py ./Final_variants AA.csv ../all.variants.csv
+python /home/mccrone/variant_pipeline/scripts/combine.py ./deepSNV cov.csv ../all.coverage.csv
+# Stage quality_report
+multiqc ./
+# ##### Finished at Mon Jun 19 22:08:14 EDT 2017 Duration = 1 hours, 21 minutes, 26.541 seconds ######
+
+
+####################################################################################################
+# Starting pipeline at Thu Jun 22 11:26:13 EDT 2017
+# Input files:  [/scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1225.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1228.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1229.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1230.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1231.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1232.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1237.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1238.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1240.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1242.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1245.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1303.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1305.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1307.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1310.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1313.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1317.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1321.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1323.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/1340.removed.bam, /scratch/alauring_fluxm/mccrone/HIVE/data/processed/victoria_2/04_removed_duplicates/Vic_pool.removed.bam]
+# Output Log:  .bpipe/logs/46226.log
+# Stage post_align
+# Stage deepsnv [1307]
+# Stage deepsnv [1245]
+# Stage deepsnv [1238]
+# Stage deepsnv [1237]
+# Stage deepsnv [1228]
+# Stage deepsnv [Vic_pool]
+# Stage deepsnv [1231]
+# Stage deepsnv [1242]
+# Stage deepsnv [1303]
+# Stage deepsnv [1232]
+# Stage deepsnv [1225]
+# Stage deepsnv [1230]
+# Stage deepsnv [1313]
+# Stage deepsnv [1323]
+# Stage deepsnv [1229]
+# Stage deepsnv [1240]
+# Stage deepsnv [1305]
+# Stage deepsnv [1310]
+# Stage deepsnv [1321]
+# Stage deepsnv [1317]
+# Stage deepsnv [1340]
+# Stage parse [1340]
+# Stage parse [1231]
+# Stage parse [1229]
+# Stage parse [1305]
+# Stage parse [1238]
+# Stage parse [1245]
+# Stage parse [1228]
+# Stage parse [1242]
+# Stage parse [1232]
+# Stage parse [1310]
+# Stage parse [1237]
+# Stage parse [Vic_pool]
+# Stage parse [1321]
+# Stage parse [1323]
+# Stage parse [1307]
+# Stage parse [1313]
+# Stage parse [1303]
+# Stage parse [1240]
+# Stage parse [1317]
+# Stage parse [1230]
+# Stage parse [1225]
+# Stage reference_base_and_quality [1303]
+# Stage reference_base_and_quality [1240]
+# Stage reference_base_and_quality [1245]
+# Stage reference_base_and_quality [1225]
+# Stage reference_base_and_quality [1228]
+# Stage reference_base_and_quality [1305]
+# Stage reference_base_and_quality [1238]
+# Stage reference_base_and_quality [1231]
+# Stage reference_base_and_quality [1232]
+# Stage reference_base_and_quality [1317]
+# Stage reference_base_and_quality [1310]
+# Stage reference_base_and_quality [1237]
+# Stage reference_base_and_quality [1242]
+# Stage reference_base_and_quality [1230]
+# Stage reference_base_and_quality [1321]
+# Stage reference_base_and_quality [1307]
+# Stage reference_base_and_quality [1323]
+# Stage reference_base_and_quality [1340]
+# Stage reference_base_and_quality [Vic_pool]
+# Stage reference_base_and_quality [1313]
+# Stage reference_base_and_quality [1229]
+# Stage sift [1230.removed]
+# Stage sift [1225.removed]
+# Stage sift [1238.removed]
+# Stage sift [1242.removed]
+# Stage sift [1240.removed]
+# Stage sift [1245.removed]
+# Stage sift [1317.removed]
+# Stage sift [1303.removed]
+# Stage sift [1232.removed]
+# Stage sift [1237.removed]
+# Stage sift [1323.removed]
+# Stage sift [1231.removed]
+# Stage sift [1307.removed]
+# Stage sift [1313.removed]
+# Stage sift [1340.removed]
+# Stage sift [1228.removed]
+# Stage sift [1229.removed]
+# Stage sift [1321.removed]
+# Stage sift [1305.removed]
+# Stage sift [1310.removed]
+# Stage classification [1240.removed.ref.sum]
+# Stage classification [1313.removed.ref.sum]
+# Stage classification [1237.removed.ref.sum]
+# Stage classification [1229.removed.ref.sum]
+# Stage classification [1225.removed.ref.sum]
+# Stage classification [1303.removed.ref.sum]
+# Stage classification [1307.removed.ref.sum]
+# Stage classification [1305.removed.ref.sum]
+# Stage classification [1310.removed.ref.sum]
+# Stage classification [1317.removed.ref.sum]
+# Stage classification [1340.removed.ref.sum]
+# Stage classification [1231.removed.ref.sum]
+# Stage classification [1228.removed.ref.sum]
+# Stage classification [1323.removed.ref.sum]
+# Stage classification [1242.removed.ref.sum]
+# Stage classification [1245.removed.ref.sum]
+# Stage classification [1232.removed.ref.sum]
+# Stage classification [1238.removed.ref.sum]
+# Stage classification [1321.removed.ref.sum]
+# Stage classification [1230.removed.ref.sum]
+# Stage combine
+python /home/mccrone/variant_pipeline/scripts/combine.py ./Final_variants AA.csv ../all.variants.csv
+python /home/mccrone/variant_pipeline/scripts/combine.py ./deepSNV cov.csv ../all.coverage.csv
+# Stage quality_report
+multiqc ./
+# ################ Finished at Thu Jun 22 11:26:43 EDT 2017 Duration = 29.887 seconds ################
+

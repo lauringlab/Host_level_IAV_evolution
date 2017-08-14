@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style type='text/css'>
+
+            body {
+                font-family: arial;
+                margin: 0;
+                padding: 0;
+                color: #333;
+            }
+            #hd {
+                padding: 0 1em 1em 1em;
+                background-color: #f0f0f0;
+            }
+            
+            h1 {
+            	padding-top: 0.5em;
+            	margin-top: 0;
+            }
+            
+            #bd {
+                padding: 0.5em 1em 1em 1em;
+            }
+            .docLabel, .constraintLabel { font-weight: bold; margin-right: 1em; }
+            .constraintLabel { xcolor: orange; }
+            .creationDate  { font-size: 80%; font-style: italic; color: #555; }
+            .creationDate a:link, .creationDate a:visited { color: inherit; text-decoration: none; } 
+            .creationDate a:hover, .creationDate a:active { color: inherit; text-decoration: underline; } 
+            
+            .timeline {
+            	height: 2em;
+            	font-size: 70%;
+            	margin-left: 30px;
+            	position: relative;
+            }
+            .timerow {
+            	position: relative;
+            	color: white;
+            }
+            
+            .stageblock {
+                display: inline-block;
+              	padding: 0.2em 0;
+            	text-align: center;
+				-webkit-border-radius: 3px;
+				-moz-border-radius: 3px;
+				border-radius: 3px;            	
+				background-color: #41568D ;
+				background-color: #90B96F; 
+            	color: white;
+            }
+            
+            .joiner {
+                display: inline-block;
+              	padding: 0 0;
+                margin: 0 0;
+            	text-align: center;
+                color: black;
+            }
+            
+            
+            .transparentblock {
+                display: inline-block;
+				background-color: #fff;
+                height: 15px;
+            	text-align: center;
+            }
+            
+           .blockannotation {
+                display: inline-block; 
+            	text-align: center;
+                padding-left: 0.5em;
+                font-size: 85%;
+            }
+            .annotationline {
+            	height: 0.9em;
+            	font-size: 70%;
+            	margin-left: 30px;
+            	position: relative;
+            }
+            br.h2hr {
+                clear: both;
+            }
+			
+            .stageblock.failed {
+           		background-color: #E64E4E;
+            }
+            
+            .statusMark.fail {
+           		color: #ff5757;
+           		font-weight: bold;
+            }
+            
+           .timeblock.duration {
+	           color: black;
+           	   background-color: white;
+            } 
+
+            .dra { 
+                position: relative;
+                top: 0.6em;
+            }
+            
+            
+            .timelineborder {
+	            border-top: solid 1px #41568D;
+				height: 1px;
+				position: absolute;
+				top: 45%;
+				width: 90%; 
+            }
+            
+            
+            .timelineborder.right {
+            	right: 2px;
+            }
+            
+            a.stageLink:link, a.stageLink:visited {
+            	color: white;
+            	text-decoration: none;
+            }
+            a.stageLink:hover, a.stageLink:active {
+            	color: white;
+            	text-decoration: underline;
+            }
+            
+            hr {
+            	margin-top: 2.8em;
+            }
+            
+			h2.hr {
+			    font-size: 16pt;
+			    color: #444;	
+				position: relative;
+				top: -1em;
+				margin-top: 0;
+				background-color: white;
+				float: left;
+				margin-left: 20px;
+				padding: 0px 10px;
+			}
+			
+			.stageList {
+			     background-color: #F0F0F0;
+			     list-style-type: none;
+			     -webkit-border-top-left-radius: 2px;
+			     -webkit-border-top-right-radius: 2px;
+			     -moz-border-radius-topleft: 2px;
+			     -moz-border-radius-topright: 2px;
+			     border-top-left-radius: 2px;
+			     border-top-right-radius: 2px;
+			}
+			 
+			.stageList table {
+				font-size: 10pt;
+			}
+			.stageList th {
+			 	text-align: right;
+			 	padding-right: 0.5em;
+			 }
+			 .stageList td {
+			 	text-align: left;
+			 	padding-right: 0.5em;
+			 	background: #FCFCFC;
+				padding: 3px 0.5em;
+			 }
+				 
+			 .stageListOuter {
+			 	padding-left: 0px;
+			 	clear: both;
+			 }
+			 .stageList h3 {
+			   box-shadow: 1px 1px 3px black;
+			   position: relative;
+			   padding: 0.5em;
+			   background-color: #41568D;
+			   color: white;
+			     -webkit-border-top-left-radius: 3px;
+			     -webkit-border-top-right-radius: 3px;
+			     -moz-border-radius-topleft: 3px;
+			     -moz-border-radius-topright: 3px;
+			     border-top-left-radius: 3px;
+			     border-top-right-radius: 3px;
+			     font-size: 12pt;
+			 }
+			 a:target {
+			   color: yellow !important;
+			 }
+			 
+			 .stageList .bd {
+			   margin: 0.5em;            
+			   padding-bottom: 1em;
+		     }
+		     
+		     .statusMark {
+		     	position: absolute;
+		     	right: 1em;
+		     }
+		     div.status {
+		     	clear: both;
+		     	margin-left: 30px;
+		     	font-size: 110%;
+		     }
+		     div.status.success {
+		     	color: green;
+		     }
+		     div.status.fail {
+		     	color: #e01f1f;
+		     	font-weight: bold;
+		     }
+		     p.descBody { 
+		     	font-size: 92%; 
+	     	 }
+	     	 .branchTitle {
+	     	 	clear: both;
+	     	 	text-decoration: underline;
+	     	 	font-size: 95%;
+	     	 }
+        </style>
+    </head>
+    <body>
+        <div id='hd'>
+            <h1>Pipeline Report</h1>
+            <p class='creationDate'>Created by <a class='unobtrusiveLink' href='http://bpipe.org'>Bpipe</a>, Tue Jul 18 22:51:48 EDT 2017</p>
+        </div>
+
+        <div id='bd'>
+        	<hr>
+            <h2 class='hr'>Result</h2>
+            <br class='h2hr'>
+            <div class='status fail'>
+	            
+	            Failed in stage quality_report
+	            
+            </div>
+            
+        	<hr>
+            <h2 class='hr'>Timeline</h2>
+            <br class='h2hr'>
+            
+            
+                         
+           
+             
+             
+                <div style='width:100%;' class='timeline' >
+                    
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:5%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_1_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:14%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_1_fastqc'>fastqc</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:5%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:14%" class='blockannotation'>
+                            3 minutes, 0.292 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:14%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_2_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:5%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_2_bowtie2'>bowtie...</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:14%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:5%" class='blockannotation'>
+                            0.296 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:14%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_3_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:12%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_3_picard_sortsam'>picard_sorts...</a>
+                        </div>
+                        
+                    
+
+                        
+                        
+                        <div style="width:6%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_4_picard_removedups'>picard...</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:14%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:12%" class='blockannotation'>
+                            2 minutes, 41.160 s
+                        </div>
+                    
+                        <div style="width:6%" class='blockannotation'>
+                            1 minutes, 22.199 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:33%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_5_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:6%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_5_get_control'>get_co...</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:33%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:6%" class='blockannotation'>
+                            1 minutes, 22.199 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:39%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_6_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:7%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_6_deepsnv'>deepsnv...</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:39%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:7%" class='blockannotation'>
+                            1 minutes, 35.431 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:7%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_7_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:5%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_7_parse'>parse</a>
+                        </div>
+                        
+                    
+
+                        
+                                <div class='joiner'>&#8594;</div>
+                              
+                        
+                        <div style="width:62%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_8_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:5%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_8_sift'>sift</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:7%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:5%" class='blockannotation'>
+                            4.592 s
+                        </div>
+                    
+                        <div style="width:62%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:5%" class='blockannotation'>
+                            2.871 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:7%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_9_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:15%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_9_reference_base_and_quality'>reference_base_...</a>
+                        </div>
+                        
+                    
+
+                        
+                                <div class='joiner'>&#8594;</div>
+                              
+                        
+                        <div style="width:63%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_10_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:8%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_10_classification'>classifi...</a>
+                        </div>
+                        
+                    <span class=dra>&#10549;</span>
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:7%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:15%" class='blockannotation'>
+                            3 minutes, 14.234 s
+                        </div>
+                    
+                        <div style="width:63%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:8%" class='blockannotation'>
+                            1 minutes, 50.582 s
+                        </div>
+                    
+                </div>
+            
+            
+                <div style='width:100%;' class='timeline' >
+                    
+
+                        
+                        <div style="width:71%" 
+                             class='transparentblock '>
+                          <a class='stageLink' 
+                             href='#stage_11_'></a>
+                        </div>
+                        
+                    
+
+                        
+                        <div style="width:8%" 
+                             class='stageblock '>
+                          <a class='stageLink' 
+                             href='#stage_11_combine'>combine</a>
+                        </div>
+                        
+                    
+
+                        
+                        
+                        <div style="width:5%" 
+                             class='stageblock failed'>
+                          <a class='stageLink' 
+                             href='#stage_12_quality_report'>qualit...</a>
+                        </div>
+                        
+                    
+                </div> 
+                <div style='width:100%;' class='annotationline'>
+                    
+                        <div style="width:71%" class='blockannotation'>
+                            
+                        </div>
+                    
+                        <div style="width:8%" class='blockannotation'>
+                            1 minutes, 50.582 s
+                        </div>
+                    
+                        <div style="width:5%" class='blockannotation'>
+                            2.493 s
+                        </div>
+                    
+                </div>
+            
+            
+        	<hr>
+            <h2 class='hr'>Pipeline Stages</h2>
+            <br class='h2hr'>
+            <p style='position: relative; top: -1em;'>Total Runtime = 8 minutes, 35.620 seconds</p>
+            <ol class='stageListOuter'>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_1_fastqc'>
+                        
+                            fastqc
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Run FASTQC to generate QC metrics for the fastq files</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>/scratch/alauring_fluxm/mccrone/HIVE/data/raw/HK_7/HS1595_B.1.1.fastq</li>
+                                
+                                    <li class='input'>/scratch/alauring_fluxm/mccrone/HIVE/data/raw/HK_7/HS1595_B.2.1.fastq</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td>fastqc -o 01_fastqc --noextract -f fastq /scratch/alauring_fluxm/mccrone/HIVE/data/raw/HK_7/HS1595_B.1.1.fastq<br>fastqc -o 01_fastqc --noextract -f fastq /scratch/alauring_fluxm/mccrone/HIVE/data/raw/HK_7/HS1595_B.2.1.fastq<br><produce></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>01_fastqc/HS1474_A.1.1_fastqc.zip</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Tools</th>
+                            <td>
+                            <ul class='tools'>
+                                
+                                  <li class='input'>
+                                    
+                                        fastqc  
+                                     :
+                                    v0.10.1
+
+                                    
+                                     
+                                  </li>
+                                
+                            </ul>
+                            </td>
+                        </tr>
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:43:22 - 2017-7-18 22:46:22
+                                
+                                
+                                (3 minutes, 0.292 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_2_bowtie2'>
+                        
+                            bowtie2
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Aligns using Bowtie, generating a SAM file.  Note, this file may be very large.</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>/scratch/alauring_fluxm/mccrone/HIVE/data/raw/HK_7/HS1595_B.1.1.fastq</li>
+                                
+                                    <li class='input'>/scratch/alauring_fluxm/mccrone/HIVE/data/raw/HK_7/HS1595_B.2.1.fastq</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td><produce></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>03_align/HS1595_B.sam</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Tools</th>
+                            <td>
+                            <ul class='tools'>
+                                
+                                  <li class='input'>
+                                    
+                                        bowtie2  
+                                     :
+                                    2.1.0
+
+                                    
+                                     
+                                  </li>
+                                
+                            </ul>
+                            </td>
+                        </tr>
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:23 
+                                
+                                
+                                (0.296 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_3_picard_sortsam'>
+                        
+                            picard_sortsam
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Sort SAM file so that its in reference order and convert to BAM.</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>03_align/HS1595_B.sam</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>03_align/HS1595_B.bam</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:23 
+                                
+                                
+                                (0.140 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_4_picard_removedups'>
+                        
+                            picard_removedups
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Remove duplicates</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>03_align/HS1595_B.bam</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>04_removed_duplicates/HS1595_B.removed.bam</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:24 
+                                
+                                
+                                (0.162 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_5_get_control'>
+                        
+                            get_control
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>04_removed_duplicates/HS1595_B.removed.bam</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>04_removed_duplicates/HS1595_B.removed.bam</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:24 
+                                
+                                
+                                (0.072 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_6_deepsnv'>
+                        
+                            deepsnv
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Runs a basic deepSNV script to call variants in each sample saving the outputs as .Rdata files and csv of the summary output</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>04_removed_duplicates/HS1595_B.removed.bam</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>deepSNV/HS1595_B.removed.csv</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:24 
+                                
+                                
+                                (0.248 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_7_parse'>
+                        
+                            parse
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Take the concatenated consensus fasta file from deepSNV and deconcatenate it using the segmented positions in from the coverage file</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>deepSNV/HS1595_B.removed.fasta</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td></td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>parsed_fa/HS1595_B.removed.parsed.fasta</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:24 
+                                
+                                
+                                (0.057 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_8_sift'>
+                        
+                            sift
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Variant csv file and filter based on quality scores</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>Variants/HS1595_B.removed.ref.sum.csv</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td>python /home/mccrone/variant_pipeline/scripts/filter_var.py Variants/HS1595_B.removed.ref.sum.csv Filter_var/HS1595_B.removed.ref.sum.filtered.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/HK_7.options.yaml</td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>Filter_var/HS1595_B.removed.ref.sum.filtered.csv</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:49:39 - 2017-7-18 22:49:42
+                                
+                                
+                                (3.024 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_9_reference_base_and_quality'>
+                        
+                            reference_base_and_quality
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>runs a python script that for each variant called checks the number of reference bases (skipped by deepSNV) and then calculates the average mapped quality, phred and read position of all variants</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>deepSNV/HS1595_B.removed.csv</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td>python /home/mccrone/variant_pipeline/scripts/reciprocal_variants.py 04_removed_duplicates/HS1595_B.removed.bam deepSNV/HS1595_B.removed.csv Variants/HS1595_B.removed.ref.sum.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/HK_7.options.yaml</td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>Variants/HS1595_B.removed.ref.sum.csv</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:46:25 - 2017-7-18 22:49:39
+                                
+                                
+                                (3 minutes, 14.595 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_10_classification'>
+                        
+                            classification
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>Add amino acid data to variant calls based a reference sequence</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>Filter_var/HS1595_B.removed.ref.sum.filtered.csv</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td>python /home/mccrone/variant_pipeline/scripts/AA_var.py  ./parsed_fa/PC1A.removed.parsed.fasta Filter_var/HS1595_B.removed.ref.sum.filtered.csv Final_variants/HS1595_B.removed.ref.sum.filtered.AA.csv /scratch/alauring_fluxm/mccrone/HIVE/scripts/HK_7.options.yaml</td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>Final_variants/HS1595_B.removed.ref.sum.filtered.AA.csv</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:49:43 - 2017-7-18 22:51:33
+                                
+                                
+                                (1 minutes, 50.661 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_11_combine'>
+                        
+                            combine
+                        
+                        </a>
+                        
+                        <span class='statusMark success' >
+                        
+                        &#10003;
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>combines the coverage, reads and variant calls into one file that can easily be imported into R for analysis</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>Final_variants/HS1595_B.removed.ref.sum.filtered.AA.csv</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td>python /home/mccrone/variant_pipeline/scripts/combine.py ./Final_variants AA.csv ../all.variants.csv<br>python /home/mccrone/variant_pipeline/scripts/combine.py ./deepSNV cov.csv ../all.coverage.csv</td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>Final_variants/HS1595_B.removed.ref.sum.filtered.AA.csv</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:51:33 - 2017-7-18 22:51:42
+                                
+                                
+                                (8.575 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+                <li class='stageList'>
+                    <h3 class='stageTitle'><a name='stage_12_quality_report'>
+                        
+                            quality_report
+                        
+                        </a>
+                        
+                        <span class='statusMark fail' >
+                        
+                        X
+                        
+                        </span>
+                    </h3>
+                    <div class='bd'>
+
+                    
+                        
+                        
+                            <p class='descBody'>runs MultiQC to create a quality report for the run</p>
+                        
+
+                        <table>
+                        
+
+                        
+                        <tr>
+                            <th class='docLabel'>Inputs</th>
+                            
+                                <td>
+                                <ul class='inputs'>
+                                
+                                    <li class='input'>Final_variants/HS1595_B.removed.ref.sum.filtered.AA.csv</li>
+                                
+                                </ul>
+                                </td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr><th>Commands</th><td>multiqc ./</td></tr>
+
+
+                        
+                        <tr>
+                            <th class='docLabel'>Outputs</th>
+                            
+                            <td>
+                                <ul class='outputs'>
+                                
+                                    <li>HS1595_B.removed.ref.sum.filtered.AA.csv.quality_report</li>
+                                
+                                </ul>
+                            </td>
+                            
+                        </tr>
+                        
+
+                        
+
+                        
+                        
+                        
+                        <tr>
+                            <th class='docLabel'>Execution Time</th>
+                            <td>
+                                
+                                    2017-7-18 22:51:42 - 2017-7-18 22:51:44
+                                
+                                
+                                (2.493 seconds)
+                                
+                            </td>
+                        </tr>
+                        
+                        </table>
+                    
+                    </div>
+                </li>
+            
+        </ol>
+        
+        
+        </div>
+    </body>
+</html>

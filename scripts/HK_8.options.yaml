@@ -1,0 +1,27 @@
+#YAML
+
+
+# Options for calling variants
+#
+input_dir: ./data/raw/HK_8/ #'Directory containing the input fastqs'
+output: ./data/processed/HK_8/ # 'The final directory that will hold the output. If it does\'t exsit it will be made')
+ref: ./data/reference/Hong_Kong_PC1A # 'The name of the reference files used for bowtie alignment' (no extension) Also there should be file with the same name but .fa extension
+control: PC1A # The sample name of the plasmid control used for varinat calling
+p: 0.1 # 'The p value cut off to used. Any variant with a p.val>a will be removed at the variant calling step'
+method : fisher # 'The method used to combine the p value from each strand "fisher","average","max".'
+disp: two.sided # Dispersion estimation to be used in deepSNV. options are c("two.sided","one.sided","bin"). Anything other than two.sided or one.sided will yield a binomial distribution'
+
+# Options for filtering and classifyting variants
+
+open_reading : ../../reference/NY.OR.fa # a file fasta file that contains the open reading frames of the the genome.The path is from inside output ddir Each open reading frame ID should contain the ID of the appropriate chromosome in the reference fasta file 
+classify_var : reference # Classify nonsynomyous and synomymous variants against the sample reference or the reference used to call variants options are  'sample' or 'reference'
+mapping : 30
+phred : 35
+p_cut : 0.01
+freq : 0
+pos : [31, 94]
+muscle_path : /sw/lsa/centos7/muscle/3.8.31/bin/
+run : HK_8 # What run name should be added to the csv if not needed use 'None'
+infer : True # Boolean switch to infer minor variants at positions where the minor variant may be the plasmid\'s consensus' True or False
+classification: sample # sample or control - should nonsynonymous and syn. mutations be called relative to the control or the sample consensus?
+stringent_freq : 0.5

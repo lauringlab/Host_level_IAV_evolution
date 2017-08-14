@@ -1,0 +1,609 @@
+---
+title: "Transmission models"
+author: "JT McCrone"
+date: "4/7/2017"
+output: github_document
+---
+
+
+```{r,echo=F}
+require(knitr)
+require(ggplot2)
+require(plyr)
+require(reshape2)
+require(extrafont)
+require(wesanderson)
+
+set.seed(42) # Set seed so randomization is reproducible
+opts_chunk$set(fig.align="center",warning=FALSE,tidy=T,cache = T,echo=F)
+theme_set(new = theme_classic()+ theme(
+axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
+text=element_text(family="Arial",size = 18))) # to make nice plots
+
+# A couple color palette options.
+#cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- wes_palette("Zissou")
+source("../scripts/useful_functions.R")
+
+```
+
+
+```{r}
+trans_freq<-read.csv("./transmission_pairs_freq.poly.donor.csv") # Read in the freq.variant calls from the transmission setup Rmd
+trans_freq.comp<-ddply(subset(trans_freq,freq1>0),.(pair_id,chr,pos),function(x){ 
+    if(nrow(x)>1){
+      return(x)}
+  }) # only polymorphic sites in sample 1 
+trans_freq.comp$found<-trans_freq.comp$freq2>0.02 # was it found in the second sample
+
+
+
+```
+# Presence/Absence model
+
+Let $A_1$ and $A_2$ be a alleles in the donor. Then there are three possible outcomes of transmission. Either $A_1$ is transmitted, $A_2$ is transmitted, or both $A_1$ and $A_2$ are transmitted. The probability of only one allele being transmitted (let's call it $A_i$) given a bottleneck size of $N_b$ is 
+\[
+P(A_i) = f_i^{N_b}
+\]
+
+Where $p_i$ is the frequency of the allele in the donor. In otherwords this is simply the probability of only drawing $A_i$ in $N_b$ draws.
+
+The probability of both alleles being transmitted is given by
+
+\[
+P(A_1,A_2) = 1- \big(f_1^{N_b}+f_2^{N_b}\big)
+\]
+
+where $f_1$ and $f_2$ are the frequencies of the alleles respectively. This is simply the probability of not picking only $A_1$ or only $A_2$ in $N_b$ draws.
+
+We can then define the probability of observing the data at each polymorphic site $j$ as $P_j$ where $P_j=P(A_i)$ if only one allele is transmitted and $P_j=P(A_1,A_2)$ if two alleles are transmitted. 
+
+The  likelihood of a bottleneck size $N_b$ is then given by
+
+\[
+L(N_b) = \prod^j P_j
+\]
+
+or the probability of observing the data at each polymorphic site. Thus the log likelihood is given by
+
+\[
+\text{log}(L(N_b)) = \sum^j\text{log}(P_j)
+\]
+
+### Fitting the Presence/Absence model
+
+In this fit we take the minority frequency to the correct and set the major frequency to 1-minority
+```{r,model_fit_function_per_pair}
+is.wholenumber <-function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+dzpois<-function(x,lambda){ # the pmf of the zero truncated poisson distribution
+   if(x<=0 | is.wholenumber(x)==F){
+     return(0)
+  }else{
+  (exp(-1*lambda)*lambda^x)/(factorial(x)*(1-exp(-1*lambda)))
+    
+  }
+}
+dzpois<-Vectorize(dzpois,vectorize.args = c("x"))
+
+p_all<-function(p,n){ # probability all success - only finding the variant at frequency p in n draws
+  p^n
+}
+p_all.v<-Vectorize(p_all,vectorize.args="n")
+
+math_fit=function(data){    # this  calculation is for each position in the genome. 
+  stopifnot(length(unique(data$chr))==1, length(unique(data$pos))==1)
+  #  In this fit we take the minority frequency to be  correct and set the major frequency to 1-minority. 
+  #This accounts for the fact that frequencies are related by the expression :  minor allele + major allele + errror =1. 
+  #Here we make the major allele frequency = major allele + error. The error is always small. if it exceeds 1% then we through an error here 
+  if(1-sum(data$freq1)>0.01) stop("The sum of the frequencies is less than 99% - the error rate is too high here for our correction")
+  
+  data$freq1[data$freq1==max(data$freq1)]<-1-min(data$freq1) 
+  
+  
+  found<-subset(data,found==T) # only alleles that were transmitted
+  l<-seq(0.01,10,0.01) # These are the lambdas
+  Nb<-1:100 # Here are the bottlenecks
+  Nb_given_l<-dzpois(Nb,l) # This gives a 1000 by 100 matrix. 
+  
+  # |-------Nb-------
+  # |
+  # |
+  # lambda.r  
+  # |
+  # |
+  # |
+  if(nrow(found)==0 | nrow(found)>2) stop('No variant transmitted for this site or there are more than 2 variants here')
+  if(nrow(found)==1){ # one variant found here. All successes
+    prob<-p_all.v(p=found$freq1,n=Nb) # this is a vector of probabilities for each n prob[i]= the probability of only getting that variant in Nb[i] (i.e. draws)
+  }
+  if(nrow(found)==2){
+    first_var<-p_all.v(p=found$freq1[1],n=Nb) # all this one
+    second_var<-p_all.v(p=found$freq1[2],n=Nb) # all the other one
+    one_each<-1-(first_var+second_var) # at least one of each - This is a vector as above since R adds and subtracts the elements of the vectors as expected 
+    prob<-one_each
+  }
+  conditional_prob<-matrix(prob,nrow=1) %*%  t(Nb_given_l)
+  
+  # This is matrix muliplication - it results in P(l)=P(Data|Nb)P(Nb|l) summed over all Nb for each l
+  # 
+  #                        |-------lambda_i-------| 
+  #                        |                      |  
+  #                        |                      |
+  # [...P(Data|Nb_i)...] * Nb_i                   Nb_i  = [.....P(lambda_i).....]
+  #                        |                      |
+  #                        |                      |
+  #                        |                      |
+  
+  return(data.frame(lambda=l,prob=t(conditional_prob)))
+}
+
+
+
+pa_fit_per_pair<-function(data){ # data is a pair 
+  stopifnot(length(unique(data$pair_id))==1) # Only one pair at a time.
+  probs<-ddply(data,~chr+pos,function(data) math_fit(data)) # For each genomic position in question 
+  LL.df<-ddply(probs,~lambda,summarize,LL=sum(log(prob))) # Get the  log likelihood of the each lambda for this pair - we can sum accros pairs later.
+  return(LL.df)
+}
+```
+
+
+
+```{r}
+summarize_likelihoods<-function(x){
+ Nb<-x$lambda[which(x$LL==max(x$LL))] # Get the  max lambda
+ good_range<-subset(x,LL> (max(LL)-1.92)) # get the bottlenecks that fall in this region the 95% confidence intereval
+ lower<-good_range$lambda[1]
+ upper <- good_range$lambda[nrow(good_range)]
+ return(data.frame(Nb=Nb,lower_95=lower,upper_95=upper,mean = Nb/(1-exp(-1*Nb))))
+}
+```
+
+```{r}
+pa_Nb<-ddply(trans_freq.comp,~pair_id,pa_fit_per_pair) # Get the LL for each pair for each lambda 0.01-10 by 0.01
+pa_total_fit<-ddply(pa_Nb,~lambda,summarize,LL=sum(LL),mean = unique(lambda)/(1-exp(-1*unique(lambda))))
+pa_fit_sum<-summarize_likelihoods(pa_total_fit)
+pa_fit_sum
+
+write_to_summary("P-A Nb:",pa_fit_sum$mean)
+write_to_summary("P-A lambda:",pa_fit_sum$Nb)
+write_to_summary("P-A CI:",paste(pa_fit_sum$lower_95,pa_fit_sum$upper_95,collapse = "-"))
+
+
+prob_above_5 <-1-sum(dzpois(c(1,2,3,4,5),pa_fit_sum$Nb))
+write_to_summary("P-A prob >5",prob_above_5)
+```
+
+### Log likelihood plot
+```{r,eval=T}
+pa_ll.p<-ggplot(pa_total_fit,aes(x=mean,y=LL))+geom_point()+ylab("Log Likelihood")+xlab("Average Bottleneck size")+scale_x_continuous(breaks=c(1:10))
+pa_ll.p
+require(cowplot)
+
+
+save_plot("./Figures/PA_LL.pdf", pa_ll.p,
+          base_aspect_ratio = 1.3)
+```
+
+### Fits by pair
+ For fun
+```{r,fig.height=6}
+fits<-ddply(pa_Nb,~pair_id,summarize_likelihoods)
+
+fits<-fits[order(fits$Nb,decreasing = T),]
+fits$y = 1:nrow(fits)
+
+ggplot()+geom_point(data=fits,aes(y=y,x=lower_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=fits,aes(y=y,x=upper_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=fits,aes(y=y,x=Nb),shape=108,size=5,color=cbPalette[5])+
+  geom_segment(data=fits,aes(x=lower_95,xend=upper_95,y=y,yend=y),color=cbPalette[2])+
+  theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
+  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")+
+  scale_x_continuous(limits = c(0,10))
+```
+
+### Simulation
+
+```{r,simulation_functions}
+rbin_sample<-function(data,bottlenecks,bottleneck_col){ 
+  # data refers to the 2 mutations at this position, bottlenecks- a data frame with the bottle_neck, 
+  #model - the name of the column in the bottlenecks that contains the bottleneck size we want to use.
+  
+  if(nrow(data)!=2){
+    stop(print("There are not 2 mutations at this point. either it is not a polymorphic site or there are 3 in which case the assumptions used in the code fail."))
+  }
+  pair<-unique(data$pair_id)
+  
+  if(length(pair)!=1){
+    stop(print("There should only be one pair id at this point."))
+  }
+  
+  freq_success<-1-min(data$freq1) # This is the major allele frequency - calculated the same as above.
+  Nb<-bottlenecks[which(bottlenecks$pair_id==pair),bottleneck_col] 
+  
+  success<-rbinom(1,Nb,freq_success)  # the number of success in n trials. How many of the samples (Nb) were used up by getting the major allele.
+  
+  data<-mutate(data,found=F)
+  if(success==Nb){ # only found major variants
+    data$found[data$freq1==max(data$freq1)]=T
+  } else if(success==0){ # only the minor 
+    data$found[data$freq1==min(data$freq1)]=T
+  } else{   # both were found
+    data$found=T
+  }
+  return(data)
+}
+
+rzpois<-function(lambda){ #from http://giocc.com/zero_truncated_poisson_sampling_algorithm.html
+  k = 1
+  t = exp(-lambda) / (1 - exp(-lambda)) * lambda
+  s = t
+  u = runif(1)
+  while(s < u){
+    k = k+1
+    t = t*(lambda / k)
+    s = s+t
+  }
+  return(k)
+}
+
+simulations<-function(data,runs,lambda,FUN=rbin_sample){ # iSNV data, how many iterations, what is lambda value and what function is used to simulate the data.
+
+  model.df<-data.frame(freq1=NA,trial=NA,prob=NA)[0,]
+  bottlenecks<-data.frame(pair_id=unique(data$pair_id),lambda=rep(lambda,times = length(unique(data$pair_id)))) # adding the same lambda column here to be used in ddply below.
+  for (i in 1:runs){
+    
+      bottlenecks<-ddply(bottlenecks,~pair_id,function(df){ # for each pair draw a bottleneck size.
+        df$Nb=rzpois(df$lambda)
+        return(df)
+        })
+      trial.df<-ddply(data,~chr+pos+pair_id,FUN,bottlenecks,"Nb") # Simmulate the data for each site for each pair- the same Nb is used for all sites in the pair.
+      logit<-glm(formula =found~freq1,family=binomial(logit),data=trial.df) # Fit a logit model to the data
+      trial.df$prob<-logit$fitted.values
+      trial.df$trial<-i
+      model.df<-rbind(model.df,trial.df) # add to the final output
+  }  
+  return(model.df)
+}
+```
+
+
+
+```{r}
+sim_plot<-function(variant.df,sim_trans){ # variants is the frequency comparision data frame sim_trans is the simulated data frame
+
+logit<-glm(formula =found~freq1,family=binomial(logit),data=variant.df ) # get the data trend line
+variant.df$prob<-logit$fitted.values # this is the data line
+
+trans.area=ddply(sim_trans,~freq1,summarize,low.95=quantile(prob,na.rm=T,probs=0.025),high.95=quantile(prob,na.rm=T,probs=0.975),low.50=quantile(prob,na.rm=T,probs=0.25),high.50=quantile(prob,na.rm=T,probs=0.75)) # Get the quanitles for each data point
+
+trans.sim_plot=ggplot()+
+  geom_ribbon(data=trans.area,aes(x=freq1,ymin=low.95,ymax=high.95),
+              alpha=0.6,fill=cbPalette[5])+
+  geom_ribbon(data=trans.area,aes(x=freq1,ymin=low.50,ymax=high.50),
+              alpha=0.9,fill=cbPalette[5])+
+  xlab("")+ylab("Probability transmitted")+
+  geom_point(data=variant.df,aes(x=freq1,y=as.numeric(found)),alpha=0.1)+
+  geom_line(data=variant.df,aes(x=freq1,y=prob))+xlab("Frequency in donor")#+scale_fill_discrete(name="Average bottleneck")
+
+  return(trans.sim_plot)
+}
+```
+
+```{r,eval=T}
+sim_trans_pa<-simulations(data=trans_freq.comp,runs = 1000,lambda = pa_fit_sum$Nb) # presence/absence
+```
+
+```{r}
+pa_sim_plot<-sim_plot(trans_freq.comp,sim_trans_pa)
+
+write.csv(sim_trans_pa,"Figures/data/Figure4B.area.csv")
+pa_sim_plot
+```
+
+
+# Beta binomial model
+
+The Beta binomial model is explained in detail in Leonard \emp{et al.}. It is similar to the presence/absence model in that transmission is modeled as a simple sampling process; however, it loosens the assumption that the frequencies in the recipient are constant overtime. Instead frequencies of transmitted variants are allowed to change between transmission and sampling according the a beta distribution. The distribution is not dependent on the amount of time that passes between transmission and sampling, and the frequency in the donor is assumed to be the same between sampling and transmission.
+
+The equations below are very similar to those present by Leonard \emp{et al.} with two exceptions. (1) We fit a distribution to the bottleneck sizes in our cohort, and (2) because we know our sensitivity to detect rare variants based on the expected frequency of the iSNV and the titer of the sample we can include the possiblity that iSNV are transmitted but are missed due to less than perfect sensitivity.
+
+
+
+\[
+L(N_b)_i=\sum_{k=0}^{N_b}\text{p_beta}\Big( _{R,i}|k,N_b-k\Big)\text{p_bin}\Big(k|N_b,v_{D,i}\Big)
+\]
+
+and
+
+I will start with the most conservative assumption. We will always round the titer and frequency down to the nearest standard and apply that accuracy. Also I'm assuming the accuracy is perfect in the donor.
+
+So now the likelihood function of lost variants is given by
+
+
+\[
+L(N_b)_i=\sum_{k=0}^{N_b}\Big[\text{p_beta_cdf}\Big( v_{R,i}<T|k,N_b-k\Big)\text{p_bin}\Big(k|N_b,v_{D,i}\Big)+\sum_{f_i}^{[0.02,0.05,0.1)}\text{p_beta}\big(f_i<v_{R,i}<f_{i+1}\big|k,N_b-k\big)\text{p_bin}\Big(k|N_b,v_{D,i}\Big)\big(1-\text{sensitivity}|\text{titer}_R,f_i)\Big]
+\]
+In other words what is the probability the (variant was not transmitted or transmitted but remains <2%) or ( the variant was transmitted and is present within a given frequency range and we don't find it given the lower end of that frequency range and the titer of the sample.)
+
+
+```{r,betabinom_functions}
+like_found.beta<-function(v_r,k,Nb,v_d,gc_ul,acc=accuracy_stringent){
+  acc_gc=10^(floor(log10(gc_ul))) # This will round the gc down to the nearest log as discussed below.
+  if(v_r>0.02 & v_r<0.05){
+  sense= acc$sensitivity[which(acc$gc_ul==acc_gc & acc$freq==0.02)]
+  }
+  if(v_r>0.05 & v_r<0.1){
+  sense= acc$sensitivity[which(acc$gc_ul==acc_gc & acc$freq==0.05)]
+  }
+  else {
+    sense=1
+  }
+  dbeta(x=v_r,shape1 = k,shape2=Nb-k)*dbinom(x=k,size=Nb,prob = v_d)#*sense
+}
+
+like_lost.beta<-function(k,Nb,v_d,t){
+  pbeta(q = t,shape1 = k,shape2 = Nb-k)*dbinom(x=k,size=Nb,prob = v_d)
+}
+
+like_lost.beta.uncert<-function(k,Nb,v_d,t,gc_ul,acc=accuracy_stringent){
+  acc_gc=10^(floor(log10(gc_ul))) # This will round the gc down to the nearest log as discussed below.
+  uncert_term=c()
+  f=c(0.02,0.05,0.10)
+  for(i in 1:(length(f)-1)){
+    uncert=1-acc$sensitivity[which(acc$gc_ul==acc_gc & acc$freq==f[i])]
+    # The prob the variant is missed because itis between f[i] and f[i+1] given the sample size 
+    uncert_term[i]=(pbeta(q = f[i+1],shape1 = k,shape2 = Nb-k)-pbeta(q = f[i],shape1 = k,shape2 = Nb-k))*dbinom(x=k,size=Nb,prob = v_d)*uncert
+  }
+  #probability the variant is below the cut off or present but missed
+  pbeta(q = t,shape1 = k,shape2 = Nb-k)*dbinom(x=k,size=Nb,prob = v_d)+sum(uncert_term)
+}
+
+# The probability the varaint is present above t (98% for fixed variants)
+like_fixed.beta<-function(k,Nb,v_d,t){
+  (1-pbeta(q = t,shape1 = k,shape2 = Nb-k))*dbinom(x=k,size=Nb,prob = v_d)
+}
+
+
+L.Nb.beta<-function(df,Nb,acc=accuracy_stringent){
+  v_r=df$freq2 # recipient frequency
+  v_d=df$freq1 # donor frequency
+  like=c()
+  t=0.02 # frequency threshold
+  if(df$found==T){
+    if(v_r==1){ #fixed
+    for(k in 0:Nb){
+      like[k+1]=like_fixed.beta(k=k,Nb=Nb,v_d=v_d,t=1-t)
+    }
+    }  
+    else{
+      for(k in 0:Nb){ # Found but not fixed
+      like[k+1]=like_found.beta(v_r=v_r,k=k,Nb=Nb,v_d=v_d,gc_ul=df$gc_ul.2,acc=accuracy_stringent)
+      }
+    }
+      
+  }else if(df$found==F){ # Not found
+    for(k in 0:Nb){
+      like[k+1]=like_lost.beta.uncert(k=k,Nb=Nb,v_d=v_d,t=t,gc_ul=df$gc_ul.2,acc=accuracy_stringent)
+    }
+  }
+  return(sum(like))
+  }
+
+L.Nb.beta<-Vectorize(L.Nb.beta,vectorize.args = "Nb")
+
+
+math_beta.pois<-function(df){
+  l=seq(0.01,10,0.01) # the lambdas we are testing
+  Nb=1:100 # The bottlenecks
+  Nb_given_l=dzpois(Nb,l) # This gives a 1000 by 100 matrix. 
+  
+  # |-------Nb-------|
+  # |                |  
+  # |                |  
+  # lambda.r         |
+  # |                |
+  # |                |
+  # |                |
+  
+  prob = L.Nb.beta(df,Nb) # this is a vector of probabilities for each n prob[i]= the probability of only getting that variant in Nb[i] (i.e. draws)
+  conditional_prob=matrix(prob,nrow=1) %*%  t(Nb_given_l) #as above 
+  # This is matrix muliplication - it results in P(l)=P(Data|Nb)P(Nb|l) summed over all Nb for each l
+  # 
+  #                        |-------lambda_i-------| 
+  #                        |                      |  
+  #                        |                      |
+  # [...P(Data|Nb_i)...] * Nb_i                   Nb_i  = [.....P(lambda_i).....]
+  #                        |                      |
+  #                        |                      |
+  #                        |                      |
+  
+  return(data.frame(lambda=l,prob=t(conditional_prob)))
+}
+
+fit_Nb.beta<-function(df){ # where Nb is a vector of bottleneck sizes
+  prob = ddply(df,~chr+pos,math_beta.pois)
+ LL.df=ddply(prob,~lambda,summarize,LL=sum(log(prob))) # Get the  log likelihood of the each lambda for each pair 
+ return(LL.df)
+
+}
+
+
+```
+
+
+
+## Fitting 
+
+```{r}
+accuracy_stringent<-read.csv("../data/reference/accuracy_stringent.csv",stringsAsFactors = F)
+beta_Nb<-ddply(subset(trans_freq.comp,freq1<0.5),~pair_id,fit_Nb.beta)
+```
+
+```{r}
+beta_total_fit<-ddply(beta_Nb,~lambda,summarize,LL=sum(LL),mean = unique(lambda)/(1-exp(-1*unique(lambda))))
+beta_fit_sum<-summarize_likelihoods(beta_total_fit)
+beta_fit_sum
+
+write_to_summary("BB Nb:",beta_fit_sum$mean)
+write_to_summary("BB lambda:",beta_fit_sum$Nb)
+write_to_summary("BB CI:",paste(beta_fit_sum$lower_95,beta_fit_sum$upper_95,collapse = "-"))
+
+```
+### Loglikelihodd plot
+
+```{r,eval=T}
+beta_ll.p<-ggplot(beta_total_fit,aes(x=mean,y=LL))+geom_point()+ylab("Log Likelihood")+xlab("Average Bottleneck size")+scale_x_continuous(breaks=c(1:10))
+beta_ll.p
+require(cowplot)
+
+
+save_plot("./Figures/Beta_LL.pdf", beta_ll.p,
+          base_aspect_ratio = 1.3)
+```
+
+### Fitting by person
+
+```{r}
+fits_beta=ddply(beta_Nb,~pair_id,summarize_likelihoods)
+
+fits_beta=fits_beta[order(fits_beta$Nb,decreasing = T),]
+fits_beta$y = 1:nrow(fits_beta)
+
+ggplot()+geom_point(data=fits_beta,aes(y=y,x=lower_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=fits_beta,aes(y=y,x=upper_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=fits_beta,aes(y=y,x=Nb),shape=108,size=5,color=cbPalette[5])+
+  geom_segment(data=fits_beta,aes(x=lower_95,xend=upper_95,y=y,yend=y),color=cbPalette[2])+
+  theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
+  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")+
+  scale_x_continuous(limits = c(0,200),breaks=seq(0,200,20),minor_breaks = seq(10,190,20))
+fits_beta=subset(fits_beta,select=-c(y))
+
+```
+
+## Simulations
+
+```{r}
+rbetabin_sample<-function(data,bottlenecks,model){ # data refers to the 2 mutations at this position, bottlenecks- a data frame with the bottleneck, model - the name of the column in the bottlenecks that contains the bottleneck size we want to use.
+  if(nrow(data)!=2){
+    stop(print("There are not 2 mutations at this point. either it is not a polymorphic site or there are 3 in which case the assumptions used in the code fail."))
+  }
+  pair=unique(data$pair_id)
+  
+  if(length(pair)!=1){
+    stop(print("There should only be one pair id at this point."))
+  }
+  
+  freq_success=min(data$freq1) # This is the minor allele frequency
+  bottle_neck_col=which(names(bottlenecks)==model)
+  n=bottlenecks[which(bottlenecks$pair_id==pair),bottle_neck_col] # Get the bottleneck
+  stopifnot(!(is.na(n)))
+    only_minor=c()
+    only_major=c()
+  for(k in c(0:n)){
+    only_minor[k+1]=like_lost.beta.uncert(k,n,1-freq_success,t=0.02,gc_ul=unique(data$gc_ul.2)) # includes uncertainty - The likelihood the allele was lost
+    only_major[k+1] = like_lost.beta.uncert(k,n,freq_success,t=0.02,gc_ul=unique(data$gc_ul.2)) # includes uncertainty - The likelihood the allele was lost
+    
+  }
+    only_minor = sum(only_minor)
+    only_major = sum(only_major)
+    both = 1-(only_minor+only_major)
+  
+  # flip the coin
+  pick = runif(1,0,1)
+  data$found=F
+  
+  # 0  only_minor         only_major         both                        1
+  # |------------------|---------------|---------------------------------|
+  
+  if(pick<only_minor){
+    data$found[data$freq1==min(data$freq1)]=T
+  }else if(pick>only_minor & pick<(only_minor+only_major)){
+    data$found[data$freq1==max(data$freq1)]=T
+  }else if(pick>only_minor+only_major){
+    data$found=T
+  }
+  
+  return(data)
+}
+
+```
+
+```{r,simulation_beta}
+sim_trans_beta<-simulations(subset(trans_freq.comp),runs = 1000,lambda = beta_fit_sum$Nb,FUN=rbetabin_sample) # beta model
+```
+
+```{r}
+beta_sim_plot<-sim_plot(trans_freq.comp,sim_trans_beta)
+write.csv(sim_trans_beta,"Figures/data/Figure4D.area.csv")
+beta_sim_plot
+
+```
+## lambda = 10 
+```{r,simulation_beta.10}
+sim_trans_beta.10<-simulations(subset(trans_freq.comp),runs = 10,lambda = 10,FUN=rbetabin_sample) # beta model
+```
+
+```{r}
+beta_sim_plot.10<-sim_plot(trans_freq.comp,sim_trans_beta.10)
+beta_sim_plot.10
+
+```
+
+
+
+```{r}
+AIC<-function(df,k){
+  2*k-2*max(df$LL)
+}
+kable(data.frame(Model= c("Presence/Absence","BetaBinomial"),AIC = c(AIC(pa_total_fit,1),AIC(beta_total_fit,1))))
+
+write_to_summary("BB AIC:", AIC(beta_total_fit,1))
+write_to_summary("P-A AIC:", AIC(pa_total_fit,1))
+
+final_table<-data.frame(Model=c("Presence Absence","BetaBinomial"))
+final_table<-cbind(final_table,rbind(pa_fit_sum,beta_fit_sum))
+
+kable(final_table)
+
+
+```
+
+#Figure 4
+```{r}
+load("./transmission_setup_plots.RData")
+require(cowplot)
+trans.com.plot<-trans.com.plot+xlab("Frequency in donor")
+fig_4=plot_grid(trans_freq.p, pa_sim_plot, trans.com.plot,beta_sim_plot, labels = c("A", "B", "C", "D"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
+
+save_plot("./Figures/Figure_4.pdf", fig_4,
+          ncol = 2, # we're saving a grid plot of 2 columns
+          nrow = 2, # and 2 rows
+          # each individual subplot should have an aspect ratio of 1.3
+          base_aspect_ratio = 1.3
+          )
+embed_fonts("./Figures/Figure_4.pdf")
+fig_4
+
+
+
+```
+
+```{r}
+save_plot("./Figures/Figure_4A.pdf", trans_freq.p,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure_4A.pdf")
+save_plot("./Figures/Figure_4B.pdf", pa_sim_plot,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure_4B.pdf")
+save_plot("./Figures/Figure_4C.pdf", trans.com.plot,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure_4C.pdf")
+
+save_plot("./Figures/Figure_4D.pdf", beta_sim_plot,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure_4D.pdf")
+```
+
+

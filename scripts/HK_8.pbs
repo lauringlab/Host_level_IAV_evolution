@@ -1,0 +1,21 @@
+#!/bin/sh
+#PBS -S /bin/sh
+#PBS -A alauring_fluxm
+#PBS -N HK_8
+#PBS -q fluxm
+#PBS -M mccrone@umich.edu
+#PBS -m abe
+#PBS -j oe
+#PBS -V
+#PBS -l nodes=1:ppn=2,mem=48gb,walltime=20:00:00
+
+echo Running job name $PBS_JOBNAME with ID $PBS_JOBID on host $PBS_O_HOST;
+echo Working directory is $PBS_O_WORKDIR
+echo Start time: `date`;
+
+
+cd $PBS_O_WORKDIR
+
+python ~/variant_pipeline/bin/variantPipeline.py ./scripts/HK_8.options.yaml -bam
+
+echo Finish time: `date`

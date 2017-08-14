@@ -1,0 +1,215 @@
+---
+title: "processing SNV calls"
+author: "JT McCrone"
+date: "3/23/2017"
+output: github_document
+---
+
+```{r,include=F}
+require(knitr)
+require(plyr)
+require(ggplot2)
+require(reshape2)
+require(ggdendro)
+require(grid)
+meta<-read.csv("../data/reference/all_meta.csv")
+
+opts_chunk$set(fig.align="center",warning=T,tidy=T,cache = F,echo=T)
+theme_set(new = theme_classic()+ theme(
+  axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+  axis.line.y = element_line(colour = 'black', size=0.5, linetype='solid'))) # to make nice plots
+source("../scripts/useful_functions.R") # useful functions adapted largley from HIVE work
+```
+
+
+Here I'll remake the quality csv. I will outline the details of our snv calling and filtering here.
+# Average coverages
+
+These shouldn't change since I haven't rerun these steps but just for clarity's sake I'll redo it here. There was only one version of this.
+
+```{r,coverage,eval=T}
+cov.files<-c("../data/processed/HK_1/all.coverage.csv","../data/processed/HK_2/all.coverage.csv","../data/processed/HK_6/all.coverage.csv","../data/processed/HK_7/all.coverage.csv","../data/processed/HK_8/all.coverage.csv","../data/processed/cali09/all.coverage.csv","../data/processed/cali09_2/all.coverage.csv","../data/processed/victoria/all.coverage.csv","../data/processed/victoria_2/all.coverage.csv","../data/processed/perth/all.coverage.csv","../data/processed/perth_2/all.coverage.csv")
+
+cov<-read_rbind(cov.files,c("HK_1","HK_2","HK_6","HK_7","HK_8","cali09","cali09_2","victoria","victoria_2","perth","perth_2"))
+
+cov.sample<-ddply(cov,~Id+run,summarize,cov=mean(coverage))
+
+cov.sample<-adply(cov.sample,1,function(x){
+          LAURING_ID=strsplit(as.character(x$Id),"_")[[1]][1]
+          dup = strsplit(as.character(x$Id),"_")[[1]][2] # get the duplicate label if needed otherwise returns NA
+          
+          if(is.na(as.numeric(LAURING_ID))==F){ # some Ids include a decimal - this removes that
+            LAURING_ID=as.character(round(as.numeric(LAURING_ID),0))
+          }
+          
+          x$LAURING_ID=LAURING_ID
+          x$dup = dup
+          return(x)})
+write.csv(cov.sample,"../data/processed/average_coverages.csv")
+
+```
+Here are the summary plots from this analysis.
+
+```{r}
+
+#cov.sample<-read.csv("../data/processed/average_coverages.csv",stringsAsFactors = F)
+
+
+ggplot(cov.sample,aes(x=as.factor(run),y=cov))+geom_boxplot()+xlab("Run")+ylab("Mean Coverage in the sample") + scale_y_continuous(limits=c(0,50000),breaks = seq(0,50000,by=10000))
+
+ggplot(cov.sample,aes(x=as.factor(run),y=cov))+geom_boxplot()+geom_point(position="jitter")+xlab("Run")+ylab("Mean Coverage in the sample") + scale_y_continuous(limits=c(0,50000),breaks = seq(0,50000,by=10000))+geom_abline(slope=0,intercept = 1000)
+
+
+cuts<-data.frame(cutoffs=c(100,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,20000,30000,40000,50000))
+
+cuts<-ddply(cuts,~cutoffs,summarize,samples.below=nrow(subset(cov.sample,cov<cutoffs)))
+
+ggplot(cuts,aes(y=samples.below,x=cutoffs))+geom_point()+xlab("Mean frequency threshold")+ylab("Samples falling below the theshold")+scale_y_continuous(breaks=seq(0,550,by=20))+scale_x_continuous(breaks=cuts$cutoffs)+theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+```
+
+So there are a samples with coverage less than 1,000X - we should at least remove these.
+
+
+# qual.csv
+
+
+```{r,reading_in_snv}
+
+variants_csv<-c("../data/processed/HK_1/all.variants.csv","../data/processed/HK_2/all.variants.csv","../data/processed/HK_6/all.variants.csv","../data/processed/HK_7/all.variants.csv","../data/processed/HK_8/all.variants.csv","../data/processed/cali09/all.variants.csv","../data/processed/cali09_2/all.variants.csv","../data/processed/victoria/all.variants.csv","../data/processed/victoria_2/all.variants.csv","../data/processed/perth/all.variants.csv","../data/processed/perth_2/all.variants.csv")
+#
+variants<-read_rbind(variants_csv)
+```
+
+```{r,processing_samples_with_cov}
+################## Careful ################
+# These lines remove all the sites where there is only 1 base and that base matches the control base. This shortens the data frame drastically and the down stream code is already bases on this assumption - If there is no variant at the position then the position is the same as the plasma control.
+
+
+# This is not valid at this point - there may be cases where there is a polymorpism in 1 duplicate but not the other. The line below results in removing the consenus base in that case. Therefore we must do this trimming after the quality step.
+#variants<-subset(variants,!(ref==var & freq.var>0.98))
+
+
+
+#
+# Id refers to the sequenced sample - LAURING_ID refers to the SPECID - the actual nose and through. There can be mulitple Id for the same LAURING_ID
+
+LAURING_ID_LOOKUP<-data.frame(Id=unique(variants$Id))
+LAURING_ID_LOOKUP<-adply(LAURING_ID_LOOKUP,1,function(x){
+          LAURING_ID=strsplit(as.character(x$Id),"_")[[1]][1]
+          dup = strsplit(as.character(x$Id),"_")[[1]][2] # get the duplicate label if needed otherwise returns NA
+          
+          if(is.na(as.numeric(LAURING_ID))==F){ # some Ids include a decimal - this removes that
+            LAURING_ID=as.character(round(as.numeric(LAURING_ID),0))
+          }
+          
+          x$LAURING_ID=LAURING_ID
+          x$dup = dup
+          return(x)})
+
+
+variants<-join(variants,LAURING_ID_LOOKUP)
+
+variants<-join(variants,meta,by="LAURING_ID",type = "left")
+
+# If the LAUIRNG_ID is not in the meta file the sample will have a lot of NA columns. gc_ul is just one of those.
+extra<-subset(variants,is.na(gc_ul))
+variants<-subset(variants,!(is.na(gc_ul)))
+
+print(paste0("We are removing sample ",unique(extra$Id), " becasue they weren't found in the meta data."))
+
+# This makes sure every sample that was sequenced twice was sequenced on separate runs - This is assumed in the qual function below. only HK runs have duplicates. the others were separated by time so I know they were sequenced on different run.
+ddply(variants,~LAURING_ID,summarize,runs = length(unique(run)),dup_labels=length(unique(dup)))->x
+wrong<-subset(x,runs<dup_labels) # This is the case where the sample was sequenced on fewer runs than duplicates i.e. both duplicates on 1 run
+stopifnot(nrow(wrong)==0)
+
+poor_coverage_Id<-subset(cov.sample,cov<1000,select=c(LAURING_ID,run))
+poor_coverage_Id$Id_run=with(poor_coverage_Id,paste0(LAURING_ID,run))
+variants$Id_run=with(variants,paste0(LAURING_ID,run))
+
+
+variants<-subset(variants,!(Id_run %in% poor_coverage_Id$Id_run),select=-c(Id_run)) # Id refers to the sequenced sample - LAURING_ID refers to the SPECID - the actual nose and through sample
+```
+
+```{r,the_long_loop}
+
+############### THE LONG LOOP ##############
+# This will not be efficient but hopefully it works. We will loop through each LAURING_ID and run the quality function on that sample. i.e. Is each mutation found twice if we need each mutation to be found twice.
+IDS<-unique(variants$LAURING_ID)
+qual<-quality(subset(variants,LAURING_ID==IDS[1]))
+for( i in 2:length(IDS)){
+	sample_qual<-quality(subset(variants,LAURING_ID==IDS[i]))
+	qual<-rbind(qual,sample_qual) # This joins duplicates where needed and filters out those less with titers 1e3
+}
+# See note above (line 84) This removes the consensus bases where there are no polymorphism (at least at a 2% threshold)
+qual<-subset(qual,!(ref==var & freq.var>0.98))
+
+
+qual$pcr_result[qual$pcr_result=="H3N2"]="A/H3N2" # common format
+#
+qual$class_factor=NA
+qual$class_factor[grep("Noncoding",qual$Class)]<-"Noncoding"
+qual$class_factor[grep('Syn', qual$Class)]<-"Synonymous" 
+qual$class_factor[grep('Nonsyn',qual$Class)]<-"Nonsynonymous" # if it is nonsynonymous in any OR we will catch it
+
+
+qual$class_factor<-as.factor(qual$class_factor)
+
+qual<-subset(qual,class_factor!="Noncoding") # Eliminate the noncoding
+```
+
+I will now add a column to the meta file noting which samples are eligible for snv calls. These are nasal and throat samples that were sequenced, have a titer above 1e3 and did not have any seqeuncing runs fail sequencing (less than 1000 X coverage on average).
+
+
+```{r}
+meta<-mutate(meta,snv_qualified=(gc_ul>1e3 & sequenced==T & !(LAURING_ID %in% poor_coverage_Id$LAURING_ID)))
+write.csv(x = meta,file = "../data/reference/all_meta.sequence_success.csv")
+```
+
+Up to this point we have filtered snp by the following :
+
+1) average MapQ : 30
+
+2) average phred : 35
+
+3) deepSNV p-value : 0.01
+
+4) Frequency freq : 0
+
+5) Average read position : [31, 94]
+
+6) Frequency above which these are not applied stringent_freq : 0.15
+
+
+7) Require snv to be found twice in samples with titers between 1e3 and 1e4
+  - In this case the frequency and sequencing meta data are taken from the sample with higher coverage at this site.
+
+8) I will now require the frequency to be above 2%. This means that anything above 98% will be set to 1. We only expect there to be one base here.
+
+1-6 can be found in the options.yaml files in scripts.
+
+
+```{r}
+qual<-mutate(qual,control.freq=(n.ctrl.fw+n.ctrl.bw)/(cov.ctrl.fw+cov.ctrl.bw),exp.freq=(n.tst.fw+n.tst.bw)/(cov.tst.fw+cov.tst.bw))
+
+
+ggplot(subset(qual,ref!=var),aes(x=exp.freq,y=freq.var,color=control.freq))+geom_point()+xlab("Expected frequence give coverage")+ylab("Reported frequency")+scale_color_gradient(name="Frequency of variant in control")
+
+ggplot(subset(qual,control.freq>0.1 & ref!=var),aes(x=control.freq,fill=mutation))+geom_density()
+```
+We have corrected the issues! In the past high counts in the plasmid control affected the reported frequency of majority alleles. No longer thanks the to the deepSNV only for minor alleles!
+
+```{r}
+no_freq.qual<-qual
+
+
+qual<-subset(qual,freq.var>0.02)
+qual$freq.var[qual$freq.var>0.98]<-1
+
+write.csv(qual,"../data/processed/qual.snv.csv")
+write.csv(no_freq.qual,"../data/no_freq_cut.qual.snv.csv")
+```
+This removes `r nrow(no_freq.qual)- nrow(qual)` snv and `r length(unique(no_freq.qual$SPECID)) - length(unique(qual$SPECID))` isolates from the data set. (They did not contain snv). 
+
+

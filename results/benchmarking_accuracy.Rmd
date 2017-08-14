@@ -1,0 +1,111 @@
+---
+title: "Benchmarking accuracy"
+author: "JT McCrone"
+date: "April 3,2017"
+output: github_document
+---
+
+
+```{r,include=F,message=F}
+require(plyr)
+require(knitr)
+require(ggplot2)
+require(reshape2)
+require(ggplot2)
+require(ggdendro)
+require(grid)
+require(extrafont)
+set.seed(42) # Set seed so randomization is reproducible
+opts_chunk$set(fig.align="center",warning=FALSE,tidy=T,cache = T,echo=F)
+theme_set(new = theme_classic()+ theme(
+axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
+text=element_text(family="Arial Narrow",size = 18))) # to make nice plots
+source("../scripts/useful_functions.R") # useful functions adapted largley from HIVE work
+cols<-c("#08519cff","#787878ff","#6baed6ff")
+
+
+```
+
+Here is the accuracy from our benchmarking experiments.
+```{r}
+accuracy<-read.csv("../data/reference/accuracy.csv")
+
+accuracy<-mutate(accuracy,PPV=TP/(TP+FP))
+kable(accuracy)
+```
+  
+  
+While this is correct it does not account for the frequency of the False positives which is usually lower than the TP until we reach the rare variants. 
+_Note : We did not set any frequency thresholds in the benchmarking paper. Here we will apply frequency thresholds.  When samples are sequenced twice we will require  the frequency of the measurement with the higher coverage to have a frequency above 2%. This is consistent with how we have processed the patient sample and uses the same quality function_
+  
+```{r}
+# The 10^3 csv was made in Benchmarking_paper/results/dups103.Rmd
+# The 10^4 was made in /Users/jt/Documents/Analysis/Benchmarking_paper/results/figures.Rmd 
+
+new_processing<-function(dups,gc){
+  dups$gc_ul=gc
+dups$run=dups$dup
+dups$LAURING_ID=dups$Id
+dups.qual<-ddply(dups,~LAURING_ID,quality)
+true_snv<-read.csv("../data/reference/mutant_id.csv",stringsAsFactor=F)
+dups.qual<-mutate(dups.qual,category=mutation %in% true_snv$mutant)
+
+}
+
+#dups3<-read.csv("../data/reference/dups_103_passed_calls.csv")
+dups3_long<-read.csv("../data/reference/dups_103_passed_calls_long.csv")
+
+
+dups3.qual<-new_processing(dups3_long,1.1e3)
+
+dups3_stringent<-subset(dups3.qual,freq.var>0.02)
+
+#dups4<-read.csv("../../data/reference/dups_104_passed_calls.csv")
+
+dups4_long<-read.csv("../data/reference/dups_104_passed_calls_long.csv")
+
+
+dups4.qual<-new_processing(dups4_long,1.1e3)
+
+dups4_stringent<-subset(dups4.qual,freq.var>0.02)
+
+
+high_titer<-read.csv("../data/reference/105_passed_calls.csv")
+high_titer_stringent<-subset(high_titer,freq.var>0.02)
+```
+  
+Here I have applied the stringency mentioned above and have calculated the FP as the number of FP in the give sample with a frequency above the expected frequency of the TP. This lowers the sensitivity by basically give perfect specificity.
+```{r}
+tabulize<-function(df){
+  x<-ddply(df,~exp.freq,summarize,freq=unique(exp.freq),TP=length(which(category==T)),sensitivity=TP/20)
+  x<-x[order(x$exp.freq,decreasing = T),]
+  y<-adply(x,1,function(z) z$FP=nrow(subset(df,exp.freq==z$exp.freq & category==F & freq.var>z$exp.freq)))
+  names(y)[5]<-"FP"
+  return(y)
+}
+
+ht_tab<-tabulize(high_titer_stringent)
+ht_tab$gc_ul<-1e5
+
+dups4_tab<-tabulize(dups4_stringent)
+dups4_tab$gc_ul<-1e4
+
+dups3_tab<-tabulize(dups3_stringent)
+dups3_tab$gc_ul<-1e3
+
+accuracy.stringent<-rbind(ht_tab,dups4_tab)
+accuracy.stringent<-rbind(accuracy.stringent,dups3_tab)
+accuracy.stringent<-mutate(accuracy.stringent,PPV=TP/(TP+FP))
+kable(accuracy.stringent)
+
+write.csv(accuracy.stringent,"../data/reference/accuracy_stringent.csv")
+
+```
+
+
+So in almost every case 
+$$
+PPV=\frac{TP}{TP+FP}=1
+$$
+If we say something is there then you better believe it is. Unless it's present at 1% in a $10^3$ sample, then it's probably a false positive. So it's probably not worth rerunning the anlaysis at this point yet. There are some transmitted variants in this category but they are mostly inferred reciprocal variants which need to be handled differently. I will create a similar accuracy table for inferred reciprocal variants, and then I'll include that accuracy and the above accuracy in the models.

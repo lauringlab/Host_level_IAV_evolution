@@ -1,0 +1,65 @@
+---
+title: "frequency distribution"
+output: html_document
+---
+
+What is spread of our observed frequency given the known frequency. To do this I will be using the obseverd frequencies from our benchmarking experiment. 
+
+```{r}
+freq<-read.csv("~/Desktop/benchmarking_frequency_copy.csv",stringsAsFactors = F,skip = 1)
+
+require(plyr)
+
+freq<-mutate(freq,spread = freq.var - exp.freq)
+require(ggplot2)
+freq<-subset(freq,exp.freq>=0.02)
+ggplot(freq,aes(x=spread))+geom_histogram(color="white",binwidth = 0.01)
+```
+
+
+Now what if we normalize so that the first dilution titer 5 exp.freq 5 is 5%. This removes any error due to the qpcr or pipetting
+
+```{r}
+
+t<-ddply(freq,~mutation,function(x){
+  first = subset(x,exp.freq==0.05 & gc==5)
+  n_factor=first$freq.var/0.05 # normalization factor
+  x$n_factor=n_factor
+  x<-mutate(x,freq.n = freq.var/n_factor,spread.n = freq.n-exp.freq)
+  return(x)
+})
+
+
+
+ggplot(subset(t,gc+exp.freq!=5.05 ),aes(x=spread.n))+geom_histogram(color="white",binwidth = 0.01)#+facet_wrap(~gc)
+```
+
+As expected distribution is dependent on the titer of the sample
+```{r}
+ggplot(subset(t,gc+exp.freq!=5.05 ),aes(x=spread.n,fill=as.factor(gc)))+geom_histogram(color="white",position='dodge',binwidth = 0.01)
+```
+
+
+```{r}
+ggplot(subset(t,gc+exp.freq!=5.05 ),aes(x = gc,y=abs(spread.n)))+geom_point()#+scale_x_reverse()
+```
+
+It seems the expected frequency also play a role. Probably because there is more room to roam from higher frequency variants. We are only plotting those we detect.
+```{r}
+ggplot(subset(t,gc+exp.freq!=5.05 ),aes(x = exp.freq,y=abs(spread.n)))+geom_point()#+scale_x_reverse()
+```
+
+
+
+# Fitting
+
+These should be normal error. The distributions are skewed because we are looking at minor alleles and are bound on the lower end by a limit of detetion. I'll fit for the 10^4 data set using method of moments excluding the estreem point.Should the mean be 0. I'll round to 0 it was 0.002. 
+
+
+```{r}
+fit4<-subset(t,gc==4 & spread.n<0.1)
+mean(fit4$spread.n)
+v = var(fit4$spread.n)
+x= seq(-0.1,0.1,0.01)
+plot(x,dnorm(x,mean=0,sd = sqrt(v)))
+```
