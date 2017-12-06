@@ -176,7 +176,7 @@ save_plot("./Figures/Figure2C.pdf", fig_2C,
 embed_fonts("./Figures/Figure2C.pdf")
 write.csv(sim.df.l,"./Figures/data/Figure2C.csv")
 
-
+sim.df.l %>% group_by(Ne) %>% summarize(iqr25 = quantile(outcomes)[2],iqr75 = quantile(outcomes)[4])
 ```
 
 

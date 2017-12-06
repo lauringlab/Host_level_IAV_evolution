@@ -7,7 +7,7 @@ High quality individuals:	200
 -------iSNV Summary Statistics-------
 SPECID <10 iSNV:	243
 SPECID more 10 iSNV:	6
-SPECID mixed:	
+SPECID mixed:
 Median iSNV:	2
 IQR iSNV:	1 3
 Ns/S:	0.642857142857143
@@ -22,7 +22,7 @@ NS HA n:	37
 Antigenic iSNV n:	18
 Antigenic p:	0.000607986687045
 Antigenic iSNV %:	Proportion of snv in antigenic sites 0.025245 - 0.009818
-Antigenic infection n:	Propotion of infections with antigenic sites 0.075000 - 0.035000 
+Antigenic infection n:	Propotion of infections with antigenic sites 0.075000 - 0.035000
 ------Effective population size------
 Samples at least 1 day apart:	29
 R2 samples same day:	0.990387354562134
