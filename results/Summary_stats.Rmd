@@ -1,29 +1,49 @@
 ---
 title: "Summary statistics"
 author: "JT McCrone"
-date: "3/22/2017"
+date: "10/30/2017"
 output: github_document
 ---
 ```{r,echo=F}
+
+# Set up packages
 require(knitr)
 require(ggplot2)
 require(magrittr)
 require(tidyverse)
-require(plyr)
-require(reshape2)
+if(!("package:tidyverse" %in% search())){
+  require(dplyr)
+  require(tidyr)
+  require(purrr)
+  require(readr)
+  require(rlang)
+}
+require(HIVEr)
 require(extrafont)
 require(wesanderson)
-
 set.seed(42) # Set seed so randomization is reproducible
-opts_chunk$set(fig.align="center",warning=FALSE,tidy=T,cache = T,echo=F)
+
+# Set up figures
+opts_chunk$set(fig.align="center",warning=TRUE,tidy=T,cache = T,echo=F)
 theme_set(new = theme_classic()+ theme(
 axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
 axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
 text=element_text(family="Arial",size = 18))) # to make nice plots
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 cbPalette<-wes_palette("Zissou")
-source("../scripts/useful_functions.R")
+# Get widely used functions
+#source("../scripts/useful_functions.R")
+require(doMC)
+doMC::registerDoMC(cores=4)
 
+####### Write to summary results file ######
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results.table.tsv")
+}
 ```
 
 First we'll read in the all_meta file. Which now contains every sample we ever touched. We will filter it so that it contains 1 entry per person. This handels the cases in  2014-2015 where we have mulitple samples/ person. Although the multiple samples are important when we pick which sample to use in looking at transmission, here we just are looking at dates on onset so one sample/ person will do.
@@ -37,13 +57,9 @@ I should note we are taking one sample per person per infecting strain. There ar
 How many H3N2 and H1N1 did we sequence
 
 ```{r}
-meta<-read.csv("../data/reference/all_meta.sequence_success.csv",colClasses = c('onset'='Date','collect'='Date'),stringsAsFactors = F)
-meta$pcr_result[meta$pcr_result=="H3N2"]<-"A/H3N2"
-meta$pcr_result[meta$pcr_result=="A/H3N3 & B/YAM"] <-"A/H3N2" # this one didn't qualify for iSNV identification
-meta$season[meta$season=="10-11"]<-"2010-2011"
-meta$season[meta$season=="11-12"]<-"2011-2012"
-meta$season[meta$season=="12-13"]<-"2012-2013"
-meta$season[meta$season=="13-14"]<-"2013-2014"
+meta<-read_csv("../data/reference/all_meta.sequence_success.csv")
+# Read in the meta data
+# Get the number of infections (individuals) that were infected by each strain and in 2014-2015
 
 meta %>% subset(pcr_result=="A/H3N2") %>%
   .$ENROLLID  %>% unique() %>% length()->H3N2_cases
@@ -63,11 +79,12 @@ write_to_summary("2014-2015 cases:",cases_2014_15)
 
 ### Table 1 stats
 
+Take the meta and split by strain and season. 
 ```{r}
-meta %>% group_by(season,pcr_result) %>% dplyr::summarise(count = length(unique(ENROLLID))) ->IAV_positive_individuals
+meta %>% group_by(season,pcr_result) %>% summarise(count = length(unique(ENROLLID))) ->IAV_positive_individuals
 
 
-IAV_positive_individuals %>% spread(season,count)->IAV_positive_individuals.table
+IAV_positive_individuals %>% spread(season,count,fill = 0)->IAV_positive_individuals.table
 
 knitr::kable(IAV_positive_individuals.table)
 ```
@@ -77,41 +94,19 @@ knitr::kable(IAV_positive_individuals.table)
 
 These apply to all cases where 2 individuals are sick within the same household within a week of eachtoher (difference in date of onset <= 7 days).
 
-In the event of multiple possible donors we assume the donor is the individual with symptom onset neast to the recipeient.
+In the event of multiple possible donors we assume the donor is the individual with symptom onset nearest to the recipeient.
 
-The donor and recipeint are never have symptoms on the same day unless they are the only cases in the house. In this case we will randomize the pair and estimate a bottleneck both ways.
+The donor and recipeint are never allowed to have symptom onset on the same day unless they are the only cases in the house. In this case we will randomize the pair and estimate a bottleneck in both directions.
 
 If there are two possible donors with the same date of onset then we throw out any possible pair to that recipient.
 
 Also we require that pairs have an L1-norm below the 5% percentile of the non household pairs.
 
+First we will just need one sample per person per pcr result. Date of onset is important for this analysis not date of sampling - that comes in later. 
 ```{r}
-meta_one<-ddply(meta,~ENROLLID+pcr_result,function(x){ #  one per person
-                                          if(nrow(x)==1){ # if there is only one sample then we are done
-                                            return(x)
-                                          }else if(nrow(x)==2){ # There are two samples here with this person and pcr result
-                                            pick<-which(x$sequenced==T) # pick the one that we sequenced
-                                            if(length(pick)==1){ #if there is only one then we're done
-                                              return(x[pick,])
-                                            }
-                                            else if(length(pick)<1){ # we didn't sequence any of these
-                                              pick<-runif(1)<0.5
-                                              return(x[pick+1,]) # 1 or 2 randomly Pick is 0 or 1
-                                            }
-                                            else if(length(pick)>1){ # we sequenced both
-                                              pick<-which(x$snv_qualified==T) # See how many qualified for snv calling
-                                              if(length(pick)>1| length(pick)<1){ # Either 0 or 2 did
-                                              pick<-which(x$gc_ul==max(x$gc_ul)) # take the one with a higher titer.
-                                              }
-                                              return(x[pick,])
-                                            }
-                                            
-                                          }else{
-                                            stop("more than 2 samples for this person?")
-                                          }
-})
+# Get just one sample per enrollid per pcr_result. When multiple samples were taken then we take the mose relavent ones.
 
-write.csv(x = meta_one,file = "../data/reference/meta_one.seqeunce.success.csv")
+meta_one<-read_csv("../data/processed/secondary/meta_one.sequence.success.csv")
 
 meta %>% subset(snv_qualified==T)%>% nrow()->snv_qual_isolates
 meta %>% subset(snv_qualified==T)%>% 
@@ -125,92 +120,9 @@ write_to_summary("High quality individuals:",snv_qual_individuals)
 Tranmission pairs are cases where 2 people are sick with the same strain from the same household with 7 days of eachother (inclusive)
 
 ```{r,all}
-getting_tp<-function(df){ # The data frame is all for 1 house
-  house<-unique(df$HOUSE_ID)
-  stopifnot(length(house)==1,length(unique(df$pcr_result))==1) # Verify only 1 house here and only 1 strain
-  
-  if(length(unique(df$ENROLLID))>1){ # verify more than 1 person in the household
-    pairs<-data.frame(ENROLLID.1=NA,ENROLLID.2=NA,onset.1=NA,onset.2=NA,transmission=NA,sequenced.1=NA,sequenced.2=NA,gc_ul.1=NA,gc_ul.2=NA,snv_qualified.1=NA,snv_qualified.2=NA)
-    df<-df[order(df$onset,df$ENROLLID,decreasing = F),] # Order the data frame based on onset date. Earliest is first 
-    # loop through and get all possible transmission pairs and make 1 row for each possible transmission pair
-    for(i in 1:(nrow(df)-1)){
-      ENROLLID.1=df$ENROLLID[i]
-      onset.1=df$onset[i]
-      sequenced.1=df$sequenced[i]
-      gc_ul.1=df$gc_ul[i]
-      snv_qualified.1=df$snv_qualified[i]
-      for(j in (i+1):nrow(df)){
-        ENROLLID.2=df$ENROLLID[j]
-        onset.2=df$onset[j]
-        sequenced.2=df$sequenced[j]
-        gc_ul.2=df$gc_ul[j]
-        snv_qualified.2=df$snv_qualified[j]
-        transmission=onset.2-1
-        #print(c(onset.2,onset.1))
-        if((onset.2-onset.1)<=7){ #if onset is withing a week of each other
-          out<-data.frame(ENROLLID.1=ENROLLID.1,ENROLLID.2=ENROLLID.2,onset.1=onset.1,onset.2=onset.2,transmission=transmission,sequenced.1=sequenced.1,sequenced.2=sequenced.2,gc_ul.1=gc_ul.1,gc_ul.2=gc_ul.2,snv_qualified.1=snv_qualified.1,snv_qualified.2=snv_qualified.2)
-          pairs<-rbind(subset(pairs,!(is.na(ENROLLID.1))),out)# We don't want that first line with the NA  
-        }
-      }
-    }
-      return(subset(pairs,!(is.na(ENROLLID.1)))) 
-  } 
-}
-
-## Add a column for valid pairs - ie pairs that match our criteria.
-# This is a mess of a block of code. 
-
-finding_valid<-function(house){ # This function will take in a household and update the valid column for each pair
-  stopifnot(length(unique(house$HOUSE_ID))==1)
-  house$valid=F # They all start invalid - they must prove their worth to us!
-  house$double=F
-  min_onset<-min(house$onset.1) # This the index date for the house it is used later
-  if(length(unique(house$pair_id))==1){ # there is only one pair here so it's valid
-    house$valid=T
-    if(house$onset.1==house$onset.2){ # there is only one pair and they are sick on the same day so this is valid but we will need to look at transmission both ways
-      house$double=T
-    }
-    return(house)
-  }
-  else{# There are multiple possible pairs here
-    # If the onset days are the same now then they stay invalid.
-    # All that is left is to remove the pairs that skip an individual - arc over the top.
-    # For this we will look at each recipeint and validate the pair that has the minimum diff in onset date
-    # but whose difference is >0
-    house_multi=ddply(house,~ENROLLID.2,function(x,min_onset){ # for each possible recipient in the house we will find which donor is valid
-      x=mutate(x,diff_onset=x$onset.2-x$onset.1) # Get the difference in onset date 
-      valid_onsets=x$diff_onset[x$diff_onset>0] # valid pairs at this point must have a difference on onset date >0
-      if(identical(x$onset.1,x$onset.2) & all(x$onset.2 == min_onset)){ # the recipient is sick on the house index case and onset1==onset2 and there is no other possible donor date - these are all sick on the first day and need to be handeled in both directions
-        x$valid<-T
-        x$double<-T
-      }
-      else if(length(valid_onsets)>0){ # There are some valid donors
-        if(length(which(x$diff_onset==min(valid_onsets)))==1){ # If there is only 1 valid donor here (i.e donors not sick on the same day) 
-          
-        x$valid[x$diff_onset==min(valid_onsets)]=T 
-        }
-      }  
-        # otherwise we leave them as false
-        
-      x<-subset(x,select=-c(diff_onset)) # get rid of this column
-      return(x)
-      },min_onset)
-    
-    return(house_multi)
-
-    }
-  }
-all_pairs.tp<-ddply(meta_one,~HOUSE_ID+season+pcr_result,getting_tp)
-all_pairs.tp$pair_id<-1:nrow(all_pairs.tp)
-
-
-all_pairs.tp<-ddply(all_pairs.tp,~HOUSE_ID,finding_valid)
+all_pairs.tp <- read_csv("../data/processed/secondary/transmission_pairs.csv")
 
 valid_pairs<-subset(all_pairs.tp,valid==T)
-all_pairs.tp<-mutate(all_pairs.tp,
-                     sequenced_pair=sequenced.1==sequenced.2 & sequenced.2==T, titer_pair= sequenced.1==sequenced.2 & sequenced.2==T & gc_ul.1>1e3 & gc_ul.2>1e3,snv_qualified_pair = snv_qualified.1==T & snv_qualified.2==T) # Just adding columns to summarize the pairs.
-
-
 
 all_pairs.tp %>% .$HOUSE_ID %>% unique() %>% length()->concurrent_houses #houses with multiple infections
 
@@ -223,13 +135,13 @@ This yields `r nrow(all_pairs.tp)` possible pairs. And `r nrow(valid_pairs)` val
 
 
 
-## Summary table 
+## Summary table of transmission events
 ```{r,summary_table}
-require(plyr)
 sum.table<-function(data,r=F){
-  sum.long<-ddply(data,~season+pcr_result,summarize,houses=length(unique(HOUSE_ID)),pairs=length(ENROLLID.1)) # each row is a pair
-  pairs<-dcast(sum.long,season~pcr_result,value.var = "pairs",fill=0)
+  data %>% group_by(season,pcr_result) %>% summarize(houses=length(unique(HOUSE_ID)),pairs=length(ENROLLID1))->sum.long # each row is a pair
+  sum.long %>%select(-houses) %>%spread(pcr_result,pairs,fill=0) %>% ungroup()->pairs
   pairs$total<-pairs$`A/H1N1`+pairs$`A/H3N2`
+  
   totals<-data.frame(season="total",H1N1=sum(pairs$`A/H1N1`),H3N2=sum(pairs$`A/H3N2`),total=sum(pairs$`A/H1N1`)+sum(pairs$`A/H3N2`))
   names(totals)<-c("season","A/H1N1","A/H3N2","total")
   pairs<-rbind(pairs,totals)
@@ -247,7 +159,7 @@ We had samples from `r length(unique(meta_one$ENROLLID))` inidividuals. We seque
 
 
 ```{r}
-sequenced_pairs<-subset(valid_pairs,sequenced.1==sequenced.2 & sequenced.2==T) # both samples were sequenced.
+sequenced_pairs<-subset(valid_pairs,sequenced1==sequenced2 & sequenced2==T) # both samples were sequenced.
 ```
 
 
@@ -260,7 +172,7 @@ sequenced.sum<-sum.table(sequenced_pairs,r=T)
 
 
 ```{r}
-snv_hopefull_pairs<-subset(valid_pairs,sequenced.1==sequenced.2 & sequenced.2==T & gc_ul.1>1e3 & gc_ul.2>1e3) # Both pairs sequenced and high enough titers to look for snv
+snv_hopefull_pairs<-subset(valid_pairs,sequenced1==sequenced2 & sequenced2==T & gc_ul1>1e3 & gc_ul2>1e3) # Both pairs sequenced and high enough titers to look for snv
 ```
 
 When we further restrict our analysis and require both samples to be greater than 10^3^ then we have `r nrow(snv_hopefull_pairs)` possible pairs. The 71 I quoted earlier included sequenced early samples and all 2014-2015 samples we handeled. I have remade the meta data csv for this analysis.
@@ -271,7 +183,7 @@ snv_hopeful.sum<-sum.table(snv_hopefull_pairs,r=T)
 
 ```{r}
 
-snv_pairs<-subset(valid_pairs,snv_qualified.1==T & snv_qualified.2==T) # Both samples sequenced with titers>1e3 and passed sequencing (ave cov >1000 in both duplicates if applicable)
+snv_pairs<-subset(valid_pairs,snv_qualified1==T & snv_qualified2==T) # Both samples sequenced with titers>1e3 and passed sequencing (ave cov >1000 in both duplicates if applicable)
 snv.sum<-sum.table(snv_pairs,r=T)
 
 write_to_summary("High quality transmission pairs:",
@@ -281,100 +193,30 @@ write_to_summary("High quality transmission pairs:",
 ## L1-norm
 
 ```{r}
-qual<-read.csv("../data/processed/qual.snv.csv",colClasses = c('onset'='Date','collect'='Date'),stringsAsFactors = F) # read in quality variant calls from all seasons
-qual$season[qual$season=="10-11"]<-"2010-2011"
-qual$season[qual$season=="11-12"]<-"2011-2012"
-qual$season[qual$season=="12-13"]<-"2012-2013"
-qual$season[qual$season=="13-14"]<-"2013-2014"
+qual<-read_csv("../data/processed/secondary/qual.snv.csv",
+               col_types = list(
+                 ENROLLID= col_character(),
+                 SPECID = col_character(),
+                 LAURING_ID = col_character(),
+                 Id = col_character()
+               )) # read in quality variant calls from all 
+stopifnot(min(qual$freq.var)>0.02)
 ```
+
+Now we will make all possible pair comparisions within a season and strain. Note - becuause we are using the meta_one data frame we are not accounting for intrahost dynamics (in season 2014-2015). We have set up meta_one to give us the highest quality iSNV data.
+
 
 ```{r}
 
-dist_tp<-function(pairs,qual_data){ 
-  data.df<-get_freqs(pairs = pairs,snv = qual_data)
-  y<-as.matrix(cbind(data.df$freq1,data.df$freq2)) 
-  d=dist(t(y),method = "manhattan")
-  if(is.na(d) & nrow(data.df)==1){
-    if(is.na(data.df$mutation)){# This is the case when there are no variants found in either sample
-    d=0
-    }
-  }  
-  #print(paste(pairs,d,sep=":"))
-  return(d)
-  # This is the same as L1-norm I checked it by hand (1/18/17)
-} # data frame of 1 pair
-
-```
-
-```{r}
-#make all possible pairs comparisions
-
-all_possible_pairs<-ddply(subset(meta_one,snv_qualified==T),~season+pcr_result,function(x) expand.grid(x$SPECID,x$SPECID)) # there is only 1 SPECID/ ERNOLLID in meta_one
-names(all_possible_pairs)<-c("season","pcr_result","SPECID.1","SPECID.2")
-all_possible_pairs<-subset(all_possible_pairs,SPECID.1!=SPECID.2 & SPECID.1 %in% meta_one$SPECID[meta_one$snv_qualified==T] & SPECID.2 %in% meta_one$SPECID[meta_one$snv_qualified==T] ) # This ensures that 1) we are not comparing a sample against itself and 2) both samples were well sequenced and had a chance of calling variants.
-
-## One of the draw backs of expand grid is we get all possibilitys so there are 2 pairs for each
-# combination of specid (bidirectional). We only want 1.
-
-# This requires that the second sample was taken from the person who was sick second. This matches how we
-# Set pairs in tranmission. the EnrollID is the tie-braker.
-
-# First we need to add the necessary columns
-all_possible_pairs<-mutate(all_possible_pairs,
-                            ENROLLID.1=meta_one$ENROLLID[match(x = SPECID.1,meta_one$SPECID)],
-                            ENROLLID.2=meta_one$ENROLLID[match(x = SPECID.2,meta_one$SPECID)],
-                           time_onset=meta_one$onset[match(x = SPECID.2,meta_one$SPECID)]-meta_one$onset[match(SPECID.1,meta_one$SPECID)],
-                           time_collect=meta_one$collect[match(x = SPECID.2,meta_one$SPECID)]-meta_one$collect[match(SPECID.1,meta_one$SPECID)]
-                           )
-write.csv(all_possible_pairs,"./every_possible_pair.csv")
-all_possible_pairs<-subset(all_possible_pairs,time_onset>=0) # only those with SPECID.2 sick later than SPECID.1
-
-
-# Now for those with a difference of 0. 
-zeros_p<-subset(all_possible_pairs,time_onset==0)
-zeros_pass<-adply(zeros_p,1,function(x){
-  if(as.character(x$ENROLLID.1)<as.character(x$ENROLLID.2)){ # This is the tie break in the transmission pair search.
-    return(x)
-  }
-})
-fine_p<-subset(all_possible_pairs,time_onset>0)
-
-possible_pairs<-rbind(fine_p,zeros_pass)
-
-```
-
-```{r}
-possible_pairs.dist<-adply(possible_pairs,1,summarize,L1_norm=dist_tp(data.frame(SPECID.1=SPECID.1,SPECID.2=SPECID.2),qual_data = qual),.parallel = TRUE,.progress = "tk")
-write.csv(x = possible_pairs.dist,"./possible.pairs.csv")
-
-possible_pairs.dist<-read.csv("./possible.pairs.csv",stringsAsFactors = F)
-```
-
-```{r}
-# Get the houses for each pair. 
-possible_pairs.dist<-mutate(possible_pairs.dist,HOUSE_ID.1=meta_one$HOUSE_ID[match(x = SPECID.1,meta_one$SPECID)],HOUSE_ID.2=meta_one$HOUSE_ID[match(x = SPECID.2,meta_one$SPECID)],Household = HOUSE_ID.1==HOUSE_ID.2)
-
-# Now Id the valid transmission pairs in the pairs.
-possible_pairs.dist<-adply(possible_pairs.dist,1,function(x){
-  x$valid_tp = x$ENROLLID.2 %in% all_pairs.tp$ENROLLID.2[which(all_pairs.tp$valid==T & all_pairs.tp$ENROLLID.1==x$ENROLLID.1)]
-  return(x)
-  })
-
-#Let's make sure this is the same as above.
-sum(possible_pairs.dist$valid_tp)
-write.csv(possible_pairs.dist,"./possible.pairs.dist.csv")
-```
-
-
-```{r}
-#l1norm.p_household<-ggplot(possible_pairs.dist,aes(x=L1_norm,fill=Household,y=..ncount..))+geom_histogram(color='white',binwidth = 10,boundary=0,position = 'dodge')+scale_fill_manual(name="",labels=c("Community","Household"),values = cbPalette[c(1,4)])+xlab("L1 Norm")+ylab("Count (normalized by group)")
-
-#l1norm.p_household
+possible_pairs.dist<-read_csv("../data/processed/secondary/possible.pairs.dist.csv")
 
 cutoffs<-as.data.frame(quantile(possible_pairs.dist$L1_norm[possible_pairs.dist$Household==F],probs = seq(0,1,0.05))) # get the percentiles for the community pairs
 names(cutoffs)<-"L1_norm"
 cutoffs$threshold<-seq(0,1,0.05)
-cutoffs<-adply(cutoffs,1,summarize,valid_pairs=nrow(possible_pairs.dist[(possible_pairs.dist$valid_tp==T & possible_pairs.dist$L1_norm<L1_norm),]))
+cutoffs<-cutoffs %>% rowwise() %>%
+  mutate(valid_pairs=nrow(possible_pairs.dist[(possible_pairs.dist$valid==T & possible_pairs.dist$L1_norm<L1_norm),]))
+
+
 ggplot(cutoffs,aes(y=valid_pairs,x=threshold))+geom_point()#+scale_x_continuous(breaks=cutoffs$L1_norm,labels = cutoffs$threshold)+xlab("Quantile")
 kable(cutoffs)
 
@@ -382,23 +224,21 @@ possible_pairs.dist<-mutate(possible_pairs.dist,quality_distance=L1_norm<cutoffs
 
 # Add distance cut off data to all_pairs.tp
 
-all_pairs.tp<-adply(all_pairs.tp,1,function(x){
-  y<-subset(possible_pairs.dist,ENROLLID.1==x$ENROLLID.1 & ENROLLID.2==x$ENROLLID.2)
-  
-  if(x$snv_qualified_pair==T){ # we'll do this for all snv_qualified pairs not just the valid ones.
-    stopifnot(nrow(y)==1)
-      x$quality_distance = y$quality_distance
-      return(x)
-  }else{
-    x$quality_distance=NA
-    return(x)
-  }
-
-})
+all_pairs.tp<-merge(all_pairs.tp,subset(possible_pairs.dist,select=c(ENROLLID1,ENROLLID2,quality_distance)),all.x = T)
+all_pairs.tp$quality_distance[all_pairs.tp$snv_qualified_pair==F]<-NA
 
 
-
-l1norm.p_tp<-ggplot(subset(possible_pairs.dist,valid_tp==T | Household==F),aes(x=L1_norm,fill=as.factor((valid_tp-1)*-1),y=..ncount..))+geom_histogram(color='white',binwidth = 7.5,boundary=0,position = 'dodge')+scale_fill_manual(name="",labels=c("Household transmision","Community aquired"),values = cbPalette[c(1,4)])+xlab("L1 Norm")+ylab("Normalized Count")+theme(legend.position = c(0.5,0.5))+geom_segment(aes(x=15,xend =cutoffs$L1_norm[cutoffs$threshold==0.05],y=0,yend=1),linetype=2,color=cbPalette[5],size=0.3)#geom_segment(aes(x=cutoffs$L1_norm[cutoffs$threshold==0.05],xend =cutoffs$L1_norm[cutoffs$threshold==0.05],y=0,yend=1),linetype=2,color=cbPalette[5],size=0.3)#+stat_bin(binwidth=10,boundary = 0, geom="text", aes(label=..count..), vjust=-1,size=2) #+scale_y_log10()
+figure3A_data<-subset(possible_pairs.dist,valid==T | Household==F)
+figure3A_data<-figure3A_data %>%
+  select(season,SPECID1,SPECID2,L1_norm,valid,Household)
+l1norm.p_tp<-ggplot(figure3A_data,
+                    aes(x=L1_norm,fill=as.factor((valid-1)*-1),y=..ncount..))+
+geom_histogram(color='white',binwidth = 7.5,boundary=0,position = 'dodge')+
+  scale_fill_manual(name="",labels=c("Household transmision","Community pairs"),values = cbPalette[c(1,4)])+
+  xlab("L1 Norm")+ylab("Normalized Count")+
+  theme(legend.position = c(0.5,0.5))+
+  geom_segment(aes(x=15,xend =cutoffs$L1_norm[cutoffs$threshold==0.05],y=0,yend=1),
+               linetype=2,color=cbPalette[5],size=0.3)
 l1norm.p_tp
 
 # What is the count in the highest bin?
@@ -411,25 +251,20 @@ write_to_summary("Max household bar:",max(group1$count))
 write_to_summary("Max community bar:",max(group2$count))
 
 
-write.csv(subset(possible_pairs.dist,valid_tp==T | Household==F),"./Figures/data/Figure3A.csv")
+write.csv(figure3A_data,"./Figures/data/Figure3A.csv")
 print(cutoffs$L1_norm[cutoffs$threshold==0.05]) # I moved it 15 because of the bin size 
 ```
 
 ## Overall Summary
 
 ```{r}
-get_double<-function(df){ # get the 
-  if (length(unique(df$SPECID))==2 & length(unique(df$pcr_result))==1){ # There are 2 people in 2010-2014 with 2 samples but these appear to be 2 cases where the indivual was infected with H1N1 once and then later with H3N2. Bummer for them. but this pcr result criterea takes care of them
-    return(df)
-  }
-}
+all.intra<-meta %>% get_double() # Get those samples that come from longitundal pairs
 
-all.intra<-ddply(meta,~ENROLLID,get_double) # Get those samples that come from longitundal pairs
-sequenced.intra<-ddply(subset(meta,sequenced==T),~ENROLLID,get_double) # Get those samples that come from longitundal pairs
+sequenced.intra<-subset(meta,sequenced==T) %>% get_double() # Get those samples that come from longitundal pairs
 
-snv_hopefull.intra<-ddply(subset(meta,sequenced==T& gc_ul>1e3),~ENROLLID,get_double) # Get those samples that come from longitundal pairs
+snv_hopefull.intra<-subset(meta,sequenced==T& gc_ul>1e3) %>% get_double() # Get those samples that come from longitundal pairs
 
-snv.intra<-ddply(subset(meta,snv_qualified==T),~ENROLLID,get_double) # Get those samples that come from longitundal pairs
+snv.intra<-subset(meta,snv_qualified==T) %>% get_double() # Get those samples that come from longitundal pairs
 
 total.sum<-data.frame(Class=c("Households","Isolates","Individuals","Transmission pairs","Households with potential pairs","Longitudinal sampling"),
                       "All Samples"=c(length(unique(meta$HOUSE_ID)),
@@ -460,8 +295,10 @@ kable(total.sum)
 ```
 
 ```{r}
-by_house<-ddply(valid_pairs,~HOUSE_ID+season+pcr_result,summarize,Individuals =length(unique(c(ENROLLID.1,ENROLLID.2))) )
-x<-ddply(by_house,~Individuals+season,summarize,households=length(Individuals))
+by_house<- valid_pairs %>% group_by(HOUSE_ID,season,pcr_result) %>%
+  summarize(Individuals =length(unique(c(ENROLLID1,ENROLLID2))) )
+x<- by_house %>% group_by(Individuals,season) %>%
+  summarize(households=length(Individuals))
 
 x %>% spread(season,households)->by_house.table
 
@@ -469,6 +306,7 @@ kable(by_house.table)
 ```
 ## Looking at transmission
 
+Here are the functions used for plotting. 
 ```{r}
 one_for_each_plotting<-function(df){
   df$offset_x.1<-min(df$donset) #This puts the points at the onset 
@@ -477,42 +315,14 @@ one_for_each_plotting<-function(df){
   df$offset_y.2<-max(df$offset_y[df$donset==max(df$donset)])
   return(df[1,])
 }
-longform_pairs<-function(df){ # This function takes in a data frame with 1 row/ pair and outputs one with 1 row/ enrollid in the pair (ie 2 rows)
-  stopifnot(nrow(df)==1) # only 1 row at a time
-  House<-df$HOUSE_ID
-  season=df$season
-  pcr_result<-df$pcr_result
-  Enroll1<-df$ENROLLID.1
-  Enroll2<-df$ENROLLID.2
-  onset.1<-df$onset.1
-  onset.2<-df$onset.2
-  gc_ul.1<-df$gc_ul.1
-  gc_ul.2<-df$gc_ul.2
-  pair_id<-df$pair_id
-  sequenced.1<-df$sequenced.1
-  sequenced.2<-df$sequenced.2
-  sequenced_pair<-df$sequenced_pair
-  titer_pair<-df$titer_pair
-  first.df<-data.frame(HOUSE_ID=House,pair_id=pair_id,ENROLLID=Enroll1,pcr_result=pcr_result,season,onset=onset.1,gc_ul=gc_ul.1,sequenced=sequenced.1,sequenced_pair=sequenced_pair,titer_pair=titer_pair,valid=df$valid,quality_distance=df$quality_distance)
-  second.df<-data.frame(HOUSE_ID=House,pair_id=pair_id,ENROLLID=Enroll2,pcr_result=pcr_result,season,onset=onset.2,gc_ul=gc_ul.2,sequenced=sequenced.2,sequenced_pair=sequenced_pair,titer_pair=titer_pair,valid=df$valid,quality_distance=df$quality_distance)
-  if(df$onset.1<df$onset.2){
-    first.df$case="Donor"
-    second.df$case="Recipient"
-  }
-  if(df$onset.1==df$onset.2){
-    first.df$case="Unknown"
-    second.df$case="Unknown"
-  }
-  
-  out<-rbind(first.df,second.df)
-  return(out)
-}
+
 
 make_transmission_plot<-function(x,type="all"){ # type should be all or valid or invalid.
   stopifnot(type %in% c('all','valid','invalid'))
-  x<-adply(x,1,longform_pairs) # Each row is a pair so for each pair split the row into 2 rows 
+  #x<-plyr::adply(x,1,longform_pairs) # Each row is a pair so for each pair split the row into 2 rows 
+  x<-longform_pairs(x)
   x<-subset(x,select=c(HOUSE_ID,pair_id,ENROLLID,pcr_result,season,onset,gc_ul,sequenced,sequenced_pair,titer_pair,snv_qualified_pair,valid,quality_distance)) # just select these columns for each row
-  x<-ddply(x,~HOUSE_ID,function(x){ # This will be useful for ording the plotting - at least that's the hope. For each house get the first onset date and set the donset as the distance of each case from that date.
+  x<-plyr::ddply(x,~HOUSE_ID,function(x){ # This will be useful for ording the plotting - at least that's the hope. For each house get the first onset date and set the donset as the distance of each case from that date.
     min_onset<-min(x$onset)
     mutate(x,min_onset=min_onset,donset=onset-min_onset)
   })
@@ -522,13 +332,13 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
   HOUSE_order<-unique(x$HOUSE_ID) # This is the order we want the houses to be in on the plot
   
   
-  x<-ddply(x,~HOUSE_ID,function(z){
+  x<-plyr::ddply(x,~HOUSE_ID,function(z){
     z$y_Id=which(HOUSE_order==unique(z$HOUSE_ID))*2 # where does this house fall in the order
     return(z)})
   
   
   # I don't really use this any more but it is useful if you want to offset points with the same x value by shifting them on the x axis
-  x<- ddply(x, ~onset+y_Id, function(x){ # this applys an offset for different individuals who are sick on the same day
+  x<- plyr::ddply(x, ~onset+y_Id, function(x){ # this applys an offset for different individuals who are sick on the same day
       if(length(unique(x$ENROLLID))>1){ # if there are mulitple people here
       ENROLLIDs<-sort(unique(x$ENROLLID),decreasing=T)
       x<-mutate(x,sort_order=match(ENROLLID,ENROLLIDs)-1,offset_x=as.numeric(donset+sort_order/5))
@@ -539,7 +349,7 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
     return(x)
     })
   
-   x<- ddply(x, ~onset+y_Id, function(x){ # this applys an offset for different individuals who are sick on the same day
+   x<- plyr::ddply(x, ~onset+y_Id, function(x){ # this applys an offset for different individuals who are sick on the same day
       if(length(unique(x$ENROLLID))>1){ # if there are mulitple people here
       ENROLLIDs<-sort(unique(x$ENROLLID),decreasing=T)
       x<-mutate(x,sort_order=match(ENROLLID,ENROLLIDs)-1,offset_y=y_Id+((-1*length(ENROLLIDs)+4)*sort_order-1))
@@ -557,7 +367,7 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
 
   x$line=T # start with all lines
   x$curve=F
-  x<-ddply(x,~pair_id,function(x){
+  x<-plyr::ddply(x,~pair_id,function(x){
     if(length(unique(x$onset))==1){ # This pair is sick on the same day # and they are the only ones in the house
       x$curve=T 
       }
@@ -569,9 +379,9 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
   #Then we look at each pair in the house. If the points are separated on 
   #the x axis with another point in between then we get rid of the line 
   #connecting and replace it with a curve
-  x<-ddply(x,~HOUSE_ID,function(u){
+  x<-plyr::ddply(x,~HOUSE_ID,function(u){
     offset_y<-sort(unique(u$offset_y))
-    ddply(u,~pair_id,function(y,offset_y){
+    plyr::ddply(u,~pair_id,function(y,offset_y){
       diff<-which(offset_y %in% y$offset_y)
       #print(diff)
       #stopifnot(length(diff)==2)
@@ -585,7 +395,7 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
     },offset_y)
   })
   
-  seasons = ddply(x,~season,summarize,ymin=min(y_Id)-0.25,ymax=max(y_Id)+0.25,middle=mean(y_Id))
+  seasons = plyr::ddply(x,~season,summarize,ymin=min(y_Id)-0.25,ymax=max(y_Id)+0.25,middle=mean(y_Id))
   
   if(type=="valid"){
     x<-subset(x,valid==T)
@@ -605,9 +415,9 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
   x_curves_both_useful<-subset(x_useful,line==T & curve==T)
   
 
-  x_lines_useful<-ddply(x_lines_useful,~pair_id,one_for_each_plotting) # back to short form, 1 row/ pair for the lines.  offset_x is the onsets here. 1 is the first case 2 is the second
-  x_curves_over_useful<-ddply(x_curves_over_useful,~pair_id,one_for_each_plotting)
-  x_curves_both_useful<-ddply(x_curves_both_useful,~pair_id,one_for_each_plotting)
+  x_lines_useful<-plyr::ddply(x_lines_useful,~pair_id,one_for_each_plotting) # back to short form, 1 row/ pair for the lines.  offset_x is the onsets here. 1 is the first case 2 is the second
+  x_curves_over_useful<-plyr::ddply(x_curves_over_useful,~pair_id,one_for_each_plotting)
+  x_curves_both_useful<-plyr::ddply(x_curves_both_useful,~pair_id,one_for_each_plotting)
   
   arrow_length= 0.005
   
@@ -642,9 +452,9 @@ make_transmission_plot<-function(x,type="all"){ # type should be all or valid or
   x_curves_both_lost<-subset(x_lost,line==T & curve==T)
   
   # Now we just need one x axis point for each onset in the pair
-  x_lines_lost<-ddply(x_lines_lost,~pair_id,one_for_each_plotting)
-  x_curves_over_lost<-ddply(x_curves_over_lost,~pair_id,one_for_each_plotting)
-  x_curves_both_lost<-ddply(x_curves_both_lost,~pair_id,one_for_each_plotting)
+  x_lines_lost<-plyr::ddply(x_lines_lost,~pair_id,one_for_each_plotting)
+  x_curves_over_lost<-plyr::ddply(x_curves_over_lost,~pair_id,one_for_each_plotting)
+  x_curves_both_lost<-plyr::ddply(x_curves_both_lost,~pair_id,one_for_each_plotting)
   
     transmission_plot_all<-transmission_plot_useful+geom_point(data=x_lost,aes(x=donset,y=offset_y),size=0.5)+
     geom_segment(data=x_lines_lost,aes(x=offset_x.1,xend=offset_x.2,y=offset_y.1,yend=offset_y.2,group=pair_id),
@@ -678,37 +488,6 @@ return(transmission_plot_all+theme(legend.position = 'none',axis.line.y=element_
   
 ```
 
-```{r,fig.align='center',eval=F}
-#require(
-all_10_11<-make_transmission_plot(subset(all_pairs.tp,season=="10-11"))
-all_10_11<-all_10_11+ggtitle("Transmission pairs 2010-2011")
-all_10_11
-
-all_11_12<-make_transmission_plot(subset(all_pairs.tp,season=="11-12"))
-all_11_12<-all_11_12+ggtitle("Transmission pairs 2011-2012")
-all_11_12
-
-all_12_13<-make_transmission_plot(subset(all_pairs.tp,season=="12-13"))
-all_12_13<-all_12_13+ggtitle("Transmission pairs 2012-2013")
-all_12_13
-
-all_13_14<-make_transmission_plot(subset(all_pairs.tp,season=="13-14"))
-all_13_14<-all_13_14+ggtitle("Transmission pairs 2013-2014")
-all_13_14
-
-all_14_15<-make_transmission_plot(subset(all_pairs.tp,season=="2014-2015"))
-all_14_15<-all_14_15+ggtitle("Transmission pairs 2014-2015")
-all_14_15
-
-ggsave("./2010-2011_pairs.pdf",plot=all_10_11,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-ggsave("./2011-2012_pairs.pdf",plot=all_11_12,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-ggsave("./2012-2013_pairs.pdf",plot=all_12_13,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-ggsave("./2013-2014_pairs.pdf",plot=all_13_14,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-ggsave("./2014-2015_pairs.pdf",plot=all_14_15,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-
-
-```
-
 # Valid pairs
 Transmission rules. These apply to all cases where 2 individuals are sick within the same household within a week of eachtoher (difference in date of onset <= 7 days).
 
@@ -720,32 +499,6 @@ The donor and recipeint are never have symptoms on the same day unless they are 
 We'll take a look at the pairs we are refering to and then get a list of all those that quailify.
 
 ```{r,fig.align='center'}
-#require(plotly)
-# all_10_11<-make_transmission_plot(subset(all_pairs.tp,season=="10-11"),type='valid')
-# all_10_11<-all_10_11+ggtitle("2010-2011")
-# all_10_11
-# 
-# all_11_12<-make_transmission_plot(subset(all_pairs.tp,season=="11-12"),type='valid')
-# all_11_12<-all_11_12+ggtitle("2011-2012")
-# all_11_12
-# 
-# all_12_13<-make_transmission_plot(subset(all_pairs.tp,season=="12-13"),type='valid')
-# all_12_13<-all_12_13+ggtitle("2012-2013")
-# all_12_13
-# 
-# all_13_14<-make_transmission_plot(subset(all_pairs.tp,season=="13-14"),type='valid')
-# all_13_14<-all_13_14+ggtitle("2013-2014")
-# all_13_14
-# 
-# all_14_15<-make_transmission_plot(subset(all_pairs.tp,season=="2014-2015"),type='valid')
-# all_14_15<-all_14_15+ggtitle("2014-2015")
-# all_14_15
-# 
-# ggsave("./2010-2011_pairs.valid.pdf",plot=all_10_11,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-# ggsave("./2011-2012_pairs.valid.pdf",plot=all_11_12,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-# ggsave("./2012-2013_pairs.valid.pdf",plot=all_12_13,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-# ggsave("./2013-2014_pairs.valid.pdf",plot=all_13_14,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
-# ggsave("./2014-2015_pairs.valid.pdf",plot=all_14_15,device="pdf",path="./Figures/Transmission_pairs/",width=6,height=8,units="in")
 
 all_seasons<-make_transmission_plot(all_pairs.tp,type='valid')
 
@@ -754,10 +507,29 @@ all_seasons
 all_seasons_useful<-make_transmission_plot(subset(all_pairs.tp,snv_qualified_pair==T & valid==T),type='valid')
 all_seasons_useful
 
-write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T),"Figures/data/Figure3B.csv")
+write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T,
+                 select=c(HOUSE_ID,ENROLLID1,ENROLLID2,
+                  onset1,onset2,quality_distance,double)),
+          "Figures/data/Figure3B.csv")
 
 ```
+This is the in set figure for some talks.
 
+Houses of interest
+```{r,eval=F}
+possible_pairs.dist %>% filter(Household==T) -> household.pairs
+
+merge(subset(all_pairs.tp,snv_qualified_pair==T),household.pairs) %>% select(HOUSE_ID1,HOUSE_ID2,SPECID1,SPECID2,L1_norm,onset1,onset2) -> pairs.df
+
+pairs.df %>% group_by(HOUSE_ID1) %>% dplyr::summarise(pairs = length(onset1)) ->counts_house.df # warnings are about the unused columns
+counts_house.df%>% filter(pairs>1)->mult_house
+
+make_transmission_plot(subset(all_pairs.tp,snv_qualified_pair==T & valid==T&HOUSE_ID %in% c(5263,5317,1077,5228)),type='valid') ->adams_fig
+
+pairs.df %>% filter(HOUSE_ID1 %in%c(5263,5317,1077,5228) ) %>% kable()
+#require(plotly)
+#ggplotly(adams_fig)
+```
 
 Here is a final summary table. These are the valid pairs
 ```{r,eval=T}
@@ -775,16 +547,15 @@ require(tables)
 mytable <- tabular(Heading()*what ~ Group*(`A/H1N1` +`A/H3N2`+`total`)*Heading()*(identity),data=st)
 print(mytable)
 #latex(mytable)
-
-detach(package:tables)
-detach(package:plyr)
-library(plyr)
 ```
 
 
 # SNV summary
 
-
+```{r}
+detach("package:dplyr")
+library(dplyr)
+```
 
 
 ### Titers
@@ -796,11 +567,18 @@ give.n <- function(x){ # How many samples are in this box of the box plot
   return(c(y = median(x)*1.1, label = length(x))) 
   # experiment with the multiplier to find the perfect position
 }
+figure1A_data<-select(titers,SPECID,
+                      days.post.symptom.onset=DPI,
+                      genomes.per.ul = gc_ul)
 
-titer.p<-ggplot(titers,aes(x=as.factor(DPI),y=gc_ul))+geom_boxplot(notch = T)+ylab(expression(paste(Genomes,"/" ,mu,L)))+scale_y_log10()+xlab("Days post symptom onset")#+  stat_summary(fun.data = give.n, geom = "text", fun.y = median)
+titer.p<-ggplot(figure1A_data,aes(x=as.factor(days.post.symptom.onset),
+                                  y=genomes.per.ul))+
+  geom_boxplot(notch = T)+
+  ylab(expression(paste(Genomes,"/" ,mu,L)))+
+  scale_y_log10()+xlab("Days post symptom onset")
 titer.p
 
-write.csv(titers,"./Figures/data/Figure1A.csv")
+write.csv(figure1A_data,"./Figures/data/Figure1A.csv")
 ```
 There are warning messages for 13 samples we did not get usable numbers back from the qPCR. They have NA in the log_copy_num column but R gives them 0 in the gc_ul. These are removed on the log scale.
 
@@ -815,32 +593,40 @@ intra_titers<-subset(all.intra,!(is.na(DPI)) & DPI>=0 & gc_ul>0) # See text abov
 ### Frequency distribution
 ```{r,frequency_distribution}
 min.qual<-subset(qual,freq.var<0.5) # only looking at minor alleles
-classes<-ddply(min.qual,~class_factor,summarize,mutations=length(mutation)) # class factor is is Nonsym if in any open reading frame the mutation is Nonsym.
+classes<-min.qual %>% group_by(class_factor) %>%
+  dplyr::summarize(mutations=length(mutation)) # class factor is is Nonsym if in any open reading frame the mutation is Nonsym.
 kable(classes)
 write_to_summary("Ns/S:",
                  classes$mutations[classes$class_factor=="Nonsynonymous"]/classes$mutations[classes$class_factor=="Synonymous"])
 
+figure1CD_data<-min.qual %>% select(SPECID,chr,pos,freq.var,class_factor)
 
-freq_hist.p<-ggplot(min.qual,aes(x=freq.var,fill=class_factor))+geom_histogram(color="white",binwidth=.05,position=position_dodge(),boundary = 0.02)+xlab("Frequency")+ylab("iSNV")+scale_fill_manual(name="",values=cbPalette[c(1,4)])+theme(legend.position = c(0.5, 0.5))
+freq_hist.p<-ggplot(figure1CD_data,aes(x=freq.var,fill=class_factor))+
+  geom_histogram(color="white",binwidth=.05,position=position_dodge(),
+                 boundary = 0.02)+
+  xlab("Frequency")+ylab("iSNV")+
+  scale_fill_manual(name="",values=cbPalette[c(1,4)])+
+  theme(legend.position = c(0.5, 0.5))
+
 freq_hist.p
 
-write.csv(min.qual,"./Figures/data/Figure1C_D.csv")
-
-class.df<-ddply(min.qual,~class_factor,summarize,count = length(mutation))
+write.csv(figure1CD_data,"./Figures/data/Figure1C_D.csv")
 
 freq_hist.d<-ggplot_build(freq_hist.p)
 freq_hist.d$data[[1]]->bins
 bins$bin<-rep(1:10,each=2)
-require(magrittr)
-bins %>% ddply(~bin,function(x) x$count[2]/x$count[1])->bin_ratio
+
+bin_ratio<- bins %>% group_by(bin) %>%
+  dplyr::summarize(ratio = count[2]/count[1]) # NS/S
+
 bin_ratio
 
-write_to_summary("Max Ns/S:",max(bin_ratio$V1))
+write_to_summary("Max Ns/S:",max(bin_ratio$ratio))
 
 ```
 
 
-`r class.df$count[class.df$class_factor=="Synonymous"]/sum(class.df$count)`
+`r classes$mutations[classes$class_factor=="Synonymous"]/sum(classes$mutations)`
 
 ### Distribution across the genome
 ```{r,isnv_genome}
@@ -848,41 +634,20 @@ min.qual$chr<-factor(min.qual$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR"
 chrs<-read.csv("../data/reference/segs.csv",stringsAsFactors = T) # get the start and stop of each OR for each segment (2014-2015 used as reference)
 
 chrs$chr<-factor(chrs$chr,levels=levels(min.qual$chr)) # set factors on the is meta data
-genome_loc.p<-ggplot(min.qual,aes(x=pos,y=chr))+geom_point(aes(color=class_factor),shape=108,size=5)+geom_segment(data=chrs,aes(x = start, y = chr, xend = stop, yend = chr))+ylab("")+xlab("")+scale_color_manual(name="",values=cbPalette[c(1,4)])+ theme(axis.ticks =element_blank(),axis.line.x = element_blank(),axis.line.y=element_blank())+scale_x_continuous(breaks=c())+theme(legend.position = "none")
+genome_loc.p<-ggplot(min.qual,aes(x=pos,y=chr))+
+  geom_point(aes(color=class_factor),shape=108,size=5)+
+  geom_segment(data=chrs,aes(x = start, y = chr, xend = stop, yend = chr))+
+  ylab("")+
+  xlab("")+
+  scale_color_manual(name="",values=cbPalette[c(1,4)])+
+  theme(axis.ticks =element_blank(),
+        axis.line.x = element_blank(), axis.line.y=element_blank())+
+  scale_x_continuous(breaks=c())+
+  theme(legend.position = "none")
 genome_loc.p
 ```
 
-#### Sliding window geomone
-```{r}
-snv_chr.help<-function(seg,start,stop,step,window,snv.df){
-    # get windows
-        window.df<-data.frame(left=seq(from = start,to = stop,by=step))
-        window.df$chr<-seg
-        window.df<- mutate(window.df,right=left+window)
-        snv.df<-subset(snv.df,chr==seg)
-        #print(window.df)
-        counts<-adply(window.df,1,function(x,snv.df){
-                                                    x$iSNV = nrow(subset(snv.df,pos>=x$left & pos<x$right))
-                                                    return(x)},snv.df)
-        return(counts)
-        }
 
-
-sliding_window_snv<-function(snv.df,window,step,chr.seg){
-        isnv_counts<-ddply(chr.seg,~chr,function(x,window,step,snv.df){
-                                        snv_chr.help(seg = x$chr,start = x$start,stop = x$stop,window = window,step = step,snv.df=subset(snv.df,chr==x$chr))},window,step,snv.df)
-  }       
-```
-
-
-
-```{r}
-sliding_counts<-sliding_window_snv(min.qual,100,1,chrs)
-sliding_counts$chr<-factor(sliding_counts$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS")))
-sliding_counts$pos<-rowMeans(data.frame(x=sliding_counts$left,y=sliding_counts$right))
-genome_slide.p<-ggplot(sliding_counts)+geom_line(aes(x = pos,y=(as.numeric(chr)*2+iSNV/10),group=chr))+geom_segment(data=chrs,aes(x = start, y = as.numeric(chr)*2, xend = stop, yend = as.numeric(chr)*2))+ylab("")+xlab("")+ theme(axis.ticks =element_blank(),axis.line.x = element_blank(),axis.line.y=element_blank())+scale_x_continuous(breaks=c())+theme(legend.position = "none")
-genome_slide.p
-```
 ### Distribution across Individuals - using every sample
 
 These will need to be rare in mulitple individuals to show up here at >1
@@ -891,7 +656,8 @@ give.n.atCount <- function(x){ # How many samples are in this box of the box plo
   return(c(y = length(x)*1.1, label = length(x))) 
   # experiment with the multiplier to find the perfect position
 }
-min.count<-ddply(min.qual,~chr+pos+var+pcr_result+season,summarize,counts=length(unique(ENROLLID))) # In how many people (ENROLLID) is the muation found. It would have to be minor in both people to count in this plot. The chr pos var is used so that called and infered variants of the same var are counted together.
+min.count<- min.qual %>% group_by(chr,pos,var,pcr_result,season) %>%
+  dplyr::summarize(counts=length(unique(ENROLLID))) # In how many people (ENROLLID) is the muation found. It would have to be minor in both people to count in this plot. The chr pos var is used so that called and infered variants of the same var are counted together.
 ggplot(min.count,aes(x=counts))+geom_histogram(color="white",binwidth=1)+xlab("Number of individuals")+ylab("iSNV")+stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-.5) +scale_y_log10()
 
 
@@ -905,14 +671,16 @@ write_to_summary("twice iSNV %:",only_twice/(only_once+only_twice+only_thrice))
 write_to_summary("thrice iSNV %:",only_thrice/(only_once+only_twice+only_thrice))
 write_to_summary("multiple isolates iSNV n:",only_twice+only_thrice)
 
-
-min.count<-ddply(min.qual,~chr+pos+var+pcr_result+season+mutation,summarize,counts=length(unique(ENROLLID))) # In how many people (ENROLLID) is the muation found. It would have to be minor in both people to count in this plot. The chr pos var is used so that called and infered variants of the same var are counted together.
-
-
 ```
 These are the mutations found in multiple individuals
 ```{r}
-multiple<-subset(min.qual,mutation %in% min.count$mutation[min.count$counts>1])
+min.qual<-mutate(min.qual,scratch = paste(chr,pos,chr,season,pcr_result,sep="."))
+min.count <-mutate(min.count,scratch = paste(chr,pos,chr,season,pcr_result,sep="."))
+multiple<-subset(min.qual,scratch %in% min.count$scratch[min.count$counts>1])
+
+min.qual<-subset(min.qual,select=-c(scratch))
+min.count<-subset(min.count,select=-c(scratch))
+
 
 multiple %>% subset(class_factor=="Nonsynonymous") %>% .$mutation %>%
   unique()->mult.NS
@@ -928,10 +696,11 @@ These counts don't sum to the total above, but that is because this is looking a
 ### Diversity in samples
 
 ```{r,snv_sample}
-min.count<-ddply(min.qual,~SPECID,summarize,iSNV=length(unique(mutation)),HA_iSNV=length(which(chr=="HA"))) # How many rare mutations in the sample (SPECID)
+min.count.sample<-min.qual %>% group_by(SPECID) %>%
+  dplyr::summarize(iSNV=length(unique(mutation)),HA_iSNV=length(which(chr=="HA"))) # How many rare mutations in the sample (SPECID)
 
 snv_qual_meta<-subset(meta,snv_qualified==T)
-snv_qual_meta<-join(snv_qual_meta,min.count,by="SPECID")
+snv_qual_meta<-merge(snv_qual_meta,min.count.sample,by="SPECID",all.x=T)
 
 snv_qual_meta$iSNV[is.na(snv_qual_meta$iSNV)]<-0 # these are the ones with no diversity
 snv_qual_meta$HA_iSNV[is.na(snv_qual_meta$HA_iSNV)]<-0
@@ -971,8 +740,9 @@ isnv_vaccination
 ```
 
 ```{r}
+figure1B_data<-snv_qual_meta %>% select(days.post.symptom.onset=DPI,iSNV)
 isnv_by_day.p<-ggplot(snv_qual_meta,aes(x=as.factor(DPI),y=iSNV))+geom_boxplot()+xlab("Day post symptom onset")#+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)
-write.csv(snv_qual_meta,"./Figures/data/Figure1B.csv")
+write.csv(figure1B_data,"./Figures/data/Figure1B.csv")
 
 isnv_by_day.p
 ggplot(snv_qual_meta,aes(x=as.factor(pcr_result),y=iSNV))+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)+xlab("Strain")
@@ -1050,31 +820,28 @@ embed_fonts("./Figures/Figure3A.pdf")
 save_plot("./Figures/Figure3B.pdf", all_seasons_useful,
           base_aspect_ratio = 1.3,
           base_height = 6)
-embed_fonts("./Figures/Figure3b.pdf")
+embed_fonts("./Figures/Figure3B.pdf")
 
 ```
 
-```{r}
-write.csv(all_pairs.tp,"./transmission_pairs.csv")
-```
 
-#Supplemental Figure 3
+#Supplemental Figure 4
 
 ```{r}
 sup_fig_1<-plot_grid(isnv_titer,isnv_vaccination, labels = c("A", "B"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
 
-save_plot("./Figures/Supplemental_Figure3.pdf", sup_fig_1,
+save_plot("./Figures/Supplemental_Figure4.pdf", sup_fig_1,
           ncol = 2, # we're saving a grid plot of 2 columns
           nrow = 1, # and 1 row
           # each individual subplot should have an aspect ratio of 1.3
           base_aspect_ratio = 1.3
           )
-embed_fonts("./Figures/Supplemental_Figure3.pdf")
+embed_fonts("./Figures/Supplemental_Figure4.pdf")
 sup_fig_1
 ```
 
-```{r}
-write.csv(x = snv_qual_meta,"../data/meta_snv_qual.csv")
+```{r,eval=F}
+#write.csv(x = snv_qual_meta,"../data/proccessed/meta_snv_qual.csv")
 ```
 
 # Looking at the outliers
@@ -1085,7 +852,7 @@ Let's take a look at the samples with many snv.
 ```{r}
 
 require(ggjoy)
-outliers<-subset(min.count,iSNV>10)
+outliers<-subset(min.count.sample,iSNV>10)
 
 outliers.snv<-subset(min.qual,SPECID %in% outliers$SPECID)
 
@@ -1094,71 +861,3 @@ ggplot(outliers.snv,aes(x=freq.var,y= as.factor(SPECID),height = ..density..))+g
 ```
 This looks like mixed infections. We find many mutations at similar frequencies.
 
-
-
-
-### Intrahost set up
-```{r}
-source("../scripts/useful_functions.R")
-```
-
-
-```{r}
-intra<-ddply(snv.intra,~ENROLLID,function(x){
-  x<-x[(order(c(x$collect),decreasing = F)),]
-  HOUSE_ID=unique(x$HOUSE_ID)
-  ENROLLID = unique(x$ENROLLID)
-  season=unique(x$season)
-  onset = unique(x$onset)
-  SPECID.1 = x$SPECID[1]
-  SPECID.2 = x$SPECID[2]
-  gc_ul.1 = x$gc_ul[1]
-  gc_ul.2 = x$gc_ul[2]
-
-  return(data.frame(HOUSE_ID=HOUSE_ID,ENROLLID=ENROLLID,season=season,onset=onset,SPECID.1=SPECID.1,SPECID.2=SPECID.2,gc_ul.1=gc_ul.1,gc_ul.2=gc_ul.2))
-  })
-
-intra_freq<-adply(intra,1,function(x) get_freqs(x,qual)) # Make the comparision
-
-intra_freq<-subset(intra_freq,!(is.na(mutation)))
-
-```
-
-```{r,intrahost_sum}
-intra_freq<-mutate(intra_freq,within_host_time=meta$collect[match(SPECID.2,meta$SPECID)]-meta$collect[match(SPECID.1,meta$SPECID)])
-just_one<-ddply(intra_freq,~SPECID.1+SPECID.2,summarize,within_host_time=unique(within_host_time)) # Just get one within_host_time/ pair
-
-intra_time.p<-ggplot(just_one,aes(x=within_host_time))+geom_histogram(binwidth =1, color="white")+xlab("Days between samples")+ ylab("Sample Pairs")+stat_bin(aes(y=..count.., label=..count..), binwidth = 1,geom="text", vjust=-.5)
-intra_time.p
-#ggsave("./intra_time_dist.png",intra_time.p)
-
-```
-
-
-We are only looking at polymorphic sites between 2% and 98%.
-
-
-```{r,intrahost_maintaince}
-intra_freq.comp<-subset(intra_freq,freq1>0) 
-intra_freq.comp<-subset(intra_freq,freq1>0.02 & freq1<0.98)
-intra_freq.comp<-ddply(intra_freq.comp,~chr+pos+SPECID.1,function(x) if(nrow(x)>1){return(x)}) # only polymorphic sites in sample 1 
-# Now if one of the freq2 at a given site is <1.5% we must set the other to 1 in order to treat the first and second samples equally.
-
-intra_freq.comp<-ddply(intra_freq.comp,~chr+pos+SPECID.2, function(x){
-  if(min(x$freq2<0.02)){
-    stopifnot(max(x$freq2)>0.98) # This is to make sure we are not setting a major allele to 1 when the major allele is in the polymorphic range - This could happen given some of the pecularieties with the allelic frequencies and deepSNV (i.e. There may be some sequencing errors that make up the missing frequencies)
-    x$freq2[x$freq2==max(x$freq2)]<-1
-    x$freq2[x$freq2==min(x$freq2)]<-0
-  }
-  return(x)
-})
-intra_freq.comp<-adply(intra_freq.comp,1,function(x){
-  donor_class = subset(qual,SPECID==x$SPECID.1[1] & mutation == x$mutation[1],select=c(class_factor))
-  #print(x)
-  x$donor_class = as.character(donor_class$class_factor)
-  return(x)
-})
-write.csv(x = intra_freq,"./Intrahost_all.csv")
-
-write.csv(x = intra_freq.comp,"./Intrahost_initially_present.csv")
-```

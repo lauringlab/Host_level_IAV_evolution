@@ -12,8 +12,8 @@ require(tidyverse)
 require(extrafont)
 require(wesanderson)
 require(magrittr)
-
-require(ggjoy)
+require(HIVEr)
+require(ggridges)
 set.seed(42) # Set seed so randomization is reproducible
 opts_chunk$set(fig.align="center",warning=FALSE,tidy=T,cache = T,echo=F)
 theme_set(new = theme_classic()+ theme( # to make nice plots
@@ -24,31 +24,45 @@ text=element_text(family="Arial",size = 18)))
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 cbPalette<- wes_palette("Zissou")
 require(cowplot)
-source("../scripts/useful_functions.R")
+#source("../scripts/useful_functions.R")
+
+####### Write to summary results file ######
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results.table.tsv")
+}
 ```
 
 
 ```{r}
-intra<-read.csv('./Intrahost_initially_present.csv',stringsAsFactors = F)
+intra<-read_csv('../data/processed/secondary/Intrahost_initially_present.csv')
 intra %>% subset(within_host_time==1 & freq1<0.5 & freq1>0) ->minor
-minor %>% mutate(SPECID.1_location = paste0(SPECID.1,"_",chr,pos),
-                 SPECID.2_location = paste0(SPECID.2,"_",chr,pos))->minor
-qual<-read.csv("../data/processed/qual.snv.csv",stringsAsFactors = F)
-
+minor %>% mutate(SPECID1_location = paste0(SPECID1,"_",chr,pos),
+                 SPECID2_location = paste0(SPECID2,"_",chr,pos))->minor
+qual<-read_csv("../data/processed/secondary/qual.snv.csv",
+               col_types = list(
+                 ENROLLID= col_character(),
+                 SPECID = col_character(),
+                 LAURING_ID = col_character(),
+                 Id = col_character()
+               ))
 qual  %>% mutate(coverage = cov.tst.fw+cov.tst.bw,SPECID_location = paste0(SPECID,"_",chr,pos)) ->qual
 
 minor %>% group_by(ENROLLID) %>% 
   group_by(mutation) %>%
-  mutate(cov.1 = qual$coverage[match(SPECID.1_location,qual$SPECID_location)],
-         cov.2 = qual$coverage[match(SPECID.2_location,qual$SPECID_location)])->minor
-stopifnot(min(c(minor$cov.1,minor$cov.2),na.rm = T)>1000)
+  mutate(cov1 = qual$coverage[match(SPECID1_location,qual$SPECID_location)],
+         cov2 = qual$coverage[match(SPECID2_location,qual$SPECID_location)])->minor
+stopifnot(min(c(minor$cov1,minor$cov2),na.rm = T)>1000)
 
-minor %>% mutate(sample.1 = 1000,
-                 sample.2=1000)->minor
+minor %>% mutate(sample1 = 1000,
+                 sample2=1000)->minor
 
-minor %>% adply(1,function(x){
-  x$alleles.1 = rbinom(1,size = x$sample.1,prob = x$freq1)
-  x$alleles.2 = rbinom(1,size = x$sample.2,prob = x$freq2)
+ plyr::adply(minor,1,function(x){
+  x$alleles1 = round(x$sample1*x$freq1,0)#rbinom(1,size = x$sample1,prob = x$freq1)
+  x$alleles2 = round(x$sample2*x$freq2,0)#rbinom(1,size = x$sample2,prob = x$freq2)
   return(x)})->minor
 
 ```
@@ -60,8 +74,8 @@ sink("./WFABC/4_generations.txt")
 cat(paste0(nrow(minor)," ",2,"\n"))
 cat("1,5\n")
 for(i in 1:nrow(minor)){
-  cat(paste(minor$sample.1[i],minor$sample.2[i],"\n",sep=","))
-  cat(paste(minor$alleles.1[i],minor$alleles.2[i],"\n",sep=","))
+  cat(paste(minor$sample1[i],minor$sample2[i],"\n",sep=","))
+  cat(paste(minor$alleles1[i],minor$alleles2[i],"\n",sep=","))
 }
 sink()
 ```
@@ -82,6 +96,7 @@ cd /Users/jt/Documents/Analysis/HIVE/results/WFABC
 post_N=read.table("./WFABC/4_generations_Ne_bootstrap.txt") 
 plot(density(post_N[,1]),lwd=2,main="Ne Posterior",xlab="Ne") 
 write_to_summary("ABC Ne:",mean(post_N$V1))
+print(mean(post_N$V1))
 ```
 
 ```{r}
@@ -92,10 +107,11 @@ require(boa)
 post_density.95<-apply(post_s,1,boa.hpd,1-0.95) 
 
 minor<-cbind(minor,t(post_density.95))
-names(minor)[28]<-"Lower_Bound"
-names(minor)[29]<-"Upper_Bound"
+#names(minor)[28]<-"Lower_Bound"
+#names(minor)[29]<-"Upper_Bound"
 
-minor %>% adply(1,function(x){
+minor <- rename(minor,Lower_Bound="Lower Bound",Upper_Bound = "Upper Bound")
+minor %>% plyr::adply(1,function(x){
   x$selection = !(0>x$Lower_Bound & 0<x$Upper_Bound)
   return(x)}) -> minor
 
@@ -115,31 +131,41 @@ minor$mut_id<-1:nrow(minor)
 
 
 
-post_s.long<-join(post_s.long,subset(minor,select=c(mutation,mut_id,mean_s,donor_class,ENROLLID)))
+
+post_s.long<-left_join(post_s.long,select(minor,mutation,mut_id,mean_s,donor_class,ENROLLID))
 
 post_s.long<-post_s.long[order(post_s.long$mean_s,decreasing = T),]
 post_s.long$y<-factor(post_s.long$mutation,levels =unique(post_s.long$mutation) )
 
+
+post_s.long<- post_s.long %>%group_by(mut_id) %>%
+  filter(s>minor$Lower_Bound[match(mut_id,minor$mut_id)], 
+         s<minor$Upper_Bound[match(mut_id,minor$mut_id)])
+      
+  
+  
 write_to_summary("iSNV in samples exaclty 1 day apart:",length(unique(post_s.long$mut_id)))
 
 joy_plot<-ggplot(post_s.long, aes(x=s, y=y, group=mut_id, height=..density..,fill=donor_class)) +
-     geom_joy(scale=4) +
+     geom_density_ridges(scale=4,rel_min_height = 0.04) +
      theme_joy()+ ylab("")+
     scale_fill_manual(labels  =c( "Nonsynonymous","Synonymous"),
                     name="",values=cbPalette[c(1,4)])+
     theme(axis.text.y = element_blank(),legend.position = "none")+
   geom_vline(xintercept = 0,linetype=2)
 joy_plot
-save_plot("./Figures/Figure2E3.pdf", joy_plot,
+save_plot("./Figures/Figure2E.pdf", joy_plot,
           base_aspect_ratio = 1.3)
 
 
-embed_fonts("./Figures/Figure2E3.pdf")
+embed_fonts("./Figures/Figure2E.pdf")
+
+write.csv(select(post_s.long,selection.coef = s,mutation,class=donor_class,ENROLLID),"./Figures/data/Figure2E.csv")
 ```
 
 
 
-```{r}
+```{r,eval=F}
 iqr_min <-function(x) quantile(x,probs = 0.25)
 iqr_max <-function(x) quantile(x,probs = 0.75)
 s_dotplot<-ggplot(minor,aes(y=mean_s,x=donor_class,fill=donor_class))+
@@ -177,7 +203,7 @@ save_plot("./Figures/Figure2E2.pdf", s_segment,
           base_aspect_ratio = 1.3)
 ```
 
-```{r}
+```{r,eval=F}
 minor$chr<-factor(minor$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS"))) # Set the segments as factors with PB2 on top
 chrs<-read.csv("../data/reference/segs.csv",stringsAsFactors = T) # get the start and stop of each OR for each segment (2014-2015 used as reference)
 
@@ -208,14 +234,16 @@ subset(minor,selection==T)->selected
 
 qual %>% filter(freq.var<0.5) ->qual_min
 selected %>% rowwise() %>% 
-  mutate(OR = qual_min$OR[match(selected$SPECID.1_location,qual_min$SPECID_location)],
-         Ref_AA = qual_min$Ref_AA[match(selected$SPECID.1_location,qual_min$SPECID_location)],
-         AA_pos = qual_min$AA_pos[match(selected$SPECID.1_location,qual_min$SPECID_location)],
-         Var_AA = qual_min$Var_AA[match(selected$SPECID.1_location,qual_min$SPECID_location)]) ->selected
+  mutate(OR = qual_min$OR[match(SPECID1_location,qual_min$SPECID_location)],
+         Ref_AA = qual_min$Ref_AA[match(SPECID1_location,qual_min$SPECID_location)],
+         AA_pos = qual_min$AA_pos[match(SPECID1_location,qual_min$SPECID_location)],
+         Var_AA = qual_min$Var_AA[match(SPECID1_location,qual_min$SPECID_location)]) ->selected
 
 selected<-selected[order(selected$mean_s),]
 
 kable(subset(selected,select=c(ENROLLID,mutation,donor_class,mean_s,OR,Ref_AA,AA_pos,Var_AA)))
 
 write_to_summary("Nonneutral SPECID-iSNV-class:",paste(selected$mutation,collapse = ", "))
+
+
 ```

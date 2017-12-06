@@ -7,9 +7,24 @@ JT McCrone
 
     ## Loading required package: ggplot2
 
-    ## Loading required package: plyr
+    ## Loading required package: magrittr
 
-    ## Loading required package: reshape2
+    ## Loading required package: tidyverse
+
+    ## ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+
+    ## ✔ tibble  1.3.4     ✔ purrr   0.2.4
+    ## ✔ tidyr   0.7.2     ✔ dplyr   0.7.4
+    ## ✔ readr   1.1.1     ✔ stringr 1.2.0
+    ## ✔ tibble  1.3.4     ✔ forcats 0.2.0
+
+    ## ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ tidyr::extract()   masks magrittr::extract()
+    ## ✖ dplyr::filter()    masks stats::filter()
+    ## ✖ dplyr::lag()       masks stats::lag()
+    ## ✖ purrr::set_names() masks magrittr::set_names()
+
+    ## Loading required package: HIVEr
 
     ## Loading required package: extrafont
 
@@ -17,19 +32,57 @@ JT McCrone
 
     ## Loading required package: wesanderson
 
-    ## Loading required package: ggdendro
-
     ## Loading required package: grid
 
-    ## Loading required package: doMC
+    ## Parsed with column specification:
+    ## cols(
+    ##   X1 = col_integer(),
+    ##   X1_1 = col_integer(),
+    ##   HOUSE_ID = col_integer(),
+    ##   ENROLLID = col_character(),
+    ##   SPECID = col_character(),
+    ##   onset = col_date(format = ""),
+    ##   collect = col_date(format = ""),
+    ##   vaccination_status = col_integer(),
+    ##   pcr_result = col_character(),
+    ##   LAURING_ID = col_character(),
+    ##   DPI = col_integer(),
+    ##   season = col_character(),
+    ##   log_copy_num = col_double(),
+    ##   gc_ul = col_double(),
+    ##   HIGHSD = col_character(),
+    ##   sequenced = col_logical(),
+    ##   home_collected = col_integer(),
+    ##   snv_qualified = col_logical()
+    ## )
 
-    ## Loading required package: foreach
+    ## Parsed with column specification:
+    ## cols(
+    ##   .default = col_logical(),
+    ##   X1 = col_integer(),
+    ##   chr = col_character(),
+    ##   pos = col_integer(),
+    ##   SPECID1 = col_character(),
+    ##   SPECID2 = col_character(),
+    ##   X1_1 = col_integer(),
+    ##   HOUSE_ID = col_integer(),
+    ##   ENROLLID1 = col_character(),
+    ##   ENROLLID2 = col_character(),
+    ##   onset1 = col_date(format = ""),
+    ##   onset2 = col_date(format = ""),
+    ##   transmission = col_date(format = ""),
+    ##   pair_id = col_double(),
+    ##   collect1 = col_date(format = ""),
+    ##   collect2 = col_date(format = ""),
+    ##   mutation = col_character(),
+    ##   ref = col_character(),
+    ##   var = col_character(),
+    ##   season = col_character(),
+    ##   pcr_result = col_character()
+    ##   # ... with 2 more columns
+    ## )
 
-    ## Loading required package: iterators
-
-    ## Loading required package: parallel
-
-    ## Loading required package: magrittr
+    ## See spec(...) for full column specifications.
 
 Presence/Absence model
 ======================
@@ -66,12 +119,14 @@ or the probability of observing the data at each polymorphic site. Thus the log 
 
 In this fit we take the minority frequency to the correct and set the major frequency to 1-minority
 
-    ##     Nb lower_95 upper_95     mean
-    ## 1 1.12     0.51     1.99 1.662411
+    ## # A tibble: 1 x 4
+    ##   lambda lower_95 upper_95  mean_Nb
+    ##    <dbl>    <dbl>    <dbl>    <dbl>
+    ## 1   1.12     0.51     1.99 1.662411
 
 ### Log likelihood plot
 
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-1.png" style="display: block; margin: auto;" />
 
     ## Loading required package: cowplot
 
@@ -84,11 +139,2365 @@ In this fit we take the minority frequency to the correct and set the major freq
 
 ### Fits by pair
 
-For fun <img src="transmission_models_files/figure-markdown_github/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+For fun <img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png" style="display: block; margin: auto;" />
 
 ### Simulation
 
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+
+all transmitted \>10%
+=====================
+
+What if all variants above 10% were transmitted? What would the bottleneck size be?
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+
+    ## # A tibble: 1 x 4
+    ##   lambda lower_95 upper_95  mean_Nb
+    ##    <dbl>    <dbl>    <dbl>    <dbl>
+    ## 1   5.85     3.96     8.44 5.866896
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /> This sort of makes sense. If there was a larger bottleneck then we would expect the low - frequency variants would have higher probabilities of transmission as well.
+
+No frequency cut off
+====================
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   .default = col_logical(),
+    ##   X1 = col_integer(),
+    ##   chr = col_character(),
+    ##   pos = col_integer(),
+    ##   SPECID1 = col_character(),
+    ##   SPECID2 = col_character(),
+    ##   X1_1 = col_integer(),
+    ##   HOUSE_ID = col_integer(),
+    ##   ENROLLID1 = col_character(),
+    ##   ENROLLID2 = col_character(),
+    ##   onset1 = col_date(format = ""),
+    ##   onset2 = col_date(format = ""),
+    ##   transmission = col_date(format = ""),
+    ##   pair_id = col_double(),
+    ##   collect1 = col_date(format = ""),
+    ##   collect2 = col_date(format = ""),
+    ##   mutation = col_character(),
+    ##   ref = col_character(),
+    ##   var = col_character(),
+    ##   season = col_character(),
+    ##   pcr_result = col_character()
+    ##   # ... with 2 more columns
+    ## )
+
+    ## See spec(...) for full column specifications.
+
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+    ## Nonfinite probabilities given by the zerotruncated Poisson - using a Poisson
+
+    ## # A tibble: 1 x 4
+    ##   lambda lower_95 upper_95 mean_Nb
+    ##    <dbl>    <dbl>    <dbl>   <dbl>
+    ## 1    118      112      124     118
+
+The warning reduces to the 3 sites wher ethe total frequency is very close to 99%. Our assumption that major allele = 1-minor should hold just fine.
+
+    ## # A tibble: 3 x 4
+    ## # Groups:   pair_id, chr [3]
+    ##   pair_id   chr   pos  sum.freq
+    ##     <dbl> <chr> <int>     <dbl>
+    ## 1   108.0   PB2   150 0.9759139
+    ## 2   108.5   PB2   150 0.9776132
+    ## 3   181.0    PA   513 0.9884250
+
+    ## Joining, by = c("chr", "pos", "pair_id")
+
+    ## # A tibble: 6 x 9
+    ##   SPECID1 SPECID2 HOUSE_ID   chr   pos   ref   var       freq1       freq2
+    ##     <chr>   <chr>    <int> <chr> <int> <chr> <chr>       <dbl>       <dbl>
+    ## 1  HS1450  MH8309     5289    PA   513     C     C 0.983606557 1.000000000
+    ## 2  HS1450  MH8309     5289    PA   513     C     T 0.004818486 0.000000000
+    ## 3  HS1394  MH7843     5002   PB2   150     G     A 0.974780391 0.974650206
+    ## 4  HS1394  MH7843     5002   PB2   150     G     G 0.001133466 0.002962963
+    ## 5  MH7843  HS1394     5002   PB2   150     G     A 0.974650206 0.974780391
+    ## 6  MH7843  HS1394     5002   PB2   150     G     G 0.002962963 0.001133466
+
+### Log likelihood plot
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
+
+No cut simulation
+-----------------
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png" style="display: block; margin: auto;" />
+
+No cut no infer
+===============
+
+Let's get rid of sites with infered minor alleles. <img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /><img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-20-2.png" style="display: block; margin: auto;" />
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-1.png" style="display: block; margin: auto;" />
+
+    ## # A tibble: 1 x 4
+    ##   lambda lower_95 upper_95  mean_Nb
+    ##    <dbl>    <dbl>    <dbl>    <dbl>
+    ## 1   1.67     0.91     2.71 2.057276
+
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-25-1.png" style="display: block; margin: auto;" />
 
 Beta binomial model
 ===================
@@ -114,35 +2523,35 @@ L(N_b)_i=\sum_{k=0}^{N_b}\Big[\text{p_beta_cdf}\Big( v_{R,i}<T|k,N_b-k\Big)\text
 Fitting
 -------
 
-    ##     Nb lower_95 upper_95     mean
-    ## 1 1.19     0.55     2.12 1.710314
+    ## # A tibble: 1 x 4
+    ##   lambda lower_95 upper_95  mean_Nb
+    ##    <dbl>    <dbl>    <dbl>    <dbl>
+    ## 1   1.22     0.57     2.17 1.731062
 
 ### Loglikelihodd plot
 
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-27-1.png" style="display: block; margin: auto;" />
 
 ### Fitting by person
 
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-13-1.png" style="display: block; margin: auto;" />
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-28-1.png" style="display: block; margin: auto;" />
 
 Simulations
 -----------
 
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /> \#\# lambda = 10
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /> \#\# lambda = 10
 
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-16-1.png" style="display: block; margin: auto;" />
+<img src="transmission_models_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-30-1.png" style="display: block; margin: auto;" />
 
 |Model|AIC|
 |:----|--:|
 |Presence/Absence|76.69269|
-|BetaBinomial|75.54817|
+|BetaBinomial|83.02161|
 
-|Model|Nb|lower\_95|upper\_95|mean|
-|:----|--:|--------:|--------:|---:|
+|Model|lambda|lower\_95|upper\_95|mean\_Nb|
+|:----|-----:|--------:|--------:|-------:|
 |Presence Absence|1.12|0.51|1.99|1.662411|
-|BetaBinomial|1.19|0.55|2.12|1.710314|
+|BetaBinomial|1.22|0.57|2.17|1.731062|
 
-Figure 4
+Figure 3
 ========
-
-<img src="transmission_models_files/figure-markdown_github/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />

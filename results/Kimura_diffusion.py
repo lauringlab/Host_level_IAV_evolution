@@ -26,7 +26,7 @@ HTML('''<script>
 <form action="javascript:code_toggle()"><input type="submit" id="toggleButton" value="Show Code"></form>''')
 
 
-# In[2]:
+# In[1]:
 
 from ipywidgets import interact
 import numpy as np
@@ -46,7 +46,7 @@ get_ipython().magic(u'matplotlib inline')
 
 
 
-# In[3]:
+# In[2]:
 
 def write_to_summary(line_pattern,value):
     lines = []
@@ -64,7 +64,7 @@ def write_to_summary(line_pattern,value):
 
 # ## Reading in the accuracy table
 
-# In[4]:
+# In[3]:
 
 acc_stringent = pd.read_csv("../data/reference/accuracy_stringent.csv")
 
@@ -85,7 +85,7 @@ acc_stringent
 #  
 # The code is below.
 
-# In[5]:
+# In[4]:
 
 def ith_term(i,p,t,x,N): # proofed JT 5/22/17
     q=1-p
@@ -162,7 +162,7 @@ def non_fixed(p,x,t,N,sensitivity=False,*args,**kwargs):
 #  
 # Where $(\text{FNR}|\text{Titer}_r,f_e)$ is the false negative rate given the frequency and the sample titer.
 
-# In[6]:
+# In[5]:
 
 def ith_term_fixed(i,p,t,N):# proofed JT 5/22/17
     first = (2*i+1)*p*(1-p)*(-1)**i
@@ -224,7 +224,7 @@ def boundaries(p,t,N,final,gc_ul=1e5,sensitivity=False,*args,**kwargs):
         return(lost+fixed)
 
 
-# In[7]:
+# In[6]:
 
 def pdf(p,x,t,N,gc_ul=1e5,sensitivity = False, acc=acc_stringent):
     if x <1 and x>0 :
@@ -251,7 +251,7 @@ def likelihood(n,data,generation,acc):
 
 # I am assuming one generation is 6 hours. And I am fitting for only samples that were taken at least one day appart.
 
-# In[8]:
+# In[7]:
 
 intra=pd.read_csv("./Intrahost_initially_present.csv")
 #intra.loc[intra.within_host_time == 0, "within_host_time"] = 0.2 # assume about 5 hours a day passed between samples
@@ -442,6 +442,59 @@ with plt.style.context('fivethirtyeight'):
     ax.set_ylabel("Log Likelihood")
     ax.set_xlabel("Ne")
 
+
+
+# # Sensitivity to outliers
+# 
+# 
+
+# In[11]:
+
+intra_minor["delta"] = np.abs(intra_minor["freq1"] - intra_minor["freq2"]) / intra_minor["within_host_time"] # So the most extreme is on top of the order
+minorOrdered = intra_minor.sort_values("delta",ascending=False)
+minorOrdered
+
+
+# In[12]:
+
+def MLfit(df,minN,maxN,acc=acc_stringent):
+    LL = np.arange(minN,maxN,1) # These are the effective population sizes
+    likes = []
+    for d in LL:
+        #print( 'working with: '+ str(d))
+        likes.append(likelihood(d,df,6,acc))
+        
+    max_likes=[-1*x for x in likes]  
+    Ne=LL[max_likes.index(max(max_likes))]
+    return(Ne)
+
+
+# In[25]:
+
+Ne = []
+maxN = 70
+minN = 1
+len_isnv = len(minorOrdered)
+for i in range(0,26):
+    if maxN>300:
+        break
+    
+    Ne.append(MLfit(minorOrdered.iloc[i:len_isnv,],minN,maxN))
+    if maxN==Nₑ[i]:
+        while maxN==Nₑ[i]:
+            maxN +=50
+            minN +=50
+            if maxN>300:
+                break
+        
+            Ne.append(MLfit(minorOrdered.iloc[i:len_isnv,],minN,maxN))
+    print(i)
+
+
+
+# In[26]:
+
+Ne
 
 
 # # Looking at number of terms needed for infinite sums

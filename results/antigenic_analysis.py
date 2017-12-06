@@ -399,7 +399,7 @@ print(antigenic)
 
 # In[6]:
 
-snv = pd.read_csv("/Users/jt/Documents/Analysis/HIVE/data/processed/qual.snv.csv",converters={"AA_pos": literal_eval})
+snv = pd.read_csv("/Users/jt/Documents/Analysis/HIVE/data/processed/secondary/qual.snv.csv",converters={"AA_pos": literal_eval})
 snv = snv.loc[snv['freq.var']<0.5]
 
 
@@ -547,8 +547,8 @@ HA_nonsyn[["SPECID","onset","mutation","freq.var","Ref_AA","AA_pos","Var_AA","PD
 
 AA = HA_nonsyn.loc[HA_nonsyn["Antigenic"]!="NA"]
 len(AA)
-HA_nonsyn.to_csv("./HA_nonsynom.csv")
-AA[["HOUSE_ID","ENROLLID","SPECID","onset","mutation","freq.var","Ref_AA","H3_pos","Var_AA","PDB_4HMG","PDB_4JTV","pcr_result","Antigenic","Source","vaccination_status","DPI"]].to_csv("./antigenic_isnv.csv")
+HA_nonsyn.to_csv("../data/processed/secondary/HA_nonsynom.csv")
+AA[["HOUSE_ID","ENROLLID","SPECID","onset","mutation","freq.var","Ref_AA","H3_pos","Var_AA","PDB_4HMG","PDB_4JTV","pcr_result","Antigenic","Source","vaccination_status","DPI"]].to_csv("../data/processed/secondary/antigenic_isnv.csv")
 
 
 # In[18]:
@@ -577,7 +577,7 @@ write_to_summary("NS HA n:",HA_nonsyn_n)
 #HA_nonsyn_n
 
 
-# In[23]:
+# In[22]:
 
 frac_isnv = "Proportion of snv in antigenic sites %f - %f" % (len(AA)/len(snv), (len(AA.loc[AA["Source"]=="Wiley"])+len(AA.loc[AA["Source"]=="Smith"])+len(AA.loc[AA["Source"]=="Caton"]))/len(snv))
 
@@ -602,7 +602,7 @@ write_to_summary("Antigenic infection n:",frac_infection)
 # H3_name is the minor
 # H3_name_major is the major amino acid.
 
-# In[24]:
+# In[23]:
 
 import re
 H3=[]
@@ -638,17 +638,17 @@ HA_nonsyn["H1_name_major"] = H1_major
 
 
 
-# In[25]:
+# In[30]:
 
 
-HA_nonsyn.to_csv("./minor_nonsynom.cvs")
+HA_nonsyn.to_csv("../data/processed/secondary/minor_nonsynom.csv")
 
 
 # # Is  AA_pos  base 0 or base 1
 # 
 # I expect a G at PB1 594 (base1) )(593-base 0)  in sample MH7800 HK_8
 
-# In[26]:
+# In[25]:
 
 for seq_record in SeqIO.parse("../data/processed/HK_8/coding_fa/MH7800_A.removed.parsed.coding.fasta", "fasta"):    
         if seq_record.name == "PB1":
@@ -659,17 +659,17 @@ for seq_record in SeqIO.parse("../data/processed/HK_8/coding_fa/MH7800_A.removed
             NR_prot = seq_record.seq.translate(to_stop=True)
 
 
-# In[27]:
+# In[26]:
 
 PB1_prot
 
 
-# In[28]:
+# In[27]:
 
 PB1_prot[593]
 
 
-# In[29]:
+# In[28]:
 
 NR_prot[160]
 

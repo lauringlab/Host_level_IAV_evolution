@@ -6,7 +6,7 @@ output: html_document
 What is spread of our observed frequency given the known frequency. To do this I will be using the obseverd frequencies from our benchmarking experiment. 
 
 ```{r}
-freq<-read.csv("~/Desktop/benchmarking_frequency_copy.csv",stringsAsFactors = F,skip = 1)
+freq<-read.csv("../reference/benchmarking_frequency.csv",stringsAsFactors = F,skip = 1)
 
 require(plyr)
 
@@ -62,4 +62,14 @@ mean(fit4$spread.n)
 v = var(fit4$spread.n)
 x= seq(-0.1,0.1,0.01)
 plot(x,dnorm(x,mean=0,sd = sqrt(v)))
+```
+
+What if we use the whole data set.
+
+
+```{r}
+require(magrittr)
+require(tidyverse)
+
+subset(t,gc+exp.freq!=5.05 ) %>% .$spread.n %>%var() %>% sqrt()
 ```

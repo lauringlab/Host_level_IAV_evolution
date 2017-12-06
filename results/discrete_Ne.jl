@@ -69,6 +69,7 @@ write_to_summary("Discrete model 6 Ne:",Nₑ)
 
 
 plot(Nₑ-20:Nₑ+20,LL[Nₑ-20:Nₑ+20],ylim=[LL[Nₑ]-10,LL[Nₑ]+0.5])
+#plot(2:10,LL[2:10])
 
 function CI_interval(LL,Nₑ)
 
@@ -99,7 +100,7 @@ write_to_summary("S Ne:",Nₑ)
 ci = CI_interval(LL,Nₑ)
 write_to_summary("S CI:" ,ci)
 
-plot(Nₑ-20:Nₑ+20,LL[Nₑ-20:Nₑ+20],ylim=[LL[Nₑ]-10,LL[Nₑ]+0.5])
+plot(Nₑ-20:Nₑ+20,LL[Nₑ-20:Nₑ+20],ylim=[LL[Nₑ]-20,LL[Nₑ]+0.5])
 
 
 print(nrow(S))
@@ -164,18 +165,23 @@ range = quantile(NₑFits,[0.25,0.75])
 
 write_to_summary("Subset IQR 6 Ne:",range)
 
-minor[:delta] = -1*abs(minor[:freq1] - minor[:freq2]) ./ minor[:generations] # So the most extreme is on top of the order
+ratio(x) = x/(1-x)
+minor[:delta2] = -1*abs(ratio.(minor[:freq1]) .- ratio.(minor[:freq2])) ./ minor[:generations] # So the most extreme is on top of the order
+minor[:delta] = -1*abs(minor[:freq1] .- minor[:freq2]) ./ minor[:generations] # So the most extreme is on top of the order
+
+
 minorOrdered = sort!(minor,cols = order(:delta,))
 
-Nₑ = zeros(nrow(minor))
-p = Progress(nrow(minor), 1)
+
+Nₑ = zeros(nrow(minorOrdered))
+p = Progress(nrow(minorOrdered), 1)
 maxN = 70
 minN = 1
-for i in 1:nrow(minor)
+for i in 1:nrow(minorOrdered)
     if maxN>450
         break
     end
-    Nₑ[i] = MLfit(minor[i:nrow(minor),:],minN,maxN)[1]
+    Nₑ[i] = MLfit(minorOrdered[i:nrow(minorOrdered),:],minN,maxN)[1]
     if maxN==Nₑ[i]
         while maxN==Nₑ[i]
         maxN +=50
@@ -183,20 +189,20 @@ for i in 1:nrow(minor)
         if maxN>450
             break
         end
-        Nₑ[i] = MLfit(minor[i:nrow(minor),:],minN,maxN)[1]
+        Nₑ[i] = MLfit(minorOrdered[i:nrow(minorOrdered),:],minN,maxN)[1]
         end
     end
     next!(p)
 end
 
-Nₑ
+print(Nₑ)
 
 N=Nₑ[Nₑ.>0]
 println(N)
 
 x = 0:(length(N)-1) 
 println(maximum(x,1))
-x = x./nrow(minor)
+x = x./nrow(minorOrdered)
 
 println(maximum(x,1))
 
@@ -204,6 +210,67 @@ Ndf = DataFrame(Ne=N,removed = x)
 writetable("./removed_data.csv",Ndf)
 
 plot(x,N,xlim = [0,1],ylim = [0,450])
+
+N[32]
+9/63
+
+minorOrdered2 = sort!(minor,cols = order(:delta2,))
+
+Nₑ = zeros(nrow(minorOrdered2))
+p = Progress(nrow(minorOrdered2), 1)
+maxN = 70
+minN = 1
+for i in 1:nrow(minorOrdered2)
+    if maxN>450
+        break
+    end
+    Nₑ[i] = MLfit(minorOrdered2[i:nrow(minorOrdered2),:],minN,maxN)[1]
+    if maxN==Nₑ[i]
+        while maxN==Nₑ[i]
+        maxN +=50
+        minN +=50
+        if maxN>450
+            break
+        end
+        Nₑ[i] = MLfit(minorOrdered2[i:nrow(minorOrdered2),:],minN,maxN)[1]
+        end
+    end
+    next!(p)
+end
+
+print(Nₑ)
+
+N=Nₑ[Nₑ.>0]
+println(N)
+
+x = 0:(length(N)-1) 
+println(maximum(x,1))
+x = x./nrow(minorOrdered2)
+
+println(maximum(x,1))
+
+Ndf = DataFrame(Ne=N,removed = x)
+#writetable("./removed_data.csv",Ndf)
+
+plot(x,N,xlim = [0,1],ylim = [0,450])
+
+function LogLikedf(data::DataFrame,Nₑ::Int)
+    row,col = size(data)
+    
+    LL = zeros(row)
+    for i in 1:row
+        LL[i] = log(pTransition(data[:freq2][i],data[:freq1][i],Nₑ,data[:generations][i]))
+    end
+    LL
+end
+minorOrdered[:out_418]=LogLikedf(minorOrdered,418)
+minorOrdered[:out_213]=LogLikedf(minorOrdered,)
+minorOrdered[:diff] = minorOrdered[:out_213] .-minorOrdered[:out_240]
+minorOrdered[45:63,:]
+
+sum(minorOrdered[:out_240][46:63]) - sum(minorOrdered[:out_213][46:63])
+
+
 
 minor[:generations] = minor[:within_host_time]*2
 
@@ -216,7 +283,7 @@ for N in 1:100
     next!(p)
 end
 Nₑ=findfirst(LL,maximum(LL,1)[1])
-write_to_summary("Discrete model 12 Ne:",Nₑ)
+#write_to_summary("Discrete model 12 Ne:",Nₑ)
 
 plot(Nₑ-20:Nₑ+20,LL[Nₑ-20:Nₑ+20],ylim=[LL[Nₑ]-10,LL[Nₑ]+0.5])
 
@@ -258,4 +325,6 @@ ci = CI_interval(LL,Nₑ)
 write_to_summary("NS CI 12",ci)
 
 plot(LL,ylim=[LL[Nₑ]-10,LL[Nₑ]+0.5])
+
+
 

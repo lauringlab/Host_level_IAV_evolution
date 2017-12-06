@@ -2,40 +2,66 @@
 title: "mutational model"
 author: "JT McCrone"
 date: "4/18/2017"
-output: html_document
+output: github_document
 ---
 
 ```{r,echo=F}
+# Set up packages
 require(knitr)
 require(ggplot2)
-require(plyr)
-require(reshape2)
+require(magrittr)
+require(tidyverse)
+if(!("package:tidyverse" %in% search())){
+  require(dplyr)
+  require(tidyr)
+  require(purrr)
+  require(readr)
+  require(rlang)
+}
+require(HIVEr)
 require(extrafont)
 require(wesanderson)
 require(grid)
-require(directlabels)
 set.seed(42) # Set seed so randomization is reproducible
-opts_chunk$set(fig.align="center",warning=FALSE,tidy=T,cache = T,echo=F)
-theme_set(new = theme_classic()+ theme( # to make nice plots
+
+# Set up figures
+opts_chunk$set(fig.align="center",warning=TRUE,tidy=T,cache = T,echo=F)
+theme_set(new = theme_classic()+ theme(
 axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
 axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
-text=element_text(family="Arial",size = 18))) 
-# A couple options for color palletes
+text=element_text(family="Arial",size = 18))) # to make nice plots
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-cbPalette<- wes_palette("Zissou")
+cbPalette<-wes_palette("Zissou")
+# Get widely used functions
+#source("../scripts/useful_functions.R")
 
-source("../scripts/useful_functions.R")
-```
+
+####### Write to summary results file ######
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results.table.tsv")
+}
+require(cowplot)
 # Frequency distribution
 
 
 ```{r}
-qual <-read.csv("../data/processed/qual.snv.csv",stringsAsFactors = F,colClasses = c('onset'='Date','collect'='Date'))
+qual <-read_csv("../data/processed/secondary/qual.snv.csv",
+               col_types = list(
+                 ENROLLID= col_character(),
+                 SPECID = col_character(),
+                 LAURING_ID = col_character(),
+                 Id = col_character()
+               ))
 
-meta_one<-read.csv("../data/reference/meta_one.seqeunce.success.csv")
+meta_one<-read_csv("../data/reference/all_meta.sequence_success.csv")
+
 qual_min <- subset(qual,freq.var<0.5)
 qual_min <- subset(qual_min,!(SPECID %in% c("HS1530","MH8137","MH8390"))) # ,"M54062" probabily mixed
-qual_min<-subset(qual_min,SPECID %in% meta_one$SPECID) # Only get 1 sample person
+qual_min<-qual_min %>% filter(SPECID %in% meta_one$SPECID) # Only get 1 sample person
 qual_min<-mutate(qual_min,DPI = collect-(onset-1))
 qual_min<-subset(qual_min,DPI>0)# & DPI<=3)
 
@@ -56,90 +82,6 @@ g(f,t) = \frac{2 \mu N_e}{f} e^{- \frac{2N_ef}{t}}
 $$
 I am assumining anything present at less than 0.001 is present at 0.
 
-## Likelihood functions
-
-```{r}
-g_ft<-function(x,mu,Ne,t){ # x is the frequency
-    return( (2*mu*Ne/x) * exp(-1*2*Ne*x/t) )
-}
-
-p0 <- function(mu,Ne,t){ # 1 - polymorphic - Polymorphic being defined as between 0.001 and 1 This should be checked in the sensitivity analysis
-  poly <- integrate(g_ft,lower=0.001,upper=1,mu=mu,Ne=Ne,t=t)
-  1-poly$value
-}
-
-
-not_detected<-function(mu,Ne,t,gc_ul,acc=acc_stringent){
-  # p0
-  naught = p0(mu,Ne,t) # probability it is at 0
-  # below cut
-  below = integrate(g_ft,lower=0.001,upper=0.02,mu=mu,Ne=Ne,t=t) # below detection
-  
-  # missed
-
-  acc_gc=10^(floor(log10(gc_ul))) # This will round the gc down to the nearest log as we have always done to be conservative
-  uncert_term=c()
-  f=c(0.02,0.05,0.10)
-  for(i in 1:(length(f)-1)){
-    uncert=1-acc$sensitivity[which(acc$gc_ul==acc_gc & acc$freq==f[i])]
-    # The prob the variant is missed because itis between f[i] and f[i+1] given the sample size 
-    integrand = integrate(g_ft,lower=f[i],upper=f[i+1],mu=mu,Ne=Ne,t=t)
-    uncert_term[i]=integrand$value*uncert # the probability it is present * the probability of not seeing it
-  }
-  missed = sum(uncert_term)
-  
-  return(naught+below$value+missed) # the probability of being present and missed or not present
-}
-
-acc_stringent = read.csv("../data/reference/accuracy_stringent.csv")
-```
-
-
-
-```{r}
-LL<-function(data,mu,Ne,t=6,neg=F){
-  found<-adply(data,1,function(x){
-      x$LL = g_ft(mu=mu,Ne=Ne,t=as.numeric(x$DPI,units="days")*(24/t),x=x$freq.var)
-      return(x)
-  })
-  found_LL = sum(log(found$LL)) # These are all the found snv
-  
-  # Now we'll take into account all the points that aren't there
-  data <- mutate(data,gc_ul.acc =10^(floor(log10(gc_ul)))  ) # Get the gc_ul in terms of accruacy- ie round down
-  
-  
-  min.count = ddply(data,~SPECID+DPI+gc_ul.acc,summarize,count = length(mutation)) # How many iSNV in this sample
-
-  min.count = mutate(min.count,fixed = 13133-count) # flu genome size (concatenated coding region for NY - 2014-2015) How many non mutated points
-
-  
-  sum_table.missed = ddply(min.count,~DPI+gc_ul.acc,summarize,total_fixed = sum(fixed)) # how many samples have this many fixed points
-  
-  sum_table.missed$DPI= as.numeric(sum_table.missed$DPI,unit="days")
-  
-
-  sum_table.missed = adply(sum_table.missed,1,function(x){
-              x$like = not_detected(mu = mu,Ne= Ne,t = x$DPI*(24/6),gc_ul = x$gc_ul.acc) # likelihood for each DPI and acc of not observing a mutation
-              return(x)
-  })
-  
-  sum_table.missed<-mutate(sum_table.missed,LL = total_fixed*log(like)) # Add up for each DPI and acc
-  
-  missed_LL<-sum(sum_table.missed$LL) # Get total likelihood for missed
-  
-  if(neg==T){
-    return(-(found_LL+missed_LL))
-  }else{
-     return((found_LL+missed_LL)) # return total likelihood for found and missed samples.
-  }
-}
-
-```
-
-```{r}
-#fit <- mle2(LL,start=list(mu=1e-4,Ne=30),fixed = list(neg=T),data=list(data=qual_min),method="L-BFGS-B", lower=c(mu=1e-6, Ne=5))
-```
-
 
 # 6 hours
 
@@ -155,16 +97,13 @@ parameters<-expand.grid(mu,Ne)
 names(parameters)<-c("mu","Ne")
 
 
-output<-adply(parameters,1,function(x){
- # print(paste("mu:",x$mu,"Ne:",x$Ne,sep=" "))
-  x$LL<-LL(data=qual_min,mu = x$mu,t=6,Ne=x$Ne)
-  return(x)
-},.progress = "tk")
+output<- parameters %>% rowwise()%>%
+  mutate(LL = mut_model_LL(qual_min,mu,Ne,gen_time=6,neg=F,acc=accuracy_stringent)) 
+
 
 ```
 
 ```{r}
-library(plotly)
 require(cowplot)
 top<-output[output$LL==max(output$LL),]
 write_to_summary("Mu:",top$mu)
@@ -172,16 +111,16 @@ write_to_summary("Ne_spec:",top$Ne)
 kable(top)
 CI = output[top$LL-output$LL<1.92,]
 
-tiles.p<-ggplot(output,aes(x=Ne,y=mu,z=LL))+geom_point(data=top,aes(x=Ne,y=mu))+scale_y_log10(breaks = seq(1e-6,1e-5,1e-6))+stat_contour(breaks = c(-3273,seq(-3260,-3500,by=-30)),aes(color = ..level..),show.legend = F)
-tiles.p
+tiles.p<-ggplot(output,aes(x=Ne,y=mu,z=LL))+geom_point(data=top,aes(x=Ne,y=mu))+scale_y_log10(breaks = seq(1e-6,1e-5,1e-6))+stat_contour(breaks = c(-4688,seq(-4698,-5000,by=-30)),aes(color = ..level..),show.legend = F)
 
  tiles.p<-direct.label(tiles.p,list("bottom.pieces"))
-save_plot("./Figures/Figure5B.pdf", tiles.p,
+save_plot("./Figures/Figure4.pdf", tiles.p,
           base_aspect_ratio = 1.3)
 
-embed_fonts("./Figures/Figure5B.pdf")
+embed_fonts("./Figures/Figure4.pdf")
 
-write.csv(output,"./Figures/data/Figure5B.csv")
+write.csv(rename(output,Log.likelihood=LL),"./Figures/data/Figure4.csv")
+tiles.p
 
 ```
 
@@ -189,7 +128,7 @@ write.csv(output,"./Figures/data/Figure5B.csv")
 
 # 12 hours
 
-```{r}
+```{r,eval=F}
 base<-seq(1,9,1)
 power<- -6  #seq(-7,-5,1)
 Ne <- seq(1,20,1)
@@ -201,15 +140,12 @@ parameters<-expand.grid(mu,Ne)
 names(parameters)<-c("mu","Ne")
 
 
-output<-adply(parameters,1,function(x){
- # print(paste("mu:",x$mu,"Ne:",x$Ne,sep=" "))
-  x$LL<-LL(data=qual_min,mu = x$mu,t = 12,Ne=x$Ne)
-  return(x)
-},.progress = "tk")
+output<- parameters %>% rowwise()%>%
+  mutate(LL = mut_model_LL(qual_min,mu,Ne,gen_time=6,neg=F,acc=accuracy_stringent)) 
 
 ```
 
-```{r}
+```{r,eval=F}
 library(plotly)
 top<-output[output$LL==max(output$LL),]
 kable(top)

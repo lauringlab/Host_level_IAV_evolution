@@ -6,24 +6,46 @@ output: github_document
 ---
 
 ```{r,echo=F}
+
+# Set up packages
 require(knitr)
 require(ggplot2)
-require(plyr)
-#require(reshape2)
+require(magrittr)
+require(tidyverse)
+if(!("package:tidyverse" %in% search())){
+  require(dplyr)
+  require(tidyr)
+  require(purrr)
+  require(readr)
+  require(rlang)
+}
+require(HIVEr)
 require(extrafont)
 require(wesanderson)
 require(grid)
 set.seed(42) # Set seed so randomization is reproducible
-opts_chunk$set(fig.align="center",warning=FALSE,tidy=T,cache = T,echo=F)
-theme_set(new = theme_classic()+ theme( # to make nice plots
+
+# Set up figures
+opts_chunk$set(fig.align="center",warning=TRUE,tidy=T,cache = T,echo=F)
+theme_set(new = theme_classic()+ theme(
 axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
 axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
-text=element_text(family="Arial",size = 18))) 
-# A couple options for color palletes
+text=element_text(family="Arial",size = 18))) # to make nice plots
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-cbPalette<- wes_palette("Zissou")
+cbPalette<-wes_palette("Zissou")
+# Get widely used functions
+#source("../scripts/useful_functions.R")
+require(doMC)
+doMC::registerDoMC(cores=4)
 
-source("../scripts/useful_functions.R")
+####### Write to summary results file ######
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results.table.tsv")
+}
 ```
 
 
@@ -32,131 +54,36 @@ source("../scripts/useful_functions.R")
 Reading in the transmission pairs and the quality snv
 ```{r}
 # Read in the meta data
-meta<-read.csv("../data/reference/all_meta.sequence_success.csv",
-               colClasses = c('onset'='Date','collect'='Date'),
-               stringsAsFactors = F)
-# This just sets a standard format for the season date and pcr_result.
-meta$pcr_result[meta$pcr_result=="H3N2"]<-"A/H3N2"
-meta$season[meta$season=="10-11"]<-"2010-2011"
-meta$season[meta$season=="11-12"]<-"2011-2012"
-meta$season[meta$season=="12-13"]<-"2012-2013"
-meta$season[meta$season=="13-14"]<-"2013-2014"
+meta<-read_csv("../data/reference/all_meta.sequence_success.csv")
 
-qual<-read.csv("../data/processed/qual.snv.csv",
-               colClasses = c('onset'='Date','collect'='Date'),
-               stringsAsFactors = F) # read in quality variant calls from all seasons
-# This just sets a standard format for the season date and pcr_result.
-
-qual$season[qual$season=="10-11"]<-"2010-2011"
-qual$season[qual$season=="11-12"]<-"2011-2012"
-qual$season[qual$season=="12-13"]<-"2012-2013"
-qual$season[qual$season=="13-14"]<-"2013-2014"
-
+qual<-read_csv("../data/processed/secondary/qual.snv.csv",
+               col_types = list(
+                 ENROLLID= col_character(),
+                 SPECID = col_character(),
+                 LAURING_ID = col_character(),
+                 Id = col_character()
+               ))
 # Read in the transmission pairs made in the summary file
-trans_pairs<-read.csv("./transmission_pairs.csv",
-                      stringsAsFactors = F,
-                      colClasses = c('onset.1'='Date','onset.2'='Date','transmission'="Date"))
-# These are the useful pairs We eliminate the gc_ul because we will reassign the SPECID for the pair below.
-useful_trans_pairs<-subset(trans_pairs,
-                           snv_qualified_pair==T & valid==T & quality_distance==T,
-                           select=-c(gc_ul.1,gc_ul.2))
-write_to_summary("Sequence validated pairs:",nrow(useful_trans_pairs))
-
-## Now lets add the flipped pairs when applicatble
-
-flipped<-subset(useful_trans_pairs,double==T)
-
-flipped<-rename(flipped,replace = c("ENROLLID.1"="ENROLLID.2","ENROLLID.2"="ENROLLID.1",
-                          "onset.1"="onset.2","onset.2"="onset.1",
-                          "sequenced.1"="sequenced.2","sequenced.2"="sequenced.1",
-                          "snv_qualified.1"="snv_qualified.2","snv_qualified.2"="snv_qualified.1"))
-flipped$pair_id=flipped$pair_id+0.5
-useful_trans_pairs<-rbind(useful_trans_pairs,flipped)
-
-write_to_summary("Duel directionality:",nrow(flipped))
-
+trans_pairs<-read_csv("../data/processed/secondary/transmission_pairs.csv")
+trans_freq <- read_csv("../data/processed/secondary/trans_freq.csv")
 ```
 
-Getting the SPECID for each pair.
-
-Here we use the following criteria - note this may result in different SPECID than used in the L1-norm measurements.
-
-
-1) Sample closest to transmission that are on the "right side" of tranmission (before transmission for donor if possible)
-
-2) Titer is the tie breaker when applicable.
-
 ```{r}
-get_close<-function(date,enrollid,meta){ # date is the day of transmission i.e. onset.2-1 day
-  id_snv=subset(meta,ENROLLID==enrollid & snv_qualified==T)
-  if(nrow(id_snv)==1){ # it there is only one sample from this individual
-    return(id_snv$SPECID)
-  }
-  else if(nrow(id_snv)==2){ # there are two samples for this individual
-    id_snv=mutate(id_snv,dtrans=collect-date)
-    # For donors we want the largest dtrans possible less than 0 or the smallest possitive dtrans. For the recipient we want the smallest possitive dtrans.
-    # It should be impossible for the recipient to have a negative dtrans but ENROLLID 50538 is a recipient and does have a sample taken prior to onset. 
-    #We'll treat this like any other case. For now.
-    if(all(id_snv$dtrans<0)){ 
-      # all are less than 0 so this puts the sample with least negative dtrans on top. titer is the tie braker
-      id_snv=id_snv[order(id_snv$dtrans,id_snv$gc_ul,decreasing=T),] 
-    }else{ 
-      # There is 1 or no dtrans less than 0 so this puts the sample with the lowest dtrans (either the negative 1 or the smallest positive 1) on top. titer is the tie braker
-      id_snv=id_snv[order(id_snv$dtrans,-id_snv$gc_ul,decreasing=F),] 
-    }
-    if(id_snv$iSNV[1]==0 & id_snv$iSNV[2]>0){
-      # finally if there were no polymorphisms in the first sample and there were a few in the second then we tak e the second
-      return(id_snv$SPECID[2])
-    }else{
-      if(id_snv$gc_ul[1]<id_snv$gc_ul[2]){
-        print(paste0("SPECID ", id_snv$SPECID[1], "  being used for ENROLLID ", id_snv$ENROLLID[1], " based on the time to the transmission date even though this sample has a lower titer than" , id_snv$SPECID[2]))
-      }
-    return(id_snv$SPECID[1])
-  }
-  }else{
-    stop("stopping neither 1 nor 2 specid found for this sample")
-  }
-}
-get_SPECID<-function(pair,meta){ # to be fed a dataframe of 1 row as a tranmsission pair. This will get the the samples from the pair that are closest to the the day of transmission  
-  stopifnot(nrow(pair)==1) # Verify only 1 person here
-  pair$SPECID.1=get_close(pair$transmission,pair$ENROLLID.1,meta)
-  pair$SPECID.2 = get_close(pair$transmission,pair$ENROLLID.2,meta)
-  return(pair)
-}
-```
-
-Here we are going to count the minority iSNV in each sample.
-```{r}
-min_qual<-subset(qual,freq.var<0.5)
-min.count<-ddply(min_qual,~SPECID,summarize,iSNV=length(unique(mutation)))
-
-meta<-join(meta,min.count,type="left")
-meta$iSNV[is.na(meta$iSNV)]<-0
-useful_trans_pairs<-adply(useful_trans_pairs,1,get_SPECID,meta)
-useful_trans_pairs<-mutate(useful_trans_pairs,collect.1=meta$collect[match(SPECID.1,meta$SPECID)],collect.2=meta$collect[match(SPECID.2,meta$SPECID)]) # Add the dates for collection from the meta data file.
-
-putative_mixed<-c("HS1530", "M54062" ,"MH8125", "MH8137" ,"MH8156" ,"MH8390")
-putative_mixed[which(putative_mixed %in% c(useful_trans_pairs$SPECID.2,useful_trans_pairs$SPECID.1) )] ->pmixed_tp
-useful_trans_pairs<-subset(useful_trans_pairs,!(SPECID.1 %in% putative_mixed) & !(SPECID.2 %in% putative_mixed))
-write_to_summary("PT mixed infection:",paste(pmixed_tp,collapse = ", "))
-```
-
-
-Now will compare the frequencies of mutations found in both samples.
-
-```{r}
-trans_freq<-adply(useful_trans_pairs,1,get_freqs,qual)
 trans_freq.p<-ggplot(trans_freq,aes(x=freq1,y=freq2))+geom_point()+xlab("Frequency in donor")+ylab("Frequency in recipient")
 trans_freq.p
-write.csv(trans_freq,"./trans_freq.csv")
-write.csv(trans_freq,"./Figures/data/Figure4A.csv")
+
+save_plot("./Figures/Figure3C.pdf", trans_freq.p,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure3C.pdf")
+
+write.csv(x = select(trans_freq,SPECID1,SPECID2,freq1,freq2),"./Figures/data/Figure3C.csv")
 ```
 It is pecular that there are fixed differences between the donor and recipient. My hunch is that they are near the ends of the segment.
 
 
 
 ```{r}
-recip_no_donor<-subset(trans_freq,freq1==0 & freq2==1)
+recip_no_donor<-subset(trans_freq,freq1==0 & freq2>0.98)
 
 print(nrow(recip_no_donor))
 recip_no_donor$chr<-factor(recip_no_donor$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS"))) # Set the segments as factors with PB2 on top
@@ -202,21 +129,21 @@ variants<-join(variants,meta,by="LAURING_ID",type = "left")
 What would we expect?
 Well here is our accuracy and the number of iSNV in each bin. A little back of the envelope calculation where we assume all variants between 2-5% have sensivity of 2% and all between 5-10% have sensitivity of 5%.
 
-```{r}
+```{r,eval=F}
 accuracy<-read.csv("../data/reference/accuracy_stringent.csv",stringsAsFactors = F)
-trans_freq<-mutate(trans_freq,gc_ul.1=meta$gc_ul[match(SPECID.1,meta$SPECID)],gc_ul.2=meta$gc_ul[match(SPECID.2,meta$SPECID)])
+trans_freq<-mutate(trans_freq,gc_ul1=meta$gc_ul[match(SPECID1,meta$SPECID)],gc_ul2=meta$gc_ul[match(SPECID2,meta$SPECID)])
 gc<-10^c(3:5)
 freq<-c(0,0.02,0.05,0.01)
-trans_freq<-adply(trans_freq,1,function(x){
+trans_freq<-plyr::adply(trans_freq,1,function(x){
   x$gc_ul= max( gc[ which(gc<x$gc_ul.1) ])
   x$freq = max(freq[which(freq<=x$freq1)])
   return(x)})
 
 
-counts<-ddply(trans_freq,~gc_ul+freq,summarize,count=length(gc_ul))
+counts<-plyr::ddply(trans_freq,~gc_ul+freq,summarize,count=length(gc_ul))
 counts<-subset(counts,freq %in% c(0.02,0.05))
 
-expected<-join(accuracy,counts)
+expected<-plyr::join(accuracy,counts)
 
 expected<-mutate(expected,missed=round((count/sensitivity)-count))
 
@@ -226,20 +153,13 @@ two <- sum(expected$missed[expected$freq==0.02])
 0.02*two+0.05*five
 ```
 
-We would expect 11. We find 17, but clearly NS is an outlier.
+We would expect 9. We find 17, but clearly NS is an outlier.
 
 
 Now we will restrick our analysis only to sites that are polymporphic in the donor.
 
 ```{r}
-trans_freq.comp<-ddply(subset(trans_freq,freq1>0),.(pair_id,chr,pos),function(x){
-    if(nrow(x)>1){ # In our cases this is always equal to 2 but it doesn't have to be that way so we write >1.
-      return(x)}
-  }) # only polymorphic sites in sample 1 
-
-trans_freq.comp$found=trans_freq.comp$freq2>0.02 # was it found in the second sample
-
-write.csv(x = trans_freq.comp,"./transmission_pairs_freq.poly.donor.csv")
+trans_freq.comp<-read_csv("../data/processed/secondary/transmission_pairs_freq.poly.donor.csv")
 
 trans_freq %>%  .$pair_id %>% unique()%>% length()->pair_id_whole
 
@@ -279,28 +199,92 @@ grid.newpage()
 ```{r}
 trans_plot(trans_freq.comp)
 ```
+### No frequency cut off
+```{r}
+no_cut.trans_freq<-read_csv("../data/processed/secondary/no_cut_trans_freq.csv",
+                 col_types = list(
+                 ENROLLID1= col_character(),
+                 ENROLLID2= col_character(),
+                 SPECID1 = col_character(),
+                 SPECID2 = col_character(),
+                 pair_id = col_double()))
+```
+
+```{r}
+no_cut.trans_freq.p<-ggplot(no_cut.trans_freq,aes(x=freq1,y=freq2))+geom_point()+xlab("Frequency in donor")+ylab("Frequency in recipient")
+
+no_cut.trans_freq.p
+no_cut.trans_freq.p.log<-no_cut.trans_freq.p +
+  scale_y_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
+  scale_x_log10(breaks=c(0.0001,0.001,0.01,0.1,1))
+no_cut.trans_freq.p.log
+
+# save_plot("./Figures/Supplemental_Figure7A.pdf", no_cut.trans_freq.p,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Supplemental_Figure7A.pdf")
+
+save_plot("./Figures/Supplemental_Figure7C.pdf", no_cut.trans_freq.p.log,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Supplemental_Figure7C.pdf")
+
+write.csv(x = select(no_cut.trans_freq,SPECID1,SPECID2,freq1,freq2),"./Figures/data/Supplemental_Figure7C.csv")
+
+
+```
+
+
+```{r}
+no_cut.trans_freq.comp<-read_csv(
+  "../data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv",
+  col_types = list(
+                 ENROLLID1= col_character(),
+                 ENROLLID2= col_character(),
+                 SPECID1 = col_character(),
+                 SPECID2 = col_character(),
+                 pair_id = col_double()))
+
+```
+
+```{r}
+trans_plot(no_cut.trans_freq.comp)
+
+
+```
+```{r}
+add_prob<-function(variant.df){
+logit=glm(formula =found~freq1,family=binomial(logit),data=variant.df )
+
+variant.df$prob=logit$fitted.values
+return(variant.df)
+}
+
+trans_freq.comp<-add_prob(trans_freq.comp)
+no_cut.trans_freq.comp=add_prob(no_cut.trans_freq.comp)
+
+fit=ggplot()+geom_line(data=trans_freq.comp,aes(x=freq1,y=prob),color="black")+geom_line(data=no_cut.trans_freq.comp,aes(x=freq1,y=prob),color=cbPalette[5])+xlab("Frequency in Donor")+ylab("Probability")
+fit
+```
 
 ### Community pairs
 
-```{r}
-possible_pairs<-read.csv("./possible.pairs.dist.csv") # All possible pairs (1 SPECID/person)
-community_pairs<-subset(possible_pairs,Household==F) # not household pairs
-community_pairs$pair_id=1:nrow(community_pairs)
-```
 
 ```{r}
-community_pairs.freq<-adply(community_pairs,1,get_freqs,qual,.parallel = T)
-
-write.csv(community_pairs.freq,"./community_pairs.freq.csv")
-community_pairs.freq<-read.csv("./community_pairs.freq.csv")
-```
-
-```{r}
-community_pairs.freq.comp<-ddply(subset(community_pairs.freq,freq1>0),.(pair_id,chr,pos),function(x){
-    if(nrow(x)>1){
-      return(x)}
-  },.parallel = T) # only polymorphic sites in sample 1 
-community_pairs.freq.comp$found=community_pairs.freq.comp$freq2>0.02 # was it found in the second sample
+community_pairs.freq<-read_csv("../data/processed/secondary/community_pairs.freq.csv",
+                 col_types = list(
+                 ENROLLID1= col_character(),
+                 ENROLLID2= col_character(),
+                 SPECID1 = col_character(),
+                 SPECID2 = col_character()
+               ))
+community_pairs.freq.comp<-read_csv(
+  "../data/processed/secondary/community_pairs_freq.poly.donor.csv",
+  col_types = list(
+                 ENROLLID1= col_character(),
+                 ENROLLID2= col_character(),
+                 SPECID1 = col_character(),
+                 SPECID2 = col_character(),
+                 freq2 = col_double()
+               ))
 
 
 ```
@@ -315,144 +299,86 @@ ggplot(community_pairs.freq.comp,aes(x=freq1,fill=found))+geom_histogram(color='
 
 
 ```{r}
-add_prob<-function(variant.df){
-logit=glm(formula =found~freq1,family=binomial(logit),data=variant.df )
-
-variant.df$prob=logit$fitted.values
-return(variant.df)
-}
-
-trans_freq.comp<-add_prob(trans_freq.comp)
 community_pairs.freq.comp=add_prob(community_pairs.freq.comp)
 
 fit=ggplot()+geom_line(data=trans_freq.comp,aes(x=freq1,y=prob),color="black")+geom_line(data=community_pairs.freq.comp,aes(x=freq1,y=prob),color=cbPalette[5])+xlab("Frequency in Donor")+ylab("Probability")
 fit
 ```
 
-## Looking at just the variants in the transmission pair donors.
-
-For a better comparision we will sample the community pairs that have the same donors as our transmission pairs. In essence we are asking what is the probability this variant would have been seen again if the pairs were random.
-
-There is 1 transmission pair of 2010-2011 that is H1N1. We don't have the donor in these pairs becasue no one in the cohort gave us a useable sequence from after this onset date of that strain that season.
+To get an idea of the spread around this line will sample the community pairs 1000 times each time grabbing the same number of transmission pairs as in the household data.
 
 ```{r}
-prob_logit<-function(logit_model,freq){
-  predict(logit_model,data.frame(freq1=freq),type="response")
-}
-sample_n <- function(df,n){ # randomly sample n rows from a data frame
-   return(df[sample(nrow(df),n),])
-}
-community_pairs.trans.donor<-subset(community_pairs,ENROLLID.1 %in% trans_freq.comp$ENROLLID.1)
-community_pairs.trans.donor<-mutate(community_pairs.trans.donor,SPECID.1=useful_trans_pairs$SPECID.1[match(ENROLLID.1,useful_trans_pairs$ENROLLID.1)]) # make sure we are using the same SPECID
-
-community_pairs.trans.donor.freq<-adply(community_pairs.trans.donor,1,get_freqs,qual,.parallel = T) 
-
-community_pairs.trans.donor.freq.comp<-ddply(subset(community_pairs.trans.donor.freq,freq1>0),.(pair_id,chr,pos),function(x){
-    if(nrow(x)>1){
-    return(x)
-      }
-  },.parallel = T) # only polymorphic sites in sample 1 
-community_pairs.trans.donor.freq.comp$found=community_pairs.trans.donor.freq.comp$freq2>0.02 # was it found in the second sample
+p<-length(unique(trans_freq.comp$pair_id))
+com_pairs.sampled<-sample_trans(community_pairs.freq.comp,1000,p)
+```
 
 
+
+
+```{r}
+community.area_all<-plyr::ddply(com_pairs.sampled,~freq1,summarize,low.95=quantile(prob,na.rm=T,probs=0.025),high.95=quantile(prob,na.rm=T,probs=0.975),low.50=quantile(prob,na.rm=T,probs=0.25),high.50=quantile(prob,na.rm=T,probs=0.75))
+
+trans.com.plot.sampled<-ggplot()+
+  geom_ribbon(data=community.area_all,aes(x=freq1,ymin=low.95,ymax=high.95),alpha=0.6,fill=cbPalette[1])+
+  geom_ribbon(data=community.area_all,aes(x=freq1,ymin=low.50,ymax=high.50),alpha=0.9,fill=cbPalette[1])+
+  xlab("")+ylab("Probability transmitted")+
+  geom_line(data=trans_freq.comp,aes(x=freq1,y=prob))+xlab("Frequency in Donor")
+
+write.csv(select(community.area_all,frequency.in.donor=freq1,top.95.percentile=high.95,
+                 bottom.95.percentile=low.95,
+                 top.50.percentile=high.50,
+                 bottom.50.percentile=low.50),"./Figures/data/Figure3E.area.csv")
+write.csv(select(trans_freq.comp,frequency.in.donor = freq1,probability.of.transmission=prob,transmitted=found),
+          "./Figures/data/Figure3DEF.line.csv")
+
+trans.com.plot.sampled
+
+save_plot("./Figures/Figure3E.pdf", trans.com.plot.sampled,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure3E.pdf")
 ```
 
 
 ```{r}
-com_sample_trans<-function(data,runs,config.df){ 
-  start.df=data.frame(freq1=seq(0.02,1,0.02))
-  model.df=data.frame(freq1=NA,trial=NA,prob=NA)[0,]
-    for (i in 1:runs){
-      data.sampled=adply(config.df,1,function(x,pairs){
-        possible_samples=subset(pairs,ENROLLID.1==x$ENROLLID.1)
-        samples=sample_n(possible_samples,1)
-        return(samples)
-      },data)
-      
-      #smooths the data.
-      logit<-glm(formula =found~freq1,family=binomial(logit),data=data.sampled) # Fit a logit model to the data 
-      final.df<-mutate(start.df,prob=predict(logit,data.frame(freq1=freq1),type="response"),trial=i) # Get the predictions on using the start frequencies 
-      
-      #data.sampled$prob = logit$fitted.values
-      #final.df=data.frame(freq1=data.sampled$freq1,prob=data.sampled$prob,trial=i) # Get the predictions on using the start frequencies
-
-      model.df=rbind(model.df,final.df) # add to the final output
-  }  
-  return(model.df)
-}
-```
-
-```{r}
-trans_pair_enrollid<- subset(useful_trans_pairs,pair_id %in% trans_freq.comp$pair_id) # only those pairs with iSNV called
-
-com_pairs.trans.donor.sampled<-com_sample_trans(community_pairs.trans.donor.freq.comp,1000,trans_pair_enrollid)
-```
-
-```{r}
-community.area<-ddply(com_pairs.trans.donor.sampled,~freq1,summarize,low.95=quantile(prob,na.rm=T,probs=0.025),high.95=quantile(prob,na.rm=T,probs=0.975),low.50=quantile(prob,na.rm=T,probs=0.25),high.50=quantile(prob,na.rm=T,probs=0.75))
-
-trans.com.plot<-ggplot()+geom_ribbon(data=community.area,aes(x=freq1,ymin=low.95,ymax=high.95),alpha=0.6,fill=cbPalette[1])+geom_ribbon(data=community.area,aes(x=freq1,ymin=low.50,ymax=high.50),alpha=0.9,fill=cbPalette[1])+xlab("")+ylab("Probability transmitted")+geom_line(data=trans_freq.comp,aes(x=freq1,y=prob))+xlab("Frequency in Donor")
-
-write.csv(community.area,"./Figures/data/Figure4C.area.csv")
-write.csv(trans_freq.comp,"./Figures/data/Figure4B_C_D.line.csv")
-trans.com.plot
-```
-
-```{r}
-save(trans_freq.p,trans.com.plot,file="./transmission_setup_plots.RData")
+#save(trans_freq.p,trans.com.plot,trans.com.plot.sampled,file="./transmission_setup_plots.RData")
 ```
 
 
-## Checking
+# Appendex 
 
 What if we don't require the community pairs to have a time dependency. The recipient could be sick first.
 
-```{r}
-require(magrittr)
-possible_pairs<-read.csv("./every_possible_pair.csv") # All possible pairs (1 SPECID/person)
-possible_pairs %>% mutate( Household.1 = meta$HOUSE_ID[match(x = SPECID.1,meta$SPECID)],
-                            Household.2 = meta$HOUSE_ID[match(x = SPECID.2,meta$SPECID)],
-                           Household = Household.1==Household.2) -> possible_pairs
+```{r,eval=F}
+possible_pairs<-read.csv("./every_possible_pair.csv",stringsAsFactors = F) # All possible pairs (1 SPECID/person)
+possible_pairs %>% mutate( Household1 = meta$HOUSE_ID[match(x = SPECID1,meta$SPECID)],
+                            Household2 = meta$HOUSE_ID[match(x = SPECID2,meta$SPECID)],
+                           Household = Household1==Household2) -> possible_pairs
 
-community_pairs<-subset(possible_pairs,Household==F) # not household pairs
-community_pairs$pair_id=1:nrow(community_pairs)
-```
-
-```{r}
-community_pairs.freq<-adply(community_pairs,1,get_freqs,qual,.parallel = T)
-```
-
-```{r}
-community_pairs.freq.comp<-ddply(subset(community_pairs.freq,freq1>0),.(pair_id,chr,pos),function(x){
-    if(nrow(x)>1){
-      return(x)}
-  },.parallel = T) # only polymorphic sites in sample 1 
-community_pairs.freq.comp$found=community_pairs.freq.comp$freq2>0.02 # was it found in the second sam
+all_community_pairs<-subset(possible_pairs,Household==F) # not household pairs
+all_community_pairs$pair_id=1:nrow(all_community_pairs)
 ```
 
 
-```{r}
-community_pairs.trans.donor<-subset(community_pairs,ENROLLID.1 %in% trans_freq.comp$ENROLLID.1)
-community_pairs.trans.donor<-mutate(community_pairs.trans.donor,SPECID.1=useful_trans_pairs$SPECID.1[match(ENROLLID.1,useful_trans_pairs$ENROLLID.1)]) # make sure we are using the same SPECID
+```{r,eval=F}
+all_community_pairs.trans.donor<-subset(all_community_pairs,ENROLLID1 %in% trans_freq.comp$ENROLLID1)
+community_pairs.trans.donor<-mutate(all_community_pairs.trans.donor,SPECID1=useful_trans_pairs$SPECID1[match(ENROLLID1,useful_trans_pairs$ENROLLID1)]) # make sure we are using the same SPECID
 
-community_pairs.trans.donor.freq<-adply(community_pairs.trans.donor,1,get_freqs,qual,.parallel = T) 
+all_community_pairs.trans.donor.freq<-plyr::adply(all_community_pairs.trans.donor,1,
+                                              function(x) get_freqs(c(x$SPECID1,x$SPECID2),qual),
+                                              .parallel = T) 
 
-community_pairs.trans.donor.freq.comp<-ddply(subset(community_pairs.trans.donor.freq,freq1>0),.(pair_id,chr,pos),function(x){
-    if(nrow(x)>1){
-    return(x)
-      }
-  },.parallel = T) # only polymorphic sites in sample 1 
-community_pairs.trans.donor.freq.comp$found=community_pairs.trans.donor.freq.comp$freq2>0.02 # was it found in the second sample
 
+all_community_pairs.trans.donor.freq.comp<-polish_freq(all_community_pairs.trans.donor.freq,freq1,0.02) # only polymorphic sites in sample 1 
+all_community_pairs.trans.donor.freq.comp$found=all_community_pairs.trans.donor.freq.comp$freq2>0.02 # was it found in the second sample
 ```
 
-```{r}
-com_pairs.trans.donor.sampled<-com_sample_trans(community_pairs.trans.donor.freq.comp,1000,trans_pair_enrollid)
+```{r,eval=F}
+all_com_pairs.trans.donor.sampled<-com_sample_trans(all_community_pairs.trans.donor.freq.comp,1000,trans_pair_specid$SPECID1)
 ```
 
-```{r}
-community.area<-ddply(com_pairs.trans.donor.sampled,~freq1,summarize,low.95=quantile(prob,na.rm=T,probs=0.025),high.95=quantile(prob,na.rm=T,probs=0.975),low.50=quantile(prob,na.rm=T,probs=0.25),high.50=quantile(prob,na.rm=T,probs=0.75))
+```{r,eval=F}
+all_community.area<-plyr::ddply(all_com_pairs.trans.donor.sampled,~freq1,summarize,low.95=quantile(prob,na.rm=T,probs=0.025),high.95=quantile(prob,na.rm=T,probs=0.975),low.50=quantile(prob,na.rm=T,probs=0.25),high.50=quantile(prob,na.rm=T,probs=0.75))
 
-trans.com.plot<-ggplot()+geom_ribbon(data=community.area,aes(x=freq1,ymin=low.95,ymax=high.95),alpha=0.6,fill=cbPalette[1])+geom_ribbon(data=community.area,aes(x=freq1,ymin=low.50,ymax=high.50),alpha=0.9,fill=cbPalette[1])+xlab("")+ylab("Probability transmitted")+geom_line(data=trans_freq.comp,aes(x=freq1,y=prob))+xlab("Frequency in Donor")
-trans.com.plot
+trans.all_com.plot<-ggplot()+geom_ribbon(data=all_community.area,aes(x=freq1,ymin=low.95,ymax=high.95),alpha=0.6,fill=cbPalette[1])+geom_ribbon(data=all_community.area,aes(x=freq1,ymin=low.50,ymax=high.50),alpha=0.9,fill=cbPalette[1])+xlab("")+ylab("Probability transmitted")+geom_line(data=trans_freq.comp,aes(x=freq1,y=prob))+xlab("Frequency in Donor")
+trans.all_com.plot
 ```
