@@ -3,8 +3,8 @@ addprocs(4)
 using Distributions
 using DataFrames
 using RCall
-#@everywhere using ProgressMeter
-@everywhere include("../results/Slatkin_functions.jl")
+@everywhere using ProgressMeter
+@everywhere include("../scripts/Slatkin_functions.jl")
 using ArgParse
 
 function parse_commandline()

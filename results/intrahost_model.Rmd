@@ -183,7 +183,7 @@ summary(one_per)
 ### Simulations
 
 ```{r}
-sim.df<-read_csv("../data/processed/secondary/simulated_fits.csv")
+sim.df<-read_csv("./simulated_fits.csv")
 
 write_to_summary("Simulations mean 30:",mean(sim.df$X30))
 write_to_summary("Simulations mean 50:",mean(sim.df$X50))
@@ -201,6 +201,57 @@ write.csv(sim.df.l,"./Figures/data/Figure2C.csv")
 
 ```
 
+## Is the model appropriate?
+What is the expected cumulative distribution of change in frequency?
+
+First what is the cumulative distribution of the change in frequency for the data?
+```{r}
+fits<- intra %>% filter(within_host_time>0) %>% mutate(dfreq=abs(freq1-freq2))
+
+cdf<-function(x){
+  Fn<-ecdf(x)
+  return(Fn(x))
+}
+
+
+fits<- fits %>% 
+  mutate(cdf = cdf(dfreq))
+ggplot(fits,aes(x=dfreq,y=cumulative))+geom_step()#+scale_x_continuous(limits=c(0,1))
+
+#intra %>% filter(within_host_time<4) %>% ggplot(aes(x=dfreq,y=cdf,color=as.factor(within_host_time)))+geom_step()
+
+```
+
+
+# Expectations from simulations
+
+```{r}
+paste0("./sims_30/",list.files("./sims_30/"))->s30_files
+
+s30<-read_rbind(s30_files,n=3)
+s30<- s30 %>% mutate(dfreq=abs(freq1-sim))
+s30<- s30 %>% 
+  mutate(cdf = cdf(dfreq),Ne=30)
+
+paste0("./sims_50/",list.files("./sims_50/"))->s50_files
+s50<-read_rbind(s50_files,n=3)
+s50<- s50 %>% mutate(dfreq=abs(freq1-sim))
+s50<- s50 %>% 
+  mutate(cdf = cdf(dfreq),Ne=50)
+
+
+paste0("./sims_100/",list.files("./sims_100/"))->s100_files
+
+s100<-read_rbind(s100_files,n=3)
+s100<- s100 %>% mutate(dfreq=abs(freq1-sim))
+s100<- s100 %>% 
+  mutate(cdf = cdf(dfreq),Ne=100)
+sims<-rbind(s30,s100,s50)
+ggplot()+
+  geom_step(data=sims,aes(x=dfreq,y=cdf,group=paste(run,Ne),color=as.factor(Ne)),alpha=0.3) + geom_step(data=fits,aes(x=dfreq,y=cdf)) +
+  scale_x_log10()
+#geom_step(data=s100,aes(x=dfreq,y=cdf,color="blue"))
+```
 
 
 ###  Effect of removing data

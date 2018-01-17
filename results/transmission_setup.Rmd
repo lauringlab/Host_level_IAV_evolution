@@ -23,6 +23,7 @@ require(HIVEr)
 require(extrafont)
 require(wesanderson)
 require(grid)
+require(cowplot)
 set.seed(42) # Set seed so randomization is reproducible
 
 # Set up figures
@@ -169,6 +170,37 @@ write_to_summary("No donor iSNV:",pair_id_whole-pair_id_poly)
 
 write_to_summary("Final pair count:",pair_id_poly)
 ```
+
+# Transmitted minority variants
+
+```{r}
+trans_freq.comp %>% filter(freq1<0.5)->dminor
+
+dminor$chr<-factor(dminor$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS"))) # Set the segments as factors with PB2 on top
+chrs<-read.csv("../data/reference/segs.csv",stringsAsFactors = F) # get the start and stop of each OR for each segment (2014-2015 used as reference)
+
+chrs$chr<-factor(chrs$chr,levels=levels(dminor$chr)) # set factors on the is meta data
+
+#Add donor class
+dminor<-left_join(dminor,select(qual,SPECID,mutation,class_factor),by=c("SPECID1" = "SPECID","mutation"))
+
+
+genome_loc.p<-ggplot(dminor,aes(x=pos,y=as.factor(chr)))+
+  geom_point(size=5,alpha=0.5,aes(color=class_factor,shape=found))+
+  geom_segment(data=chrs,aes(x = start, y = chr, xend = stop, yend = chr))+
+  ylab("")+xlab("")+
+  scale_color_manual(name="",values=cbPalette[c(1,3)])+ 
+  theme(axis.ticks =element_blank(), 
+        axis.line.x = element_blank(),axis.line.y=element_blank())+
+  scale_x_continuous(breaks=c())
+genome_loc.p+ggtitle("transmitted minor")
+
+dminor %>% count(class_factor,found) %>%
+  group_by(found) %>%
+  spread(found,n)
+```
+
+
 
 ### Probability of transmission as a function of donor frequency
 

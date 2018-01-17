@@ -1,3 +1,6 @@
+using Distributions
+using DataFrames
+
 function pSample(p,q)
     # If p ==0 and q/N_e == 0 then return 1 else if p =0 and q/N_e!= the 0
     # else normalize so sum accross points is 1

@@ -145,6 +145,22 @@ ggplot()+geom_point(data=pa_Nb_sum,aes(y=y,x=lambda_to_mean(lower_95)),shape=108
   scale_x_continuous(limits = c(0,10.1))
 ```
 
+By pair table
+
+```{r}
+pa_t<-pa_Nb_sum %>% mutate(
+  CI = paste0(lower_95,"-",upper_95),
+  lambda = paste0(lambda," (",CI,")")
+  ) %>%
+  select(pair_id,lambda,mean_Nb,pair_id)
+pa_t<-left_join(pa_t,
+                select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
+                       collect1,collect2,transmission))%>%
+        distinct(pair_id, .keep_all = TRUE) %>%
+        dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) %>% select(-pair_id,-ENROLLID1,-ENROLLID2)
+
+write.csv(pa_t,"./pa_bottlenecks_by_pair.csv")
+```
 ### Simulation
 
 
