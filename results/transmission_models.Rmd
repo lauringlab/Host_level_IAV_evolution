@@ -100,11 +100,6 @@ In this fit we take the minority frequency to the correct and set the major freq
 
 ```{r}
 
-pa_Nb<-trans_fit(trans_freq.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA",
-                 threshold=NULL,acc=NULL,
-                 pair_id)
-  
-pa_Nb_sum<- pa_Nb %>% group_by(pair_id) %>% do(model_summary(.) )
 pa_total_fit<-trans_fit(trans_freq.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA",
                  threshold=NULL,acc=NULL)
 pa_fit_sum<-model_summary(pa_total_fit)
@@ -133,16 +128,38 @@ require(cowplot)
 ### Fits by pair
  For fun
 ```{r,fig.height=6}
-pa_Nb_sum<-pa_Nb_sum[order(pa_Nb_sum$mean_Nb,decreasing = T),]
+
+pa_Nb<-trans_fit(trans_freq.comp,l=NULL,Nb_max=100,model="PA-straight",
+                 threshold=NULL,acc=NULL,
+                 pair_id)
+  
+straight_sum <-function(data,max_nb){
+  Nb<-data$Nb[which(data$LL==max(data$LL))] # Get the  max lambda
+  good_range<-subset(data,LL> (max(LL)-1.92)) # get the bottlenecks that fall in this region the 95% confidence intereval
+  lower<-good_range$Nb[1]
+  upper <- good_range$Nb[nrow(good_range)]
+  if(length(Nb)>1){
+    Nb=max(Nb)
+  }
+  if(Nb==max_nb){
+    return(tibble(Nb=NA,lower_95=NA,
+                upper_95=NA))
+  }else{
+    return(tibble(Nb=Nb,lower_95=lower,
+                upper_95=upper))
+    }
+}
+
+pa_Nb_sum<- pa_Nb %>% group_by(pair_id) %>% do(straight_sum(.,100))
+pa_Nb_sum<-pa_Nb_sum[order(pa_Nb_sum$Nb,decreasing = T),]
 pa_Nb_sum$y = 1:nrow(pa_Nb_sum)
 
-ggplot()+geom_point(data=pa_Nb_sum,aes(y=y,x=lambda_to_mean(lower_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=pa_Nb_sum,aes(y=y,x=lambda_to_mean(upper_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=pa_Nb_sum,aes(y=y,x=mean_Nb),shape=108,size=5,color=cbPalette[5])+
-  geom_segment(data=pa_Nb_sum,aes(x=lambda_to_mean(lower_95),xend=lambda_to_mean(upper_95),y=y,yend=y),color=cbPalette[2])+
+ggplot()+geom_point(data=pa_Nb_sum,aes(y=y,x=lower_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=pa_Nb_sum,aes(y=y,x=upper_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=pa_Nb_sum,aes(y=y,x=Nb),shape=108,size=5,color=cbPalette[5])+
+  geom_segment(data=pa_Nb_sum,aes(x=lower_95,xend=upper_95,y=y,yend=y),color=cbPalette[2])+
   theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
-  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")+
-  scale_x_continuous(limits = c(0,10.1))
+  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")
 ```
 
 By pair table
@@ -150,9 +167,9 @@ By pair table
 ```{r}
 pa_t<-pa_Nb_sum %>% mutate(
   CI = paste0(lower_95,"-",upper_95),
-  lambda = paste0(lambda," (",CI,")")
+  lambda = paste0(Nb," (",CI,")")
   ) %>%
-  select(pair_id,lambda,mean_Nb,pair_id)
+  select(pair_id,Nb,pair_id)
 pa_t<-left_join(pa_t,
                 select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
                        collect1,collect2,transmission))%>%
@@ -434,6 +451,51 @@ write_to_summary("BB lambda:",beta_fit_sum$lambda)
 write_to_summary("BB CI:",paste(beta_fit_sum$lower_95,beta_fit_sum$upper_95,collapse = "-"))
 
 ```
+### Fits by pair
+ For fun
+```{r,fig.height=6}
+
+beta_Nb<-trans_fit(subset(trans_freq.comp,freq1<0.5),
+                   l=NULL,Nb_max=200, model="BetaBin-straight",
+                 threshold=0.02,acc=accuracy_stringent,
+                 pair_id)
+  
+
+beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,200))
+beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$Nb,decreasing = T),]
+beta_Nb_sum$y = 1:nrow(beta_Nb_sum)
+
+ggplot()+geom_point(data=beta_Nb_sum,aes(y=y,x=lower_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=beta_Nb_sum,aes(y=y,x=upper_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=beta_Nb_sum,aes(y=y,x=Nb),shape=108,size=5,color=cbPalette[5])+
+  geom_segment(data=beta_Nb_sum,aes(x=lower_95,xend=upper_95,y=y,yend=y),color=cbPalette[2])+
+  theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
+  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")
+```
+
+By pair table
+
+```{r}
+beta_t<-beta_Nb_sum %>% mutate(
+  CI = paste0(lower_95,"-",upper_95),
+  lambda = paste0(Nb," (",CI,")")
+  ) %>%
+  select(pair_id,Nb,pair_id)
+beta_t<-left_join(beta_t,
+                select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
+                       collect1,collect2,transmission))%>%
+        distinct(pair_id, .keep_all = TRUE) %>%
+        dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) %>% select(-pair_id,-ENROLLID1,-ENROLLID2)
+
+snv_data<- trans_freq.comp %>% group_by(pair_id) %>%
+  summarize(minority_isnv=length(which(freq1<0.5)),
+            transmitted_minority_isnv =length(which(freq1<0.5&found==T)))
+beta_t<-left_join(beta_t,snv_data)
+
+write.csv(beta_t,"./beta_bottlenecks_by_pair.csv")
+```
+
+
 ### Loglikelihodd plot
 
 ```{r,eval=T}
