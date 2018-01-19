@@ -451,6 +451,16 @@ write_to_summary("BB lambda:",beta_fit_sum$lambda)
 write_to_summary("BB CI:",paste(beta_fit_sum$lower_95,beta_fit_sum$upper_95,collapse = "-"))
 
 ```
+### Loglikelihodd plot
+
+```{r,eval=T}
+beta_ll.p<-ggplot(beta_total_fit,aes(x=lambda_to_mean(lambda),y=LL))+geom_point()+ylab("Log Likelihood")+xlab("Average Bottleneck size")+scale_x_continuous(breaks=c(1:10))
+beta_ll.p
+require(cowplot)
+
+
+```
+
 ### Fits by pair
  For fun
 ```{r,fig.height=6}
@@ -485,42 +495,43 @@ beta_t<-left_join(beta_t,
                 select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
                        collect1,collect2,transmission))%>%
         distinct(pair_id, .keep_all = TRUE) %>%
-        dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) %>% select(-pair_id,-ENROLLID1,-ENROLLID2)
+        dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) 
 
 snv_data<- trans_freq.comp %>% group_by(pair_id) %>%
   summarize(minority_isnv=length(which(freq1<0.5)),
             transmitted_minority_isnv =length(which(freq1<0.5&found==T)))
 beta_t<-left_join(beta_t,snv_data)
+beta_t <- mutate(beta_t,
+                 within_host_time=abs(donor_sample-estimated_transmission_date)+
+                   abs(estimated_transmission_date-recipient_sample),
+                 proportion_transmitted = transmitted_minority_isnv/minority_isnv)
 
-write.csv(beta_t,"./beta_bottlenecks_by_pair.csv")
+# Adding the ages. 
+ages<- read_csv("../data/reference/HIVE_ages_by_season.csv",col_types = cols(STUDY_ID=col_character(),
+                                                                            DOB=col_date()))
+beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID")) %>%
+  mutate(Donor_age=estimated_transmission_date-DOB)
+write.csv(beta_t,"../data/processed/secondary/beta_bottlenecks_by_pair.csv")
 ```
 
 
-### Loglikelihodd plot
-
-```{r,eval=T}
-beta_ll.p<-ggplot(beta_total_fit,aes(x=lambda_to_mean(lambda),y=LL))+geom_point()+ylab("Log Likelihood")+xlab("Average Bottleneck size")+scale_x_continuous(breaks=c(1:10))
-beta_ll.p
-require(cowplot)
-
-
-```
-
-### Fitting by person
 
 ```{r}
-beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$mean_Nb,decreasing = T),]
-beta_Nb_sum$y = 1:nrow(beta_Nb_sum)
-
-ggplot()+geom_point(data=beta_Nb_sum,aes(y=y,x=lambda_to_mean(lower_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=beta_Nb_sum,aes(y=y,x=lambda_to_mean(upper_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=beta_Nb_sum,aes(y=y,x=mean_Nb),shape=108,size=5,color=cbPalette[5])+
-  geom_segment(data=beta_Nb_sum,aes(x=lambda_to_mean(lower_95),xend=lambda_to_mean(upper_95),y=y,yend=y),color=cbPalette[2])+
-  theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
-  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")+
-  scale_x_continuous(limits = c(0,10.1))
-
+lm(proportion_transmitted~within_host_time,beta_t)->lm_model
+summary(lm_model)
 ```
+
+```{r}
+
+ggplot(beta_t,aes(x=within_host_time,y=proportion_transmitted))+
+  geom_point()+geom_jitter()+
+  xlab("Withinhost time between samples (days)")+
+  ylab("Proportion of minority variants transmitted")+
+  geom_line(data=data.frame(within_host_time=beta_t$within_host_time,
+                            proportion_transmitted= lm_model$fitted.values),
+            aes(x=within_host_time,y=proportion_transmitted))
+```
+
 
 ## Simulations
 
