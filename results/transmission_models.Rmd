@@ -461,12 +461,12 @@ require(cowplot)
 ```{r,fig.height=6}
 
 beta_Nb<-trans_fit(subset(trans_freq.comp,freq1<0.5),
-                   l=NULL,Nb_max=500, model="BetaBin-straight",
+                   l=NULL,Nb_max=100, model="BetaBin-straight",
                  threshold=0.02,acc=accuracy_stringent,
                  pair_id)
   
 
-beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,500))
+beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,100))
 beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$Nb,decreasing = T),]
 beta_Nb_sum$y = 1:nrow(beta_Nb_sum)
 
@@ -504,15 +504,19 @@ beta_t <- mutate(beta_t,
 # Adding the ages. 
 ages<- read_csv("../data/reference/HIVE_ages_by_season.csv",
                 col_types = cols(STUDY_ID=col_character()))%>%
-  mutate(DOB = as.Date(parse_date_time(DOB,c("db!y","%m/%d/%Y"))))
+  mutate(DOB = parse_date_time(DOB,c("db!y","%m/%d/%Y"))) %>%
+  mutate(DOB=if_else(condition = (as.numeric(as.POSIXct(today())-DOB)/365)<AGEYR,
+                     true = DOB-years(100),false=DOB))
   
 
-beta_t<-left_join(beta_t,select(ages,STUDY_ID,AGEYR),by=c("ENROLLID1"="STUDY_ID")) %>% #mutate(Donor_age=as.numeric((estimated_transmission_date-DOB)/365.2425))%>% select(-DOB) %>%
-  
-  mutate(Donor_age=round(AGEYR,1)) %>% select(-AGEYR) %>%
-  left_join(.,select(ages,STUDY_ID,AGEYR),by=c("ENROLLID2"="STUDY_ID")) %>%
-  #mutate(Recipient_age=as.numeric((estimated_transmission_date-DOB)/365.2425))
-  mutate(Recipient_age=round(AGEYR,1)) %>% select(-AGEYR)
+beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID")) %>% 
+  mutate(Donor_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
+  select(-DOB) %>%
+  left_join(.,select(ages,STUDY_ID,DOB),by=c("ENROLLID2"="STUDY_ID")) %>%
+  mutate(Recipient_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
+  select(-DOB)
 out_beta_t<-beta_t %>% ungroup() %>%
   select(Nb,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv)
 write.csv(out_beta_t,"../data/processed/secondary/beta_bottlenecks_by_pair.csv")
