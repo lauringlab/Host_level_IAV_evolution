@@ -22,6 +22,7 @@ require(HIVEr)
 require(extrafont)
 require(wesanderson)
 require(grid)
+require(ggbeeswarm)
 set.seed(42) # Set seed so randomization is reproducible
 
 # Set up figures
@@ -101,7 +102,7 @@ write.csv(select(same_day,SPECID1,SPECID2,collect1,collect2,chr,pos,ref,var,freq
 ```
 
 
-
+## Within host dynamics
 ```{r}
 stat_sum_df <- function(fun, geom="crossbar", ...) {
   stat_summary(fun.data = fun, geom = geom, width = 0.2, ...)
@@ -137,6 +138,60 @@ intra %>% subset(within_host_time>0) %>% .$ENROLLID %>% unique() %>% length()->a
 write_to_summary("Samples exactly 1 day apart:",one_day_isnv)
 write_to_summary("Samples at least 1 day apart:",at_least_day_isnv)
 ```
+
+# Comparing within to between dynamics
+
+```{r}
+intra<-read_csv("../data/processed/secondary/Intrahost_all.csv")
+intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
+intra<-subset(intra,freq1<0.5) # Just to make sure
+
+
+trans<-read_csv("../data/processed/secondary/trans_freq.csv")
+trans<-trans %>% 
+  mutate(Endpoint="Persistent") %>%
+  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
+  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
+trans$Endpoint<-factor(trans$Endpoint,levels = c("Persistent","Arisen","Lost"),ordered = T)
+
+trans <- trans %>% mutate(within_host_time = abs(transmission-collect1)+abs(collect2-transmission))
+
+intra<-intra %>% mutate(Endpoint="Persistent") %>%
+  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
+  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
+
+intra$Endpoint<-factor(intra$Endpoint,levels = c("Persistent","Arisen","Lost"),ordered = T)
+
+intra.plot<-ggplot(intra,aes(x=as.factor(within_host_time),
+                             y=freq2-freq1,
+                   color = Endpoint))+
+  xlab("Time within host (days)")+ylab("Change in frequency")+
+  geom_quasirandom()
+
+trans.plot<-ggplot(trans,aes(x=as.factor(within_host_time),
+                             y=freq2-freq1,
+                   color = Endpoint))+
+  xlab("Time within host (days)")+ylab("Change in frequency")+
+  geom_quasirandom()
+
+cowplot::plot_grid(intra.plot, trans.plot, labels = c("A", "B"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
+
+ggplot(intra,aes(x=freq1,y=freq2))+geom_point(color=cbPalette[1])+geom_point(data=filter(trans,freq1<0.5),color=cbPalette[5])
+
+```
+
+```{r}
+proportion<-intra %>% group_by(within_host_time) %>%
+  summarize(Persistent =
+              length(which(Endpoint=="Persistent"))/length(Endpoint),
+            Arisen = 
+              length(which(Endpoint=="Arisen"))/length(Endpoint),
+            Lost = 
+              length(which(Endpoint=="Lost"))/length(Endpoint))
+
+ggplot(proportion,aes(x=within_host_time,y=Persistent))+geom_line()
+```
+
 
 ### Are the iSNV independent
 
