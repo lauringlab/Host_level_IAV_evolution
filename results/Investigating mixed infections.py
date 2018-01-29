@@ -7,7 +7,6 @@
 # 
 # There are some samples that appear to be mixed infections. These contain >10 iSNV all with very similar frequencies. My plan here is to introduce those iSNV to the sample consensus sequence and then compare both the major and minor haplotypes with strains that were circulating during the past few years.
 # 
-# Along the way we will make consensus sequences for all samples with 
 # 
 # The samples we are interested in are ["HS1530" "M54062" "MH8125" "MH8137" "MH8156" "MH8390"]
 # The plan
@@ -17,7 +16,8 @@
 #     
 #     
 
-# In[1]:
+# In[17]:
+
 
 import numpy as np
 import pandas as pd
@@ -35,31 +35,36 @@ from Bio import Phylo
 from ast import literal_eval
 
 import re
-get_ipython().magic(u'matplotlib inline')
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 
 # ## Read in iSNV
 
-# In[2]:
+# In[18]:
 
-qual = pd.read_csv("../data/processed/qual.snv.csv")
+
+qual = pd.read_csv("../data/processed/secondary/qual.snv.csv")
 #meta = pd.read_csv("../data/reference/all_meta.sequence_success.csv")
 samples_of_interest = ["HS1530","M54062","MH8125", "MH8137", "MH8156" ,"MH8390"]
-interesting = qual.loc[qual.SPECID.isin(samples_of_interest)]
+interesting = qual.loc[(qual.SPECID.isin(samples_of_interest))]
 
 
-# In[3]:
+# In[19]:
+
 
 interesting
 
 
 # ## Incorporate iSNV into the consensus sequences 
 # 
+# These functions are used to incorporate the isnv in the data frame into the consensus sequences parsed by deepSNV. A discription of each function is included below.
+# 
 
-# In[4]:
+# In[21]:
 
-sys.path.append("/Users/jt/variant_pipeline/scripts/")
+
+sys.path.append("/Users/jt/lauring_lab_repos/variant_pipeline/scripts/")
 from fasta_functions import StripGapsToFirstSequence, Align
 
         
@@ -84,7 +89,6 @@ def ReadFASTA(fastafile):
 def mutate(sequence,variants_df):
     """ This function takes in a Seq object and a data frame with mutations with chr, pos, ref, var columns. It 
     applies the mutations and then returns a sequence containing all the mutations in the variant data frame.
-    maybe I'll use lists of sequences instead of one sequence.
     """
     seq=copy.deepcopy(sequence)
     seq.seq=seq.seq.tomutable()
@@ -100,6 +104,10 @@ def mutate(sequence,variants_df):
 
 
 def trim_to_coding(fasta,SPECID,meta):
+    """This funciton trims a sample fasta sequence to the reading frame defined in a separate fasta file
+    First the funciton takes in the SPECID and looks up where the sample fasta file will be using the meta data
+    available in the meta argument. For each sequence in the reference the function looks for the same sequence name
+    in the sample fasta. It then alings this and trims the gaps so we are left with just the OR."""
     
     samp_meta = get_meta(SPECID,meta)
     
@@ -122,6 +130,11 @@ def trim_to_coding(fasta,SPECID,meta):
     return(OR)
 
 def get_haplotype(data,fasta,min_freq,max_freq):
+    """This function takes in a data frame containing isnv calls, it filters to include only those
+    isnv between the frequency thresholds provided. It then applies these mutations to the fasta file. Note
+    The position in the data frame is base 1 - This is taken into account in the mutate function. Also,
+    The fasta sequences can not be trimmed prior to this process. If they are the position in the data frame
+    will not correspond to those in the fasta sequence."""
     isnv = copy.deepcopy(data.loc[(data["freq.var"]>min_freq) & (data["freq.var"]<max_freq) ])
     consensus =  ReadFASTA(fasta)
     # cycle through segments and apply iSNV
@@ -139,6 +152,8 @@ def get_haplotype(data,fasta,min_freq,max_freq):
     return(hap)
 
 def get_meta(SPECID,meta):
+    """This function takes a SPECID and data frame with meta data and
+    returns a dictionary of the meta data for that sample."""
     ID = meta.loc[meta.SPECID==SPECID,"Id"].unique()[0]
     ID = ID.split(".")[0]
     RUN = meta.loc[meta.SPECID==SPECID,"run"].unique()[0]
@@ -152,6 +167,9 @@ def get_meta(SPECID,meta):
     return({"Id":ID,"run":RUN,"season":season,"enrollid":ENROLLID,"house_id":HOUSE_ID})
 
 def run_to_OR(run):
+    
+    """This function takes in the name of sequencing run from this study and returns the relative path
+    to the fasta files with the OR for that sample."""
     conversion={"perth":"../data/reference/perth.OR.main.fa",
                "perth_2": "../data/reference/perth.OR.main.fa",
                "cali09":"../data/reference/cali09.OR.main.fa",
@@ -166,9 +184,16 @@ def run_to_OR(run):
     return(conversion[run])
 
 
-# In[5]:
+# These functions are used to cycle through lists of SPECID and return haplotypes with minority variants incorporated or simply the consensus sequences. In both cases the sequences are trimmed to the coding regions.
+
+# In[24]:
+
 
 def get_isnv_seq(specid_list,snv_data,meta_run):
+    """This function takes a list of SPECIDs, a data frame of isnv calls for those samples and 
+    data frame with meta data for the samples. For each SPECID we get the meta data in dictionary form,
+    Get the consensus fasta file, apply the minority mutations to the fasta file, Trim the new sequences to 
+    the coding regions and return a dictionary of the results indexed by SPECID."""
     sequences = {}
     for specid in specid_list:
         meta = get_meta(specid,meta_run)
@@ -184,6 +209,10 @@ def get_isnv_seq(specid_list,snv_data,meta_run):
 
 
 def get_seq(specid_list,meta_run):
+    """This function takes a list of SPECIDs and data frame with meta data for the samples. It is similar to the 
+    function above but it does not add isnv to the sequences. It only returns the consensus sequences.
+    For each SPECID we get the meta data in dictionary form,g et the consensus fasta file, 
+    Trim the new sequences to the coding regions and return a dictionary of the results indexed by SPECID."""
     sequences={}
     for specid in specid_list:
         meta = get_meta(specid,meta_run)
@@ -203,15 +232,19 @@ def get_seq(specid_list,meta_run):
 
 
 # ## Interesting samples - minor haplotypes
+# 
+# Here we get the minor and conensus haplotypes of the putative mixed infections.
 
-# In[6]:
+# In[25]:
+
 
 interesting_haplotypes = get_isnv_seq(specid_list=samples_of_interest,snv_data=qual,meta_run=qual)
 major_haplotypes = get_seq(specid_list=samples_of_interest,meta_run=qual)
 interesting_haplotypes.update(major_haplotypes)
 
 
-# In[7]:
+# In[26]:
+
 
 interesting_haplotypes.keys()
 #major_haplotypes.keys()
@@ -221,14 +254,16 @@ interesting_haplotypes.keys()
 # 
 # I'm looking at H3N2 and H1N1 samples separately
 
-# In[8]:
+# In[27]:
+
 
 H3N2_samples = qual.loc[qual.pcr_result == "A/H3N2", "SPECID"].unique()
 H3N2_samples = [x for x in H3N2_samples if x not in interesting_haplotypes.keys()]
 H3N2_seq = get_seq(specid_list=H3N2_samples,meta_run=qual)
 
 
-# In[9]:
+# In[28]:
+
 
 H1N1_samples = qual.loc[qual.pcr_result == "A/H1N1", "SPECID"].unique()
 H1N1_samples = [x for x in H1N1_samples if x not in interesting_haplotypes.keys()]
@@ -238,8 +273,11 @@ H1N1_seq = get_seq(specid_list=H1N1_samples,meta_run=qual)
 
 
 # ## Control files
+# 
+# To add the control files we'll make dictionaries to mimic those used in the patient isolates.
 
-# In[10]:
+# In[29]:
+
 
 control_files = {"Victoria":"../data/processed/victoria/parsed_fa/Vic_pool.removed.parsed.fasta",
                 "Perth" : "../data/processed/perth/parsed_fa/Perth_mp.removed.parsed.fasta",
@@ -265,7 +303,8 @@ for key in control_files:
 
 # I will include the samples of interest and the controls in each tree comparision.
 
-# In[11]:
+# In[30]:
+
 
 H3N2_seq.update(interesting_haplotypes)
 H3N2_seq.update(control_seq)
@@ -278,9 +317,14 @@ H1N1_seq.update(control_seq)
 # 
 # This uses muscle to align segments and then fasttree to make a tree.
 
-# In[12]:
+# In[31]:
+
 
 def make_alignments(seg,sequences,out_dir,out_file):
+    """ This function aligns the sequences provided using muscle. The input is a list of dictionaries of 
+    sequences. The segment of interest is provided as the seg argument.
+    """
+    
     segment = []
     for sample in sequences:
         for chrom in sequences[sample]:
@@ -315,6 +359,7 @@ def make_alignments(seg,sequences,out_dir,out_file):
 
 def make_tree(in_fasta,tree_file):
     # Make the tree
+    """This function uses fasttree to make a ML tree of the sequences present in an aligned fasta file"""
     tree_progpath = "/Users/jt"
     tree_exe = os.path.abspath("%s/FastTree" % tree_progpath) # the executable
     #tree_file = "%s/tree.file" % tempdir
@@ -328,12 +373,15 @@ def make_tree(in_fasta,tree_file):
 
 # ## H3N2 Concatenated tree
 # 
-# There are no H1N1 H3N2 mixed infections so each tree is just H3N2 or H1N1 for visualization purposes
+# There are no H1N1 H3N2 mixed infections so each tree is just H3N2 or H1N1 for visualization purposes.
+# 
+# 
 
-# In[13]:
+# In[33]:
+
 
 def concat_seqs(sequences):
-
+    """This funciton concatenates sequences present in a dictionary of sequences."""
     concat_seq={}
     for key in sequences:
         str_seq = "".join([str(seq_rec.seq) for seq_rec in sequences[key]])
@@ -341,13 +389,15 @@ def concat_seqs(sequences):
     return(concat_seq)
 
 
-# In[14]:
+# In[34]:
+
 
 H3N2_concat_seq = concat_seqs(H3N2_seq)
 H3N2_concat_seq.keys()
 
 
-# In[15]:
+# In[35]:
+
 
 
 H1N1_hideaways = ["H1N1","M54062","M54062_isnv"]
@@ -361,7 +411,8 @@ for extra in H1N1_hideaways:
 
 # Make the alignment file
 
-# In[16]:
+# In[36]:
+
 
 make_alignments(seg="All",sequences=H3N2_concat_seq,out_dir="./coding_alignments",out_file="H3N2_coding.fa")
 
@@ -369,14 +420,16 @@ make_alignments(seg="All",sequences=H3N2_concat_seq,out_dir="./coding_alignments
 
 # Make the tree file
 
-# In[17]:
+# In[37]:
+
 
 make_tree("./coding_alignments/H3N2_coding.fa","./coding_alignments/H3N2_coding.tree")
 
 
 # Make the annotation file
 
-# In[18]:
+# In[38]:
+
 
 with open("./coding_alignments/H3N2.annotations.tsv","w") as a:
     a.write("taxa\tSPECID\tENROLLID\tHOUSE_ID\tseason\tclass\n")
@@ -393,7 +446,8 @@ with open("./coding_alignments/H3N2.annotations.tsv","w") as a:
 # ## H1N1 Concatenated tree
 # 
 
-# In[19]:
+# In[39]:
+
 
 H1N1_concat_seq = concat_seqs(H1N1_seq)
 H3N2_hideaways = ["HK","HS1530","HS1530_isnv","MH8137","MH8137_isnv","MH8390","MH8390_isnv","Victoria","Perth","MH8156","MH8156_isnv","MH8125","MH8125_isnv"]
@@ -407,17 +461,20 @@ for extra in H3N2_hideaways:
 
 
 
-# In[20]:
+# In[40]:
+
 
 make_alignments(seg="All",sequences=H1N1_concat_seq,out_dir="./coding_alignments",out_file="H1N1_coding.fa")
 
 
-# In[21]:
+# In[41]:
+
 
 make_tree("./coding_alignments/H1N1_coding.fa","./coding_alignments/H1N1_coding.tree")
 
 
-# In[22]:
+# In[42]:
+
 
 with open("./coding_alignments/H1N1.annotations.tsv",'w') as a:
     a.write("taxa\tSPECID\tENROLLID\tHOUSE_ID\tseason\tclass\n")
@@ -429,17 +486,8 @@ with open("./coding_alignments/H1N1.annotations.tsv",'w') as a:
         a.write(line)
 
 
-# In[23]:
+# In[43]:
+
 
 len(H3N2_concat_seq["HK"][0].seq)
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
 
