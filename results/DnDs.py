@@ -7,7 +7,7 @@
 # 
 # _NB: check http://bioinformatics.cvr.ac.uk/blog/calculating-dnds-for-ngs-datasets/ for reference_
 
-# In[33]:
+# In[1]:
 
 
 import numpy as np
@@ -29,7 +29,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 
-# In[7]:
+# In[2]:
 
 
 def ReadFASTA(fastafile):
@@ -51,26 +51,26 @@ def ReadFASTA(fastafile):
 
 
 
-# In[8]:
+# In[3]:
 
 
 test= ReadFASTA("../data/reference/NY.OR.main.fa")
 
 
-# In[24]:
+# In[4]:
 
 
 PB2=test[1]
 c = codonalign.CodonSeq(str(PB2.seq))
 
 
-# In[27]:
+# In[5]:
 
 
 c
 
 
-# In[44]:
+# In[6]:
 
 
 cList=codonalign.codonseq._get_codon_list(c)
@@ -104,19 +104,19 @@ codonalign.codonseq._count_site_NG86(cList[:-1],k=1)
 # 
 # This work is much easier for me to do in R so we'll use that here
 
-# In[64]:
+# In[7]:
 
 
 meta = pd.read_csv("../data/processed/secondary/meta_for_ns.s_calc.csv")
 
 
-# In[65]:
+# In[8]:
 
 
 meta = meta.loc[meta.snv_qualified==True]
 
 
-# In[158]:
+# In[76]:
 
 
 sys.path.append("/Users/jt/lauring_lab_repos/variant_pipeline/scripts/")
@@ -198,32 +198,168 @@ def get_seq(specid_list,meta_run):
         sequences[specid_key] = seg_coding 
     return(sequences)
 
-def get_NS_s(specid_list,meta_run):
+def get_NS_s(seqs):
     counter = {"PB2":[0,0],"PB1":[0,0],"PB1-F2":[0,0],
                "PA":[0,0],"PA-X":[0,0],"HA":[0,0],"NP":[0,0],
                "NR":[0,0],"M1":[0,0],"M2":[0,0],"NS1":[0,0],"NS2":[0,0]}
-    seqs = get_seq(specid_list,meta_run)
+    #seqs = get_seq(specid_list,meta_run)
     # cycle through the samples
     
+    errors = pd.DataFrame(columns=["SPECID", "Segment","Error"])
+
     for sample in seqs:
-        print sample
         sample_seq = seqs[sample]# a list of seqrecords
         for sequence in sample_seq: # cycle through seqrecords
             seq_name = sequence.name
             assert len(str(sequence.seq)) % 3 == 0, "Sequence length is not a triple number"
-            codon_sequence = codonalign.CodonSeq(str(sequence.seq))
-            cList = codonalign.codonseq._get_codon_list(codon_sequence)
-            print seq_name
-            counts = codonalign.codonseq._count_site_NG86(cList[:-1],k=1) # remove the stop codon
-            for seg in counter:
-                if seg==seq_name:
-                        counter[seg][0] += counts[0]
-                        counter[seg][1] += counts[1]
-    return(counter)
+            try:
+                codon_sequence = codonalign.CodonSeq(str(sequence.seq),gap_char='-')
+            except ValueError as ve:
+                print("ValueError probabable gap - skipping %s in sample %s Remove any mutations from this OR in count" % ( seq_name, sample))
+                errors = errors.append({"SPECID": sample.split('_')[0],
+                                "Segment":  seq_name,
+                                "Error" : str(ve).split("(")[1].split(")")[0]}, ignore_index=True)
+            else:
+                cList = codonalign.codonseq._get_codon_list(codon_sequence)
+                try:
+                    counts = codonalign.codonseq._count_site_NG86(cList[:-1],k=1) # remove the stop codon
+                except KeyError as e: 
+                    print("Codon Key error. Found %s in OR \n skipping %s in sample %s Remove any mutations from this OR in count" % (e, seq_name, sample))
+                    errors = errors.append({"SPECID": sample.split('_')[0],
+                                "Segment":  seq_name,
+                                "Error" : e}, ignore_index=True)
+                else:
+                            counter[seq_name][0] += counts[0]
+                            counter[seq_name][1] += counts[1]
+    return(counter,errors)
 
 
-# In[159]:
+# In[114]:
 
 
-Ns_s = get_NS_s(meta.SPECID,meta)
+
+
+meta.loc[meta.SPECID=="MH2516"]
+
+x = get_seq(["MH5300"],meta)
+x=x["MH5300_UM41553_4113_2013-2014_consensus"]
+test = x[1].seq
+test
+# In[10]:
+
+
+sequences = get_seq(meta.SPECID,meta)
+
+
+# In[77]:
+
+
+Ns_s,e = get_NS_s(sequences)
+
+
+# In[106]:
+
+
+l=[]
+for x in e.SPECID:
+    y = meta.pcr_result[meta.SPECID==x]
+    l.append(y.asobject[0])
+    
+e["pcr_result"] = l
+
+
+# In[108]:
+
+
+e.loc[e.pcr_result=="A/H3N2"]
+
+
+# ## PB1-F2 Stop
+# 
+# Sample MH5300 is H1N1 and has a stop codon in the PB1-F2 OR. This is confirmed in the best Blast alignment and in a note in CY188895.1 . The function should ouput any other errors. I will confirm these and then adjust the NS S counts accrodingly.
+# 
+# This same mutation is found in many samples. MH2516, MH2527 and MH2942 are the only H3N2 with the mutation.
+# 
+
+# In[115]:
+
+
+H3N2_stop = str(sequences["MH2516_330243_3061_2012-2013_consensus"][2].seq)
+H3N2_stop
+
+
+# In[122]:
+
+
+codon_sequence = codonalign.CodonSeq(H3N2_stop,gap_char='-')
+x = codonalign.codonseq._get_codon_list(codon_sequence)
+
+x.index("TAA")
+#len(x)
+
+
+# CY171005.1 matches this sequence. I think we will ignore PB1-F2 and PA-X
+
+# ## PB2 gap
+# 
+# One sample has a frame shift deletion of 2 nt near the end of PB1. This is confirmed by looking at the igv viewer. This is a victoria sample 1230. 
+
+# In[37]:
+
+
+gap = sequences["MH2436_331045_3075_2012-2013_consensus"][1].seq
+
+
+# In[38]:
+
+
+str(gap)
+
+
+# ## NS1 issues
+# 
+# I have checked the following samples. They have a premeture stop codon that terminates the NS1 AA early.
+# MH1782  -3 codons early
+# MH0922  -10 codons early
+
+# In[90]:
+
+
+
+NS1_stop = sequences["MH0922_320110_2028_2011-2012_consensus"]
+#NS1_stop = sequences["MH1782_320468_2117_2011-2012_consensus"]
+
+
+# In[91]:
+
+
+str(NS1_stop[10].seq)
+
+
+# Blast these sequences and identify the mutation.
+
+# In[134]:
+
+
+Ns_s_df = pd.DataFrame(Ns_s)
+Ns_s_df = Ns_s_df.transpose()
+Ns_s_df.columns = ["S","NS"]
+
+
+# In[135]:
+
+
+Ns_s_df.to_csv("../data/processed/secondary/NS_S_site.csv")
+
+
+# In[136]:
+
+
+Ns_s_df
+
+
+# In[143]:
+
+
+codonalign.codonseq._count_site_NG86(["CCC"],k=1)
 
