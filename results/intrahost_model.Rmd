@@ -139,6 +139,43 @@ write_to_summary("Samples exactly 1 day apart:",one_day_isnv)
 write_to_summary("Samples at least 1 day apart:",at_least_day_isnv)
 ```
 
+
+# Within host classes
+
+```{r,fig.width=5}
+intra_all<-read_csv("../data/processed/secondary/Intrahost_all.csv")
+# Remove mixed infections.
+intra_all<- intra_all %>% filter(!(SPECID2 %in% c("HS1530","MH8137","MH8390")) & !(SPECID1 %in% c("HS1530","MH8137","MH8390")))
+intra_all %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra_all
+intra_all<-filter(intra_all,freq1<0.5) # Just to make sure
+
+intra_all<-intra_all %>% mutate(Endpoint="Persistent") %>%
+  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
+  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
+
+intra_all$Endpoint<-factor(intra_all$Endpoint,levels = c("Persistent","Arisen","Lost"),ordered = T)
+
+intra.plot<-ggplot(intra_all,aes(x=as.factor(within_host_time),
+                             y=freq2-freq1,
+                   fill = Endpoint))+
+  xlab("Time within host (days)")+ylab("Change in frequency")+
+  geom_quasirandom(pch=21,color='black',size=2)+scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+facet_wrap(~class)
+intra.plot
+
+pdf("./Figures/Figure2B_2.pdf",width = 10,height = 7)
+intra.plot
+dev.off()
+
+
+
+# save_plot("./Figures/Figure2B_2.pdf", intra.plot,
+# #          base_aspect_ratio = 1.3,
+#           base_width = )
+
+embed_fonts("./Figures/Figure2B_2.pdf")
+```
+
+
 # Comparing within to between dynamics
 
 ```{r}
@@ -148,7 +185,7 @@ intra<-subset(intra,freq1<0.5) # Just to make sure
 
 
 trans<-read_csv("../data/processed/secondary/trans_freq.csv")
-trans<-trans %>% 
+trans<-trans %>% filter(freq1<0.5) %>%
   mutate(Endpoint="Persistent") %>%
   mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
   mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
@@ -176,9 +213,11 @@ trans.plot<-ggplot(trans,aes(x=as.factor(within_host_time),
 
 cowplot::plot_grid(intra.plot, trans.plot, labels = c("A", "B"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
 
-ggplot(intra,aes(x=freq1,y=freq2))+geom_point(color=cbPalette[1])+geom_point(data=filter(trans,freq1<0.5),color=cbPalette[5])
+ggplot(intra,aes(x=freq1,y=freq2))+geom_point(color=cbPalette[1])+geom_point(data=filter(trans,freq1<0.5),color=cbPalette[5])+geom_abline(slope = 1,intercept = 0,linetype=2,alpha=0.5)
 
 ```
+
+
 
 ```{r}
 proportion<-intra %>% group_by(within_host_time) %>%

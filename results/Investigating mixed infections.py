@@ -16,7 +16,7 @@
 #     
 #     
 
-# In[17]:
+# In[1]:
 
 
 import numpy as np
@@ -41,7 +41,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ## Read in iSNV
 
-# In[18]:
+# In[2]:
 
 
 qual = pd.read_csv("../data/processed/secondary/qual.snv.csv")
@@ -50,7 +50,7 @@ samples_of_interest = ["HS1530","M54062","MH8125", "MH8137", "MH8156" ,"MH8390"]
 interesting = qual.loc[(qual.SPECID.isin(samples_of_interest))]
 
 
-# In[19]:
+# In[3]:
 
 
 interesting
@@ -61,7 +61,7 @@ interesting
 # These functions are used to incorporate the isnv in the data frame into the consensus sequences parsed by deepSNV. A discription of each function is included below.
 # 
 
-# In[21]:
+# In[4]:
 
 
 sys.path.append("/Users/jt/lauring_lab_repos/variant_pipeline/scripts/")
@@ -186,7 +186,7 @@ def run_to_OR(run):
 
 # These functions are used to cycle through lists of SPECID and return haplotypes with minority variants incorporated or simply the consensus sequences. In both cases the sequences are trimmed to the coding regions.
 
-# In[24]:
+# In[5]:
 
 
 def get_isnv_seq(specid_list,snv_data,meta_run):
@@ -235,7 +235,7 @@ def get_seq(specid_list,meta_run):
 # 
 # Here we get the minor and conensus haplotypes of the putative mixed infections.
 
-# In[25]:
+# In[6]:
 
 
 interesting_haplotypes = get_isnv_seq(specid_list=samples_of_interest,snv_data=qual,meta_run=qual)
@@ -243,7 +243,7 @@ major_haplotypes = get_seq(specid_list=samples_of_interest,meta_run=qual)
 interesting_haplotypes.update(major_haplotypes)
 
 
-# In[26]:
+# In[7]:
 
 
 interesting_haplotypes.keys()
@@ -254,7 +254,7 @@ interesting_haplotypes.keys()
 # 
 # I'm looking at H3N2 and H1N1 samples separately
 
-# In[27]:
+# In[8]:
 
 
 H3N2_samples = qual.loc[qual.pcr_result == "A/H3N2", "SPECID"].unique()
@@ -262,7 +262,7 @@ H3N2_samples = [x for x in H3N2_samples if x not in interesting_haplotypes.keys(
 H3N2_seq = get_seq(specid_list=H3N2_samples,meta_run=qual)
 
 
-# In[28]:
+# In[9]:
 
 
 H1N1_samples = qual.loc[qual.pcr_result == "A/H1N1", "SPECID"].unique()
@@ -276,7 +276,7 @@ H1N1_seq = get_seq(specid_list=H1N1_samples,meta_run=qual)
 # 
 # To add the control files we'll make dictionaries to mimic those used in the patient isolates.
 
-# In[29]:
+# In[10]:
 
 
 control_files = {"Victoria":"../data/processed/victoria/parsed_fa/Vic_pool.removed.parsed.fasta",
@@ -301,13 +301,23 @@ for key in control_files:
 #control_seq
 
 
+# Now we will get the out group ready. This has been trimmed to the coding regions. It is A/Wisconsin/67/2005(H3N2)
+
+# In[13]:
+
+
+out_group = ReadFASTA("../data/reference/wisconsin.OR.fa")
+out_group_d = {"Wisconsin_2005":out_group}
+
+
 # I will include the samples of interest and the controls in each tree comparision.
 
-# In[30]:
+# In[14]:
 
 
 H3N2_seq.update(interesting_haplotypes)
 H3N2_seq.update(control_seq)
+H3N2_seq.update(out_group_d)
 
 H1N1_seq.update(interesting_haplotypes)
 H1N1_seq.update(control_seq)
@@ -317,7 +327,7 @@ H1N1_seq.update(control_seq)
 # 
 # This uses muscle to align segments and then fasttree to make a tree.
 
-# In[31]:
+# In[15]:
 
 
 def make_alignments(seg,sequences,out_dir,out_file):
@@ -377,7 +387,7 @@ def make_tree(in_fasta,tree_file):
 # 
 # 
 
-# In[33]:
+# In[16]:
 
 
 def concat_seqs(sequences):
@@ -389,14 +399,14 @@ def concat_seqs(sequences):
     return(concat_seq)
 
 
-# In[34]:
+# In[17]:
 
 
 H3N2_concat_seq = concat_seqs(H3N2_seq)
 H3N2_concat_seq.keys()
 
 
-# In[35]:
+# In[18]:
 
 
 
@@ -411,7 +421,7 @@ for extra in H1N1_hideaways:
 
 # Make the alignment file
 
-# In[36]:
+# In[19]:
 
 
 make_alignments(seg="All",sequences=H3N2_concat_seq,out_dir="./coding_alignments",out_file="H3N2_coding.fa")
@@ -420,7 +430,7 @@ make_alignments(seg="All",sequences=H3N2_concat_seq,out_dir="./coding_alignments
 
 # Make the tree file
 
-# In[37]:
+# In[20]:
 
 
 make_tree("./coding_alignments/H3N2_coding.fa","./coding_alignments/H3N2_coding.tree")
@@ -428,7 +438,7 @@ make_tree("./coding_alignments/H3N2_coding.fa","./coding_alignments/H3N2_coding.
 
 # Make the annotation file
 
-# In[38]:
+# In[21]:
 
 
 with open("./coding_alignments/H3N2.annotations.tsv","w") as a:
@@ -445,10 +455,14 @@ with open("./coding_alignments/H3N2.annotations.tsv","w") as a:
 
 # ## H1N1 Concatenated tree
 # 
+# First we add the out group Calidonia 99 and the concatenate and make the tree
 
-# In[39]:
+# In[22]:
 
 
+out_group_H1 = ReadFASTA("../data/reference/calidonia99.OR.fa")
+out_group_H1_d = {"Calidonia_99":out_group_H1}
+H1N1_seq.update(out_group_H1_d)
 H1N1_concat_seq = concat_seqs(H1N1_seq)
 H3N2_hideaways = ["HK","HS1530","HS1530_isnv","MH8137","MH8137_isnv","MH8390","MH8390_isnv","Victoria","Perth","MH8156","MH8156_isnv","MH8125","MH8125_isnv"]
 
@@ -461,19 +475,19 @@ for extra in H3N2_hideaways:
 
 
 
-# In[40]:
+# In[23]:
 
 
 make_alignments(seg="All",sequences=H1N1_concat_seq,out_dir="./coding_alignments",out_file="H1N1_coding.fa")
 
 
-# In[41]:
+# In[24]:
 
 
 make_tree("./coding_alignments/H1N1_coding.fa","./coding_alignments/H1N1_coding.tree")
 
 
-# In[42]:
+# In[25]:
 
 
 with open("./coding_alignments/H1N1.annotations.tsv",'w') as a:

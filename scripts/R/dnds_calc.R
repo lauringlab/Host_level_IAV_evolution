@@ -16,8 +16,14 @@ coverage_best <- coverage %>% group_by(LAURING_ID) %>%
 
 meta<-left_join(meta,coverage_best,by = "LAURING_ID")
 
-
+# remove mixed infections
+meta<-filter(meta,!(SPECID %in% c("HS1530","MH8137","MH390")))
 write.csv(meta,"./data/processed/secondary/meta_for_ns.s_calc.csv")
+
+
+# Run python notebook.
+# 
+
 
 # NS and S counts for genes
 # 
@@ -29,6 +35,8 @@ qual<-read_csv("./data/processed/secondary/qual.snv.csv",
                  Id = col_character()
                )) # read in quality variant calls from all 
 qual<-filter(qual,freq.var<0.5)
+# remove mixed infections
+qual<-filter(qual,!(SPECID %in% c("HS1530","MH8137","MH390")))
 
 qual_OR<- qual %>% select(Class,OR) %>% rowwise%>% mutate(Class = gsub("'","",Class),
                                                  Class = gsub("[","",Class,fixed = T),
@@ -62,7 +70,8 @@ all_data <- left_join(gene_counts,sites)
 all_data <- all_data %>% mutate(pn= NS/NS_sites,ps = S/S_sites,
                                 dn = -(3/4)*log(1-(4*pn)/3),
                                 ds = -(3/4)*log(1-(4*ps)/3),
-                                DnDs = dn/ds)
+                                DnDs = dn/ds,
+                                KaKs = pn/ps)
 
 # conconical OR
 
@@ -74,4 +83,5 @@ c_sum<-as.data.frame(t(c_sum))
 c_sum <- c_sum %>% mutate(pn= NS/NS_sites,ps = S/S_sites,
                           dn = -(3/4)*log(1-(4*pn)/3),
                           ds = -(3/4)*log(1-(4*ps)/3),
-                          DnDs = dn/ds)
+                          DnDs = dn/ds,
+                          KaKs = pn/ps)

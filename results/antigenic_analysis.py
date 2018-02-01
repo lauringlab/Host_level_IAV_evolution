@@ -5,7 +5,8 @@
 
 # In[1]:
 
-get_ipython().magic(u'matplotlib inline')
+
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 from Bio.Seq import Seq
 from Bio import SeqIO
@@ -24,6 +25,7 @@ from ggplot import *
 
 # In[2]:
 
+
 def write_to_summary(line_pattern,value):
     lines = []
     with open("./results.table.tsv",'r') as results:
@@ -38,6 +40,7 @@ def write_to_summary(line_pattern,value):
 
 
 # In[3]:
+
 
 def Align(headers_seqs, progpath, program='PROBCONS', musclegapopen=None):
     """Performs a multiple sequence alignment of two or more sequences.
@@ -363,6 +366,7 @@ def find_aligments(aligner,aligner_path,seq,pos): # The positions will be given 
 
 # In[4]:
 
+
 ## Antigenic site strings  "site : [ [list of sequences], [List of lists of antigenic positions in that sequence]]
 H1N1 = {'Sa' : [["PNHDS","KGNSYPKLSKS"],[[1,2],[1,2,3,4,6,7,8,9,10,11]]] ,
         'Sb':[["TSADQQSLYQNA"],[[1,2,3,4,5,6,7,8,9,10,11,12]]],
@@ -375,6 +379,7 @@ H3 = pd.read_csv("../data/reference/H3N2_antigenic_sites.csv")
 # This chunck does the H1N1 aligments
 
 # In[5]:
+
 
 antigenic = []
 for site in H1N1:
@@ -399,11 +404,13 @@ print(antigenic)
 
 # In[6]:
 
+
 snv = pd.read_csv("/Users/jt/Documents/Analysis/HIVE/data/processed/secondary/qual.snv.csv",converters={"AA_pos": literal_eval})
 snv = snv.loc[snv['freq.var']<0.5]
 
 
 # In[7]:
+
 
 snv
 
@@ -411,6 +418,7 @@ snv
 # This is a function that locates each HA mutation in the PDB structures. This is the equivalent of H3 numbering for H3 strains. (Assigns codon 1 to codon 17 or (AA pos - 16))
 
 # In[8]:
+
 
 def locate(snv,run_label,ref_fa,antigenic):
     # Get the HA seqeunce the sample was aligned to - the cordinates here match those in the dataframe
@@ -434,12 +442,14 @@ def locate(snv,run_label,ref_fa,antigenic):
 
 # In[9]:
 
+
 perth = locate(snv,"perth","/Users/jt/Documents/Analysis/HIVE/data/processed/perth/coding_fa/Perth_mp.removed.parsed.coding.fasta",antigenic)
 
 
 # # Victoria 2012-2013 & 2013-2014
 
 # In[10]:
+
 
 victoria = locate(snv,"vic","/Users/jt/Documents/Analysis/HIVE/data/processed/victoria/coding_fa/Vic_pool.removed.parsed.coding.fasta",antigenic)
 
@@ -448,12 +458,14 @@ victoria = locate(snv,"vic","/Users/jt/Documents/Analysis/HIVE/data/processed/vi
 
 # In[11]:
 
+
 HK = locate(snv,"HK","/Users/jt/Documents/Analysis/HIVE/data/processed/HK_6/coding_fa/PC1A.removed.parsed.coding.fasta",antigenic)
 
 
 # # Cali09 H1N1
 
 # In[12]:
+
 
 cali09 = locate(snv,"cali","/Users/jt/Documents/Analysis/HIVE/data/processed/cali09/coding_fa/Cali_pool.removed.parsed.coding.fasta",antigenic)
 
@@ -463,6 +475,7 @@ cali09 = locate(snv,"cali","/Users/jt/Documents/Analysis/HIVE/data/processed/cal
 # Here we combine all the runs together, select for the nonsynonymous mutations and make a subtype column
 
 # In[13]:
+
 
 HA_All = perth.append([victoria,HK,cali09], ignore_index = True)
 HA_nonsyn = HA_All.loc[HA_All["class_factor"]=="Nonsynonymous"]
@@ -474,6 +487,7 @@ HA_nonsyn.loc[HA_nonsyn["run"]=="cali09_2","subtype"]="H1"
 # Now we will us regex to split the PDB names into amino acid position and segement (HA1- HA2)
 
 # In[14]:
+
 
 import re
 loc=[]
@@ -501,6 +515,7 @@ HA_nonsyn["H3_seg"]=seg
 # If the row is in an H1 virus then we check if the PBD_4JTV position is in the PBD_4JTV list of antigenic sites. All these came from Caton.
 
 # In[15]:
+
 
 antigenic_sites=[]
 source = []
@@ -536,6 +551,7 @@ HA_nonsyn["Source"] = source
 
 # In[16]:
 
+
 HA_nonsyn[["SPECID","onset","mutation","freq.var","Ref_AA","AA_pos","Var_AA","PDB_4JTV","PDB_4HMG","run","Antigenic","Source","subtype","H3_pos","H3_seg"]]
 
 
@@ -545,6 +561,7 @@ HA_nonsyn[["SPECID","onset","mutation","freq.var","Ref_AA","AA_pos","Var_AA","PD
 
 # In[17]:
 
+
 AA = HA_nonsyn.loc[HA_nonsyn["Antigenic"]!="NA"]
 len(AA)
 HA_nonsyn.to_csv("../data/processed/secondary/HA_nonsynom.csv")
@@ -553,6 +570,7 @@ AA[["HOUSE_ID","ENROLLID","SPECID","onset","mutation","freq.var","Ref_AA","H3_po
 
 # In[18]:
 
+
 AA[["HOUSE_ID","ENROLLID","SPECID","onset","mutation","freq.var","Ref_AA","H3_pos","Var_AA","PDB_4HMG","PDB_4JTV","pcr_result","Antigenic","Source","vaccination_status","DPI"]]
 
 
@@ -560,10 +578,12 @@ AA[["HOUSE_ID","ENROLLID","SPECID","onset","mutation","freq.var","Ref_AA","H3_po
 
 # In[19]:
 
+
 ggplot(aes(x='DPI', y='freq.var'), data=AA) +    geom_point()  + ylab("Frequency")+xlab("Day post symptom onset")
 
 
 # In[20]:
+
 
 AA_nonsynom_n=len(AA)
 print(AA_nonsynom_n)
@@ -572,12 +592,14 @@ write_to_summary("Antigenic iSNV n:",AA_nonsynom_n)
 
 # In[21]:
 
+
 HA_nonsyn_n=len(HA_nonsyn)
 write_to_summary("NS HA n:",HA_nonsyn_n)
 #HA_nonsyn_n
 
 
 # In[22]:
+
 
 frac_isnv = "Proportion of snv in antigenic sites %f - %f" % (len(AA)/len(snv), (len(AA.loc[AA["Source"]=="Wiley"])+len(AA.loc[AA["Source"]=="Smith"])+len(AA.loc[AA["Source"]=="Caton"]))/len(snv))
 
@@ -603,6 +625,7 @@ write_to_summary("Antigenic infection n:",frac_infection)
 # H3_name_major is the major amino acid.
 
 # In[23]:
+
 
 import re
 H3=[]
@@ -641,6 +664,7 @@ HA_nonsyn["H1_name_major"] = H1_major
 # In[30]:
 
 
+
 HA_nonsyn.to_csv("../data/processed/secondary/minor_nonsynom.csv")
 
 
@@ -649,6 +673,7 @@ HA_nonsyn.to_csv("../data/processed/secondary/minor_nonsynom.csv")
 # I expect a G at PB1 594 (base1) )(593-base 0)  in sample MH7800 HK_8
 
 # In[25]:
+
 
 for seq_record in SeqIO.parse("../data/processed/HK_8/coding_fa/MH7800_A.removed.parsed.coding.fasta", "fasta"):    
         if seq_record.name == "PB1":
@@ -661,15 +686,18 @@ for seq_record in SeqIO.parse("../data/processed/HK_8/coding_fa/MH7800_A.removed
 
 # In[26]:
 
+
 PB1_prot
 
 
 # In[27]:
 
+
 PB1_prot[593]
 
 
 # In[28]:
+
 
 NR_prot[160]
 

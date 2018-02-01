@@ -478,6 +478,20 @@ ggplot()+geom_point(data=beta_Nb_sum,aes(y=y,x=lower_95),shape=108,size=4,color=
   scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")
 ```
 
+The one outlier. This sample has 2 variants present at almost identicle frequencies.
+
+```{r}
+
+outlier<-trans_fit(filter(trans_freq.comp,pair_id==137,freq1<0.5),l=NULL,Nb_max=20000,
+                 model="BetaBin-straight",
+                 threshold=0.02,acc=accuracy_stringent,
+                 pair_id)
+straight_sum(outlier,20000)
+ggplot(outlier,aes(x=Nb,y=LL))+geom_point()+scale_x_continuous(limits = c(500,20000))+scale_y_continuous(limits = c(4,7))
+
+
+```
+
 By pair table
 
 ```{r}
@@ -518,7 +532,8 @@ beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID"))
            as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
   select(-DOB)
 out_beta_t<-beta_t %>% ungroup() %>%
-  select(Nb,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv)
+  select(Nb,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2)
+out_beta_t$Nb[is.na(out_beta_t$Nb)]<-">200"
 write.csv(out_beta_t,"../data/processed/secondary/beta_bottlenecks_by_pair.csv")
 ```
 

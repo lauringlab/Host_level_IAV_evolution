@@ -66,6 +66,20 @@ intra_freq.comp<-plyr::adply(intra_freq.comp,1,function(x){
   x$donor_class = as.character(donor_class$class_factor)
   return(x)
 })
+# and now for the big data frame
+intra_freq<-plyr::adply(intra_freq,1,function(x){
+  if(x$freq1>0 & x$freq1<1){ # polymorphic in first
+    class = subset(qual,SPECID==x$SPECID1[1] & 
+                     mutation == x$mutation[1],select=c(class_factor))
+  }else if(x$freq2>0 & x$freq2<1 ){
+  class = subset(qual,SPECID==x$SPECID2[1] & 
+                         mutation == x$mutation[1],select=c(class_factor))
+  #print(x)
+  }
+  x$class = as.character(class$class_factor)
+  return(x)
+})
+
 
 write.csv(x = intra_freq,file = "../../data/processed/secondary/Intrahost_all.csv")
 write.csv(x = intra,file =  "../../data/processed/secondary/Intrahost_pairs.csv")

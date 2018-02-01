@@ -255,7 +255,7 @@ begin figtree;
 	set branchLabels.significantDigits=4;
 	set layout.expansion=0;
 	set layout.layoutType="RECTILINEAR";
-	set layout.zoom=267;
+	set layout.zoom=0;
 	set legend.attribute="ML";
 	set legend.fontSize=10.0;
 	set legend.isShown=false;
