@@ -1,0 +1,230 @@
+---
+title: "Antigenic analysis"
+output: github_document
+---
+```{r,echo=F}
+
+# Set up packages
+require(knitr)
+require(ggplot2)
+require(magrittr)
+require(tidyverse)
+if(!("package:tidyverse" %in% search())){
+  require(dplyr)
+  require(tidyr)
+  require(purrr)
+  require(readr)
+  require(rlang)
+}
+require(HIVEr)
+require(extrafont)
+require(wesanderson)
+set.seed(42) # Set seed so randomization is reproducible
+
+# Set up figures
+opts_chunk$set(fig.align="center",warning=TRUE,tidy=T,cache = T,echo=F)
+theme_set(new = theme_classic()+ theme(
+axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
+text=element_text(family="Arial",size = 18))) # to make nice plots
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbPalette<-wes_palette("Zissou")
+# Get widely used functions
+#source("../scripts/useful_functions.R")
+require(doMC)
+doMC::registerDoMC(cores=4)
+
+####### Write to summary results file ######
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results.table.tsv")
+}
+plot.median <- function(x) {
+  m <- median(x)
+  c(y = m, ymin = m, ymax = m)
+}
+require(cowplot)
+```
+
+
+# Antigenic sites
+
+```{r}
+qual<-read_csv("../data/processed/secondary/qual.snv.csv",
+               col_types = list(
+                 ENROLLID= col_character(),
+                 SPECID = col_character(),
+                 LAURING_ID = col_character(),
+                 Id = col_character()
+               )) # read in quality variant calls from all 
+min.qual.o<-subset(qual,freq.var<0.5) # only looking at minor alleles original - includes all samples
+min.qual<-subset(min.qual.o,!(SPECID %in% c("HS1530","MH8137","MH8390"))) # remove mixed infections
+
+
+```
+
+
+```{r}
+antigenic<-read_csv("../data/processed/secondary/antigenic_isnv.csv")
+antigenic_counts<-antigenic %>% group_by(mutation) %>% summarize(found = length(mutation))
+kable(filter(antigenic,mutation %in% 
+               antigenic_counts$mutation[antigenic_counts$found>1]))
+
+min.qual<-left_join(min.qual,antigenic,by = c("HOUSE_ID","ENROLLID","SPECID","mutation","pcr_result","vaccination_status","DPI","Ref_AA","Var_AA"))
+min.qual$Antigenic[is.na(min.qual$Antigenic)]<-"None"
+HA_NS<-filter(min.qual,class_factor=="Nonsynonymous",chr=="HA")
+require(ggbeeswarm)
+
+HA_NS.p<-ggplot(HA_NS, aes(y=freq.var.x,x=Antigenic=="None"))+geom_quasirandom(varwidth = TRUE)+stat_summary(fun.data="plot.median", geom="errorbar", colour="red", width=0.55, size=0.5)+ylab("iSNV frequency")+xlab(label = "")+scale_x_discrete(labels = c("Antigenic site","Nonantigenic site"))+scale_y_continuous(limits=c(0,0.5))
+
+save_plot("./Figures/Figure2B.pdf", HA_NS.p,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure2B.pdf")
+
+wilcox.test(HA_NS$freq.var.x[which(HA_NS$Antigenic!="None")],
+            HA_NS$freq.var.x[which(HA_NS$Antigenic=="None")],alternative = "greater")
+
+
+ks.test(HA_NS$freq.var.x[which(HA_NS$Antigenic!="None")],
+            HA_NS$freq.var.x[which(HA_NS$Antigenic=="None")],alternative = "greater")
+```
+There are `r length(unique(HA_NS$ENROLLID))` mutations found above. They are from `r nrow(HA_NS)` individuals so many of the sites are independent.
+
+For the whole genome
+
+```{r}
+All_NS<-filter(min.qual,class_factor=="Nonsynonymous")
+ggplot(All_NS, aes(y=freq.var.x,x=Antigenic=="None"))+geom_quasirandom()+stat_summary(fun.data="plot.median", geom="errorbar", colour="red", width=0.55, size=0.5)+ylab("iSNV frequency")+xlab(label = "")+scale_x_discrete(labels = c("Antigeic site","NonAntigenic site"))
+ks.test(All_NS$freq.var.x[which(All_NS$Antigenic!="None")],
+            All_NS$freq.var.x[which(All_NS$Antigenic=="None")],alternative = "greater")
+```
+
+
+
+
+# Global dynamics 
+
+This is for all variants.
+```{r,eval=F}
+minor<-read.csv("../data/processed/secondary/minor_nonsynom.csv",stringsAsFactors = F,colClasses = c('onset'='Date','collect'='Date'))
+
+minor %>% subset(pcr_result=="A/H3N2") %>%.$H3_name ->H3
+H3<-H3[H3!="-"]
+
+paste(H3,sep=",",collapse = ", ")
+
+minor %>% subset(pcr_result=="A/H1N1") %>%.$H1_name ->H1
+
+```
+This is for just antigenic mutations.
+
+```{r}
+minor<-read.csv("../data/processed/secondary/minor_nonsynom.csv",stringsAsFactors = F,colClasses = c('onset'='Date','collect'='Date'))
+minor<-subset(minor,!is.na(Antigenic))
+minor %>% subset(pcr_result=="A/H3N2") %>%.$H3_name ->H3
+H3<-H3[H3!="-"]
+
+paste(H3,sep=",",collapse = ", ")
+
+minor %>% subset(pcr_result=="A/H1N1") %>%.$H1_name ->H1
+
+```
+
+
+Uncomment the lines to run for all NS HA mutations
+```{r}
+require(lubridate)
+
+
+# This is for just antigenic mutations.
+nextflu<-read.table("../data/processed/secondary/global_freq_antigenic.tsv",header = T)
+require(tidyverse)
+require(directlabels)
+
+nextflu %>% select(-HA1.307R.1)%>% gather(mutation,frequency,-x) ->nextflu.l # We found this one twice.
+
+nextflu.l %>% mutate(mutation=gsub("(.*)\\.(.*)","\\1:\\2",mutation))->nextflu.l
+
+
+minor %>% filter(pcr_result=="A/H3N2", !is.na(Antigenic)) ->H3_minor
+
+H3_minor %>% subset(H3_name %in% nextflu.l$mutation & pcr_result=="A/H3N2",
+                 select = c(collect,SPECID,H3_name,freq.var,Antigenic,season)) %>%
+  mutate(collect=decimal_date(collect))->collection_points
+
+kable(collection_points)
+
+
+nextflu.l<-inner_join(nextflu.l,collection_points,by=c("mutation" = "H3_name"))
+
+# Filter to just variants that reach above 1% in or after time of collection
+# 
+interesting<- nextflu.l%>% group_by(mutation) %>% filter(x>collect) %>%
+  summarize(above=any(frequency>0.05 & frequency<0.95))
+
+
+nextflu.l<-filter(nextflu.l,mutation %in% interesting$mutation[interesting$above==T])
+collection_points<-filter(collection_points,H3_name %in% interesting$mutation[interesting$above==T])
+
+nextflu.p<-ggplot()+
+  geom_line(data = nextflu.l,
+            aes(x=x,y=frequency,color=mutation,alpha = x>collect),size=1.2)+
+  scale_alpha_discrete(range = c(0.2,1))+#theme(legend.position = "none")+
+  ylab("Global Frequency")+xlab("Year")+
+  scale_x_continuous(breaks = seq(2005,2018,by=2))+
+  geom_vline(xintercept =collection_points$collect,linetype=2,alpha=0.5)+
+  scale_color_manual(values =
+                       c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"),
+                     name = "Allele")
+#nextflu.p<-direct.label(nextflu.p,c("last.qp","angled.boxes"))
+
+nextflu.p
+
+save_plot("./Figures/Figure2C_legend.pdf", nextflu.p,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure2C_legend.pdf")
+
+nextflu.p<-direct.label(nextflu.p,c("last.qp"))+theme(legend.position = "none")
+
+save_plot("./Figures/Figure2C_label.pdf", nextflu.p,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure2C_label.pdf")
+
+```
+
+Of the `r length(unique(antigenic$mutation))` antigenic variants found in our data set. `r length(unique(nextflu.l$mutation))` were found above 5% at the global populaiotn at or after the time of collection. 
+
+## Non antigenic sites
+
+```{r}
+minor_nonA<-read.csv("../data/processed/secondary/minor_nonsynom.csv",stringsAsFactors = F,colClasses = c('onset'='Date','collect'='Date'))
+minor_nonA<-filter(minor_nonA,is.na(Antigenic))
+minor_nonA %>% subset(pcr_result=="A/H3N2") %>%.$H3_name ->H3
+H3<-H3[H3!="-"]
+# This is for all NS mutations
+nextflu_nonA<-read.table("../data/processed/secondary/global_freq.tsv",header = T)
+
+nextflu_nonA %>% select(-HA1.307R.1)%>% gather(mutation,frequency,-x) ->nextflu_nonA.l # We found this one twice.
+
+nextflu_nonA.l %>% mutate(mutation=gsub("(.*)\\.(.*)","\\1:\\2",mutation))->nextflu_nonA.l
+
+
+minor_nonA %>% subset(H3_name %in% nextflu.l$mutation & pcr_result=="A/H3N2",
+                 select = c(collect,SPECID,H3_name,freq.var,Antigenic,season)) %>%
+  mutate(collect=decimal_date(collect))->collection_points_nonA
+
+kable(collection_points_nonA)
+
+
+nextflu_nonA.l<-inner_join(nextflu_nonA.l,collection_points_nonA,by=c("mutation" = "H3_name"))
+
+# Filter to just variants that reach above 1% in or after time of collection
+# 
+interesting_nonA<- nextflu_nonA.l%>% group_by(mutation) %>% filter(x>collect) %>%
+  summarize(above=any(frequency>0.05 & frequency<0.95))
+```
+
+We found `r length(unique(minor_nonA$mutation))` non epitope mutations. `r length(which(interesting_nonA$above==T))` were found above 5% at the global level.

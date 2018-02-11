@@ -7,7 +7,7 @@
 # 
 # _NB: check http://bioinformatics.cvr.ac.uk/blog/calculating-dnds-for-ngs-datasets/ for reference_
 
-# In[2]:
+# In[1]:
 
 
 import numpy as np
@@ -29,7 +29,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 
-# In[3]:
+# In[2]:
 
 
 def ReadFASTA(fastafile):
@@ -51,26 +51,26 @@ def ReadFASTA(fastafile):
 
 
 
-# In[4]:
+# In[3]:
 
 
 test= ReadFASTA("../data/reference/NY.OR.main.fa")
 
 
-# In[5]:
+# In[4]:
 
 
 PB2=test[1]
 c = codonalign.CodonSeq(str(PB2.seq))
 
 
-# In[6]:
+# In[5]:
 
 
 c
 
 
-# In[7]:
+# In[6]:
 
 
 cList=codonalign.codonseq._get_codon_list(c)
@@ -104,19 +104,19 @@ codonalign.codonseq._count_site_NG86(cList[:-1],k=1)
 # 
 # This work is much easier for me to do in R so we'll use that here
 
-# In[8]:
+# In[7]:
 
 
 meta = pd.read_csv("../data/processed/secondary/meta_for_ns.s_calc.csv")
 
 
-# In[9]:
+# In[8]:
 
 
 meta = meta.loc[meta.snv_qualified==True]
 
 
-# In[10]:
+# In[9]:
 
 
 sys.path.append("/Users/jt/lauring_lab_repos/variant_pipeline/scripts/")
@@ -234,19 +234,19 @@ def get_NS_s(seqs):
     return(counter,errors)
 
 
-# In[11]:
+# In[10]:
 
 
 sequences = get_seq(meta.SPECID,meta)
 
 
-# In[12]:
+# In[11]:
 
 
 Ns_s,e = get_NS_s(sequences)
 
 
-# In[13]:
+# In[12]:
 
 
 l=[]
@@ -257,7 +257,7 @@ for x in e.SPECID:
 e["pcr_result"] = l
 
 
-# In[14]:
+# In[13]:
 
 
 e.loc[e.pcr_result=="A/H3N2"]
@@ -270,14 +270,14 @@ e.loc[e.pcr_result=="A/H3N2"]
 # This same mutation is found in many samples. MH2516, MH2527 and MH2942 are the only H3N2 with the mutation.
 # 
 
-# In[15]:
+# In[14]:
 
 
 H3N2_stop = str(sequences["MH2516_330243_3061_2012-2013_consensus"][2].seq)
 H3N2_stop
 
 
-# In[16]:
+# In[15]:
 
 
 codon_sequence = codonalign.CodonSeq(H3N2_stop,gap_char='-')
@@ -293,13 +293,13 @@ x.index("TAA")
 # 
 # One sample has a frame shift deletion of 2 nt near the end of PB1. This is confirmed by looking at the igv viewer. This is a victoria sample 1230. 
 
-# In[17]:
+# In[16]:
 
 
 gap = sequences["MH2436_331045_3075_2012-2013_consensus"][1].seq
 
 
-# In[18]:
+# In[17]:
 
 
 str(gap)
@@ -311,7 +311,7 @@ str(gap)
 # MH1782  -3 codons early
 # MH0922  -10 codons early
 
-# In[19]:
+# In[18]:
 
 
 
@@ -319,7 +319,7 @@ NS1_stop = sequences["MH0922_320110_2028_2011-2012_consensus"]
 #NS1_stop = sequences["MH1782_320468_2117_2011-2012_consensus"]
 
 
-# In[20]:
+# In[19]:
 
 
 str(NS1_stop[10].seq)
@@ -327,7 +327,7 @@ str(NS1_stop[10].seq)
 
 # Blast these sequences and identify the mutation.
 
-# In[21]:
+# In[20]:
 
 
 Ns_s_df = pd.DataFrame(Ns_s)
@@ -335,19 +335,19 @@ Ns_s_df = Ns_s_df.transpose()
 Ns_s_df.columns = ["S","NS"]
 
 
-# In[22]:
+# In[21]:
 
 
 Ns_s_df.to_csv("../data/processed/secondary/NS_S_site.csv")
 
 
-# In[23]:
+# In[22]:
 
 
 Ns_s_df
 
 
-# In[24]:
+# In[23]:
 
 
 codonalign.codonseq._count_site_NG86(["CCC"],k=1)

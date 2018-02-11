@@ -85,3 +85,4 @@ c_sum <- c_sum %>% mutate(pn= NS/NS_sites,ps = S/S_sites,
                           ds = -(3/4)*log(1-(4*ps)/3),
                           DnDs = dn/ds,
                           KaKs = pn/ps)
+

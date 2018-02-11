@@ -668,6 +668,9 @@ bin_ratio
 
 write_to_summary("Max Ns/S:",max(bin_ratio$ratio))
 
+ks.test(min.qual$freq.var[min.qual$class_factor=="Nonsynonymous"],
+        min.qual$freq.var[min.qual$class_factor=="Synonymous"])
+
 ```
 
 
@@ -740,7 +743,7 @@ These counts don't sum to the total above, but that is because this is looking a
 
 ### Diversity in by vaccination
 
-```{r,snv_sample}
+```{r,snv_sample1}
 min.count.sample<-min.qual %>% group_by(SPECID) %>%
   dplyr::summarize(iSNV=length(unique(mutation)),HA_iSNV=length(which(chr=="HA"))) # How many rare mutations in the sample (SPECID)
 
@@ -929,76 +932,3 @@ ggplot(outliers.snv,aes(x=freq.var,y= as.factor(SPECID),height = ..density..))+g
 ```
 This looks like mixed infections. We find many mutations at similar frequencies.
 
-# Antigenic sites
-
-
-```{r}
-antigenic<-read_csv("../data/processed/secondary/antigenic_isnv.csv")
-antigenic_counts<-antigenic %>% group_by(mutation) %>% summarize(found = length(mutation))
-kable(filter(antigenic,mutation %in% 
-               antigenic_counts$mutation[antigenic_counts$found>1]))
-
-min.qual<-left_join(min.qual,antigenic,by = c("HOUSE_ID","ENROLLID","SPECID","mutation","pcr_result","vaccination_status","DPI","Ref_AA","Var_AA"))
-min.qual$Antigenic[is.na(min.qual$Antigenic)]<-"None"
-HA_NS<-filter(min.qual,class_factor=="Nonsynonymous",chr=="HA")
-require(ggbeeswarm)
-ggplot(HA_NS, aes(y=freq.var.x,x=Antigenic=="None"))+geom_quasirandom(varwidth = TRUE)+stat_summary(fun.data="plot.median", geom="errorbar", colour="red", width=0.55, size=0.5)+ylab("iSNV frequency")+xlab(label = "")+scale_x_discrete(labels = c("Antigeic site","NonAntigenic site"))+scale_y_continuous(limits=c(0,0.5))
-
-wilcox.test(HA_NS$freq.var.x[which(HA_NS$Antigenic!="None")],
-            HA_NS$freq.var.x[which(HA_NS$Antigenic=="None")],alternative = "greater")
-```
-For the whole genome
-
-```{r}
-All_NS<-filter(min.qual,class_factor=="Nonsynonymous")
-ggplot(All_NS, aes(y=freq.var.x,x=Antigenic=="None"))+geom_quasirandom()+stat_summary(fun.data="plot.median", geom="errorbar", colour="red", width=0.55, size=0.5)+ylab("iSNV frequency")+xlab(label = "")+scale_x_discrete(labels = c("Antigeic site","NonAntigenic site"))
-
-wilcox.test(All_NS$freq.var.x[which(All_NS$Antigenic!="None")],
-            All_NS$freq.var.x[which(All_NS$Antigenic=="None")],alternative = "greater")
-```
-
-
-
-
-# Global dynamics
-
-```{r}
-require(lubridate)
-nextflu<-read.table("../data/processed/secondary/global_freq.csv",header = T)
-
-require(tidyverse)
-require(directlabels)
-
-nextflu %>% select(-HA1.307R.1)%>% gather(mutation,frequency,-x) ->nextflu.l # We found this one twice.
-
-nextflu.l %>% mutate(mutation=gsub("(.*)\\.(.*)","\\1:\\2",mutation))->nextflu.l
-
-minor %>% filter(pcr_result=="A/H3N2", !is.na(Antigenic)) ->H3_minor
-
-H3_minor %>% subset(H3_name %in% nextflu.l$mutation & pcr_result=="A/H3N2",
-                 select = c(collect,SPECID,H3_name,freq.var)) %>%
-  mutate(collect=decimal_date(collect))->collection_points
-
-kable(collection_points)
-
-
-antigenic_nextflu.l<-inner_join(nextflu.l,collection_points,by=c("mutation" = "H3_name"))
-
-nextflu.p<-ggplot()+
-  geom_line(data = filter(antigenic_nextflu.l,x>=collect),
-            aes(x=x,y=frequency,color=mutation),alpha=1)+
-  ylab("Global Frequency")+xlab("Year")+
-  scale_x_continuous(breaks = seq(2005,2018,by=2))+
-  geom_vline(xintercept =collection_points$collect,linetype=2,alpha=0.5)
-nextflu.p
-
-
-#nextflu.p<-direct.label(nextflu.p,"angled.boxes")
-
-#nextflu.p<-direct.label(nextflu.p,c("first.qp"))
-nextflu.p<-direct.label(nextflu.p,c("last.qp"))
-nextflu.p+geom_line(data = filter(antigenic_nextflu.l,x<collect),
-            aes(x=x,y=frequency,color=mutation),alpha=0.3)
-
-
-```

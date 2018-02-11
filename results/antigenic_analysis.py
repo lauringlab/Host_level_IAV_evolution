@@ -599,7 +599,7 @@ write_to_summary("NS HA n:",HA_nonsyn_n)
 #HA_nonsyn_n
 
 
-# In[27]:
+# In[31]:
 
 
 frac_isnv = "Proportion of snv in antigenic sites %f - %f" % (len(AA)/len(snv), (len(AA.loc[AA["Source"]=="Wiley"])+len(AA.loc[AA["Source"]=="Smith"])+len(AA.loc[AA["Source"]=="Caton"]))/len(snv))
@@ -607,7 +607,8 @@ frac_isnv = "Proportion of snv in antigenic sites %f - %f" % (len(AA)/len(snv), 
 print(frac_isnv)
 
 better = AA.loc[(AA["Source"]=="Wiley")|(AA["Source"]=="Smith")|(AA["Source"]=="Caton")]
-frac_infection = "Propotion of infections with antigenic sites %f - %f " % (len(AA.ENROLLID.unique())/200,len(better.ENROLLID.unique())/200)
+frac_infection = "Propotion of infections with antigenic sites %f - %f " % (len(AA.ENROLLID.unique())/(200-3), # minus mixed
+                                                                            len(better.ENROLLID.unique())/(200-3))
 
 
 print(frac_infection)

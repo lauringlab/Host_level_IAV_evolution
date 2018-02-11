@@ -15,7 +15,7 @@ JT McCrone
 
     ## Warning: package 'tidyverse' was built under R version 3.4.2
 
-    ## ── Attaching packages ─────────────────────────────────────────── tidyverse 1.2.0 ──
+    ## ── Attaching packages ───────────────────────────────────── tidyverse 1.2.0 ──
 
     ## ✔ tibble  1.3.4     ✔ purrr   0.2.4
     ## ✔ tidyr   0.7.2     ✔ dplyr   0.7.4
@@ -28,7 +28,7 @@ JT McCrone
 
     ## Warning: package 'dplyr' was built under R version 3.4.2
 
-    ## ── Conflicts ────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ──────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ tidyr::extract()   masks magrittr::extract()
     ## ✖ dplyr::filter()    masks stats::filter()
     ## ✖ dplyr::lag()       masks stats::lag()
@@ -356,30 +356,43 @@ There are two samples here with NA DPI, I believe we don't have meta data on whe
 
 <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/all_titers-1.png" style="display: block; margin: auto;" /> There are warning messages for 13 samples we did not get usable numbers back from the qPCR. They have NA in the log\_copy\_num column but R gives them 0 in the gc\_ul. These are removed on the log scale.
 
-### Frequency distribution
+### Distibution of isnv in samples
+
+### Diversity in samples
+
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/snv_sample-1.png" style="display: block; margin: auto;" />
+
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-2.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-3.png" style="display: block; margin: auto;" /> \#\#\# Frequency distribution
 
 | class\_factor |  mutations|
 |:--------------|----------:|
-| Nonsynonymous |        277|
-| Synonymous    |        434|
+| Nonsynonymous |        249|
+| Synonymous    |        330|
 
 <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/frequency_distribution-1.png" style="display: block; margin: auto;" />
 
     ## # A tibble: 10 x 2
     ##      bin     ratio
     ##    <int>     <dbl>
-    ##  1     1 0.6776860
-    ##  2     2 1.0000000
-    ##  3     3 0.7368421
+    ##  1     1 0.7027027
+    ##  2     2 1.1290323
+    ##  3     3 0.8750000
     ##  4     4 0.9230769
-    ##  5     5 0.3750000
-    ##  6     6 0.5454545
-    ##  7     7 1.0000000
-    ##  8     8 0.2608696
-    ##  9     9 0.2592593
+    ##  5     5 0.4545455
+    ##  6     6 0.6000000
+    ##  7     7 1.5000000
+    ##  8     8 1.0000000
+    ##  9     9 0.3750000
     ## 10    10 0.5000000
 
-0.6104079
+    ## 
+    ##  Two-sample Kolmogorov-Smirnov test
+    ## 
+    ## data:  min.qual$freq.var[min.qual$class_factor == "Nonsynonymous"] and min.qual$freq.var[min.qual$class_factor == "Synonymous"]
+    ## D = 0.063271, p-value = 0.6209
+    ## alternative hypothesis: two-sided
+
+0.5699482
 
 ### Distribution across the genome
 
@@ -393,31 +406,29 @@ These will need to be rare in mulitple individuals to show up here at &gt;1
 
     ## Warning: Transformation introduced infinite values in continuous y-axis
 
-    ## Warning: Removed 26 rows containing missing values (geom_text).
+    ## Warning: Removed 28 rows containing missing values (geom_text).
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/mutations_per_sample-1.png" style="display: block; margin: auto;" /> These are the mutations found in multiple individuals <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-2.png" style="display: block; margin: auto;" /> These counts don't sum to the total above, but that is because this is looking at individuals above is looking at all sequenced samples (multiple/person) sometimes. If I sum these counts over SPECID then the sums are equal.
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/mutations_per_sample-1.png" style="display: block; margin: auto;" /> These are the mutations found in multiple individuals <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-20-2.png" style="display: block; margin: auto;" /> These counts don't sum to the total above, but that is because this is looking at individuals above is looking at all sequenced samples (multiple/person) sometimes. If I sum these counts over SPECID then the sums are equal.
 
-### Diversity in samples
+### Diversity in by vaccination
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/snv_sample-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/snv_sample1-1.png" style="display: block; margin: auto;" />
 
 ### Distribution of snv in samples (Could be multiple samples/person)
 
     ##   0%  25%  50%  75% 100% 
-    ##    0    1    2    3   57
+    ##    0    1    2    3   22
 
-    ## [1] 2.855422
+    ## [1] 2.325301
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-21-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-1.png" style="display: block; margin: auto;" />
 
 Codon pos
 ---------
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-1.png" style="display: block; margin: auto;" />
-
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-23-2.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-23-1.png" style="display: block; margin: auto;" />
 
 Figure 1
 ========
