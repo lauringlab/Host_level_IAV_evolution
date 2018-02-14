@@ -72,9 +72,9 @@ fig_2A<-ggplot(intra_meta,aes(x = DPS1,xend=DPS2,y = sort_order,yend=sort_order)
 
 fig_2A
 
-save_plot("./Figures/Figure2A.pdf", fig_2A,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure2A.pdf")
+# save_plot("./Figures/Figure2A.pdf", fig_2A,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure2A.pdf")
 
 write.csv(rename(intra_meta,day.post.sympotom.onset1=DPS1,
                  day.post.sympotom.onset2=DPS2,),"./Figures/data/Figure2A.csv")
@@ -92,12 +92,12 @@ summary(lm_fit)->sum_fit
 sum_fit
 
 write_to_summary("R2 samples same day:",sum_fit$r.squared)
-save_plot("./Figures/Supplemental_Figure6.pdf", Sup_6,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Supplemental_Figure6.pdf")
-
-write.csv(select(same_day,SPECID1,SPECID2,collect1,collect2,chr,pos,ref,var,freq1,freq2),
-          "./Figures/data/Supplemental_Figure6.csv")
+# save_plot("./Figures/Supplemental_Figure6.pdf", Sup_6,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Supplemental_Figure6.pdf")
+# 
+# write.csv(select(same_day,SPECID1,SPECID2,collect1,collect2,chr,pos,ref,var,freq1,freq2),
+#           "./Figures/data/Supplemental_Figure6.csv")
 ```
 
 
@@ -126,12 +126,12 @@ intra.plot<-ggplot(intra,aes(x=as.factor(within_host_time),y=freq2-freq1,fill=do
 
   
 intra.plot
-save_plot("./Figures/Figure2B.pdf", intra.plot,
-          base_aspect_ratio = 1.3)
-
-embed_fonts("./Figures/Figure2B.pdf")
-write.csv(select(intra,days.betweeen.sampling=within_host_time,SPECID1,SPECID2,chr,pos,ref,var,
-                 freq1,freq2,mutational.class=donor_class),"./Figures/data/Figure2B.csv")
+# save_plot("./Figures/Figure2B.pdf", intra.plot,
+#           base_aspect_ratio = 1.3)
+# 
+# embed_fonts("./Figures/Figure2B.pdf")
+# write.csv(select(intra,days.betweeen.sampling=within_host_time,SPECID1,SPECID2,chr,pos,ref,var,
+#                  freq1,freq2,mutational.class=donor_class),"./Figures/data/Figure2B.csv")
 
 intra %>% subset(within_host_time==1) %>% .$ENROLLID %>% unique() %>% length()->one_day_isnv
 intra %>% subset(within_host_time>0) %>% .$ENROLLID %>% unique() %>% length()->at_least_day_isnv
@@ -165,9 +165,9 @@ intra.plot<-ggplot(intra_all,aes(x=as.factor(within_host_time),
   geom_quasirandom(pch=21,color='black',size=2)+scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+facet_wrap(~class)
 intra.plot
 
-pdf("./Figures/Figure2B_2.pdf",width = 10,height = 7)
-intra.plot
-dev.off()
+# pdf("./Figures/Figure2B_2.pdf",width = 10,height = 7)
+# intra.plot
+# dev.off()
 
 
 
@@ -176,6 +176,36 @@ dev.off()
 #           base_width = )
 
 embed_fonts("./Figures/Figure2B_2.pdf")
+```
+
+
+```{r}
+plot.median <- function(x) {
+  m <- median(x)
+  c(y = m, ymin = m, ymax = m)
+}
+
+not_new<-filter(intra_all,Endpoint!="Arisen") %>%
+  mutate(delta = (freq2-freq1)/(freq1*(1-freq1)))
+
+not_new.p<-ggplot(not_new,aes(x=as.factor(within_host_time),
+                             y=delta,
+                   fill = class))+
+  xlab("Time within host (days)")+ylab("Normalized change in frequency")+
+  geom_quasirandom(pch=21,color='black',size=2,dodge.width = 0.5)+
+  scale_fill_manual(values=cbPalette[c(1,3,5)],name="")
+not_new.p
+
+
+new.p<-ggplot(filter(intra_all,freq1==0),aes(x=as.factor(within_host_time),
+                             y=freq2,
+                   fill = class))+
+  xlab("Time within host (days)")+ylab("Frequency")+
+  geom_quasirandom(pch=21,color='black',size=2,dodge.width = 0.5)+
+  scale_fill_manual(values=cbPalette[c(1,3,5)],name="")#+
+  #stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.1, size=0.1,dodge.width=0.5)
+
+new.p
 ```
 
 
@@ -197,6 +227,8 @@ HA_NS.p<-ggplot(HA_NS,aes(x=as.factor(within_host_time),
   xlab("Time within host (days)")+ylab("Change in frequency")+
   geom_point(pch=21,color='black',size=2)+scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+facet_wrap(~class)
 HA_NS.p
+
+HA_NS %>% filter(!is.na(Antigenic)) %>% select(freq1,freq2,within_host_time,Endpoint,Antigenic)%>% mutate(delta = freq2-freq1)
 
 ```
 
@@ -313,10 +345,10 @@ sim.df.l<-data.frame(outcomes = c(sim.df$X30,sim.df$X50,sim.df$X100),Ne = rep(c(
 
 fig_2C<-ggplot(sim.df.l,aes(y = outcomes,x = as.factor(Ne)))+geom_boxplot()+scale_y_continuous(limits = c(0,240),breaks=seq(0,240,20))+xlab("Expected Ne")+ ylab("Estimated Ne") #geom_abline(slope=1,intercept = 0,linetype=2)+
 fig_2C
-save_plot("./Figures/Figure2C.pdf", fig_2C,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure2C.pdf")
-write.csv(sim.df.l,"./Figures/data/Figure2C.csv")
+# save_plot("./Figures/Figure2C.pdf", fig_2C,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure2C.pdf")
+# write.csv(sim.df.l,"./Figures/data/Figure2C.csv")
 
 
 ```
@@ -409,10 +441,10 @@ fig_2D<-ggplot(steps,aes(x=removed,y = Ne))+geom_line()+
   scale_y_continuous(limits = c(0,500),breaks = custom_breaks,
                      labels= every_nth(custom_breaks,2,inverse = T))
 fig_2D
-save_plot("./Figures/Figure2D.pdf", fig_2D,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure2D.pdf")
-write.csv(rename(steps,fraction.removed=removed),"./Figures/data/Figure2D.csv")
+# save_plot("./Figures/Figure2D.pdf", fig_2D,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure2D.pdf")
+# write.csv(rename(steps,fraction.removed=removed),"./Figures/data/Figure2D.csv")
 
 steps %>% filter(Ne>320)  ->ten_fold
 first_above<- subset(ten_fold,Ne==min(ten_fold$Ne))
