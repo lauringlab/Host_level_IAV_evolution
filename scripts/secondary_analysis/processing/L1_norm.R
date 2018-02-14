@@ -21,8 +21,8 @@ doMC::registerDoMC(cores=8)
 options(warn=1)
 # =========================== Reading in the data ===============================
 
-meta<-read_csv("../../data/reference/all_meta.sequence_success.csv")
-qual<-read_csv("../../data/processed/secondary/qual.snv.csv",
+meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
+qual<-read_csv("./data/processed/secondary/qual.snv.csv",
                col_types = list(
                  ENROLLID= col_character(),
                  SPECID = col_character(),
@@ -83,7 +83,7 @@ all_possible_pairs<-mutate(all_possible_pairs,
                              meta_one$collect[match(SPECID1,meta_one$SPECID)]
 )
 
-write.csv(all_possible_pairs,file="../../data/processed/secondary/every_possible_pair.csv")
+write.csv(all_possible_pairs,file="./data/processed/secondary/every_possible_pair.csv")
 
 # only those with SPECID2 sick later than or equal to SPECID1
 all_possible_pairs<-subset(all_possible_pairs,time_onset>=0) 
@@ -168,6 +168,6 @@ all_pairs.tp<-left_join(all_pairs.tp,
 # We only want quality distances were we had a chance to measure the distance
 all_pairs.tp$quality_distance[all_pairs.tp$snv_qualified_pair==F]<-NA
 # ============================== Save the output ===============================
-write.csv(possible_pairs.dist,file = "../../data/processed/secondary/possible.pairs.dist.csv")
-write.csv(all_pairs.tp,file = "../../data/processed/secondary/transmission_pairs.csv")
-write.csv(meta_one,file = "../../data/processed/secondary/meta_one.sequence.success.csv")
+write.csv(possible_pairs.dist,file = "./data/processed/secondary/possible.pairs.dist.csv")
+write.csv(all_pairs.tp,file = "./data/processed/secondary/transmission_pairs.csv")
+write.csv(meta_one,file = "./data/processed/secondary/meta_one.sequence.success.csv")

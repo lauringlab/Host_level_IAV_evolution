@@ -23,23 +23,23 @@ options(warn=1)
 # =========================== Reading in the data ===============================
 
 # Read in all the files we'll need 
-variants_csv<-c("../../data/processed/HK_1/all.variants.csv",
-                "../../data/processed/HK_2/all.variants.csv",
-                "../../data/processed/HK_6/all.variants.csv",
-                "../../data/processed/HK_7/all.variants.csv",
-                "../../data/processed/HK_8/all.variants.csv",
-                "../../data/processed/cali09/all.variants.csv",
-                "../../data/processed/cali09_2/all.variants.csv",
-                "../../data/processed/victoria/all.variants.csv",
-                "../../data/processed/victoria_2/all.variants.csv",
-                "../../data/processed/perth/all.variants.csv",
-                "../../data/processed/perth_2/all.variants.csv")
+variants_csv<-c("./data/processed/HK_1/all.variants.csv",
+                "./data/processed/HK_2/all.variants.csv",
+                "./data/processed/HK_6/all.variants.csv",
+                "./data/processed/HK_7/all.variants.csv",
+                "./data/processed/HK_8/all.variants.csv",
+                "./data/processed/cali09/all.variants.csv",
+                "./data/processed/cali09_2/all.variants.csv",
+                "./data/processed/victoria/all.variants.csv",
+                "./data/processed/victoria_2/all.variants.csv",
+                "./data/processed/perth/all.variants.csv",
+                "./data/processed/perth_2/all.variants.csv")
 # This will overwrite the run column to be consistant with the coverage file.
 
 variants<-read_rbind(variants_csv,n=5,cols = list(Id=col_character()))
 
-meta<-read_csv("../../data/reference/all_meta.csv")
-cov_sample <- read_csv("../../data/processed/secondary/average_coverages.csv",
+meta<-read_csv("./data/reference/all_meta.csv")
+cov_sample <- read_csv("./data/processed/secondary/average_coverages.csv",
                        col_types = list(Id=col_character(),
                       LAURING_ID=col_character()))
 
@@ -212,6 +212,6 @@ no_freq_cut<-subset(no_freq_cut,!(ref==var & freq.var==1))
 ## removing sites.
 
 ###################### Saving the data #########################################
-write.csv(x=no_freq_cut,file="../../data/processed/secondary/no_freq_cut.qual.snv.csv")
-write.csv(x=qual,file="../../data/processed/secondary/qual.snv.csv")
-write.csv(x = meta,file = "../../data/reference/all_meta.sequence_success.csv")
+write.csv(x=no_freq_cut,file="./data/processed/secondary/no_freq_cut.qual.snv.csv")
+write.csv(x=qual,file="./data/processed/secondary/qual.snv.csv")
+write.csv(x = meta,file = "./data/reference/all_meta.sequence_success.csv")

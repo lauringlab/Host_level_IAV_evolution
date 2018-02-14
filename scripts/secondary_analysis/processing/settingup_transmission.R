@@ -27,17 +27,17 @@ options(warn=1)
 set.seed(42) # Set seed so randomization is reproducible
 # ============================ Functions =========================================
 write_to_summary<-function(line_pattern,value){
-  file = readLines("../../results/results.table.tsv")
+  file = readLines("./results/results.table.tsv")
   line_pattern_regex = paste0("^",line_pattern)
   line = grep(line_pattern_regex,file)
   file[line] = paste0(line_pattern,"\t",value)
-  writeLines(file,"../../results/results.table.tsv")
+  writeLines(file,"./results/results.table.tsv")
 }
 # =========================== Reading in the data ===============================
 message("Reading in the data")
 
-meta<-read_csv("../../data/reference/all_meta.sequence_success.csv")
-qual<-read_csv("../../data/processed/secondary/qual.snv.csv",
+meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
+qual<-read_csv("./data/processed/secondary/qual.snv.csv",
                col_types = list(
                  ENROLLID= col_character(),
                  SPECID = col_character(),
@@ -45,7 +45,7 @@ qual<-read_csv("../../data/processed/secondary/qual.snv.csv",
                  Id = col_character()
                ))
 
-no_cut_qual <- read_csv("../../data/processed/secondary/no_freq_cut.qual.snv.csv",
+no_cut_qual <- read_csv("./data/processed/secondary/no_freq_cut.qual.snv.csv",
                         col_types = list(
                           ENROLLID= col_character(),
                           SPECID = col_character(),
@@ -54,7 +54,7 @@ no_cut_qual <- read_csv("../../data/processed/secondary/no_freq_cut.qual.snv.csv
                         ))
 
   
-trans_pairs<-read_csv("../../data/processed/secondary/transmission_pairs.csv")
+trans_pairs<-read_csv("./data/processed/secondary/transmission_pairs.csv")
 
 
 
@@ -128,31 +128,31 @@ message("Comparing frequencies")
 trans_freq<-plyr::adply(useful_trans_pairs,1,function(x){
   get_freqs(c(x$SPECID1,x$SPECID2),qual)},
   .parallel = T)
-write.csv(trans_freq,file = "../../data/processed/secondary/trans_freq.csv")
+write.csv(trans_freq,file = "./data/processed/secondary/trans_freq.csv")
 
 # Reduce to sites that are polymorphic in the donor.
 trans_freq.comp<-polish_freq(trans_freq,freq1,0.02)
 trans_freq.comp$found=trans_freq.comp$freq2>0.02 # was it found in the second sample
 write.csv(x = trans_freq.comp,
-          file = "../../data/processed/secondary/transmission_pairs_freq.poly.donor.csv")
+          file = "./data/processed/secondary/transmission_pairs_freq.poly.donor.csv")
 
 # ==========  Compare the frequency of mutations no frequency cutoff ==========
 message("Comparing frequencies without a frequency cut off")
 no_cut_trans_freq<-plyr::adply(useful_trans_pairs,1,function(x){
   get_freqs(c(x$SPECID1,x$SPECID2),no_cut_qual)},
   .parallel = T)
-write.csv(no_cut_trans_freq,file = "../../data/processed/secondary/no_cut_trans_freq.csv")
+write.csv(no_cut_trans_freq,file = "./data/processed/secondary/no_cut_trans_freq.csv")
 
 # Reduce to sites that are polymorphic in the donor.
 no_cut_trans_freq.comp<-polish_freq(no_cut_trans_freq,freq1,0)
 no_cut_trans_freq.comp$found=no_cut_trans_freq.comp$freq2>0 # was it found in the second sample
 write.csv(x = no_cut_trans_freq.comp,
-         file =  "../../data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv")
+         file =  "./data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv")
 
 # ================================= Community pairs ===========================
 message("Community pair comparisions")
 
-possible_pairs<-read_csv("../../data/processed/secondary/possible.pairs.dist.csv") # All possible pairs (1 SPECID/person)
+possible_pairs<-read_csv("./data/processed/secondary/possible.pairs.dist.csv") # All possible pairs (1 SPECID/person)
 community_pairs<-subset(possible_pairs,Household==F) # not household pairs
 community_pairs$pair_id=1:nrow(community_pairs)
 community_pairs.freq<-plyr::adply(community_pairs,1,function(x) {
@@ -160,7 +160,7 @@ community_pairs.freq<-plyr::adply(community_pairs,1,function(x) {
   },
   .parallel = T)
 
-write.csv(community_pairs.freq,file = "../../data/processed/secondary/community_pairs.freq.csv")
+write.csv(community_pairs.freq,file = "./data/processed/secondary/community_pairs.freq.csv")
 
 # only polymorphic sites in sample 1 
 community_pairs.freq.comp<-polish_freq(community_pairs.freq,freq1,0.02) 
@@ -168,7 +168,7 @@ community_pairs.freq.comp<-polish_freq(community_pairs.freq,freq1,0.02)
 community_pairs.freq.comp$found=community_pairs.freq.comp$freq2>0.02 
 
 write.csv(community_pairs.freq.comp,
-         file =  "../../data/processed/secondary/community_pairs_freq.poly.donor.csv")
+         file =  "./data/processed/secondary/community_pairs_freq.poly.donor.csv")
 
 
 

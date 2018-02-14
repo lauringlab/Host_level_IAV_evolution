@@ -19,8 +19,8 @@ message(
     "##############################################################################\n",
     "############################## Intrahost setup ###############################\n",
     "##############################################################################\n"))
-meta<-read_csv("../../data/reference/all_meta.sequence_success.csv")
-qual<-read_csv("../../data/processed/secondary/qual.snv.csv",
+meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
+qual<-read_csv("./data/processed/secondary/qual.snv.csv",
                col_types = list(
                  ENROLLID= col_character(),
                  SPECID = col_character(),
@@ -81,7 +81,7 @@ intra_freq<-plyr::adply(intra_freq,1,function(x){
 })
 
 
-write.csv(x = intra_freq,file = "../../data/processed/secondary/Intrahost_all.csv")
-write.csv(x = intra,file =  "../../data/processed/secondary/Intrahost_pairs.csv")
-write.csv(x = intra_freq.comp,file = "../../data/processed/secondary/Intrahost_initially_present.csv")
+write.csv(x = intra_freq,file = "./data/processed/secondary/Intrahost_all.csv")
+write.csv(x = intra,file =  "./data/processed/secondary/Intrahost_pairs.csv")
+write.csv(x = intra_freq.comp,file = "./data/processed/secondary/Intrahost_initially_present.csv")
 

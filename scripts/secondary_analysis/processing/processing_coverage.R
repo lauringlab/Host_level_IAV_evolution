@@ -22,17 +22,17 @@ message(
 
 #' Read in the coverage files 
 
-cov.files<-c("../../data/processed/HK_1/all.coverage.csv",
-             "../../data/processed/HK_2/all.coverage.csv",
-             "../../data/processed/HK_6/all.coverage.csv",
-             "../../data/processed/HK_7/all.coverage.csv",
-             "../../data/processed/HK_8/all.coverage.csv",
-             "../../data/processed/cali09/all.coverage.csv",
-             "../../data/processed/cali09_2/all.coverage.csv",
-             "../../data/processed/victoria/all.coverage.csv",
-             "../../data/processed/victoria_2/all.coverage.csv",
-             "../../data/processed/perth/all.coverage.csv",
-             "../../data/processed/perth_2/all.coverage.csv")
+cov.files<-c("./data/processed/HK_1/all.coverage.csv",
+             "./data/processed/HK_2/all.coverage.csv",
+             "./data/processed/HK_6/all.coverage.csv",
+             "./data/processed/HK_7/all.coverage.csv",
+             "./data/processed/HK_8/all.coverage.csv",
+             "./data/processed/cali09/all.coverage.csv",
+             "./data/processed/cali09_2/all.coverage.csv",
+             "./data/processed/victoria/all.coverage.csv",
+             "./data/processed/victoria_2/all.coverage.csv",
+             "./data/processed/perth/all.coverage.csv",
+             "./data/processed/perth_2/all.coverage.csv")
 
 cov<-read_rbind(cov.files,n=5,cols = list(Id=col_character()))
 
@@ -52,5 +52,5 @@ if(any(is.na(LAURING_ID_LOOKUP$LAURING_ID))){
 }
 cov_sample<-dplyr::left_join(cov_sample,LAURING_ID_LOOKUP,by="Id")
 
-write.csv(cov_sample,file="../../data/processed/secondary/average_coverages.csv")
+write.csv(cov_sample,file="./data/processed/secondary/average_coverages.csv")
 
