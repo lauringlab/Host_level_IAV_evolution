@@ -175,7 +175,7 @@ intra.plot
 # #          base_aspect_ratio = 1.3,
 #           base_width = )
 
-embed_fonts("./Figures/Figure2B_2.pdf")
+#embed_fonts("./Figures/Figure2B_2.pdf")
 ```
 
 
@@ -228,7 +228,7 @@ HA_NS.p<-ggplot(HA_NS,aes(x=as.factor(within_host_time),
   geom_point(pch=21,color='black',size=2)+scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+facet_wrap(~class)
 HA_NS.p
 
-HA_NS %>% filter(!is.na(Antigenic)) %>% select(freq1,freq2,within_host_time,Endpoint,Antigenic)%>% mutate(delta = freq2-freq1)
+HA_NS %>% filter(!is.na(Antigenic)) %>% select(ENROLLID,freq1,freq2,within_host_time,Endpoint,Antigenic)%>% mutate(delta = freq1-freq2)
 
 ```
 

@@ -269,5 +269,14 @@ embed_fonts("./results/Figures/Figure2E.pdf")
 
 write.csv(select(intra,mutation,ENROLLID,DPS1,DPS2,freq1,freq2),
           "./results/Figures/data/Figure2E.csv")
+# Stats 
+intra %>% filter(within_host_time>0,Endpoint!="Arisen") %>% 
+  summarize(persistent=length(which(Endpoint=="Persistent")),
+            total = length(Endpoint)) %>% 
+  mutate(proportion = persistent/total)
 
+intra %>% filter(within_host_time>0) %>% 
+  summarize(new=length(which(Endpoint=="Arisen")),
+            total = length(Endpoint)) %>% 
+  mutate(proportion = new/total)
 

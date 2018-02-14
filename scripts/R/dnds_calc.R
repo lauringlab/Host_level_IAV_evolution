@@ -21,6 +21,7 @@ meta<-filter(meta,!(SPECID %in% c("HS1530","MH8137","MH390")))
 write.csv(meta,"./data/processed/secondary/meta_for_ns.s_calc.csv")
 
 
+
 # Run python notebook.
 # 
 
@@ -35,8 +36,16 @@ qual<-read_csv("./data/processed/secondary/qual.snv.csv",
                  Id = col_character()
                )) # read in quality variant calls from all 
 qual<-filter(qual,freq.var<0.5)
+
 # remove mixed infections
 qual<-filter(qual,!(SPECID %in% c("HS1530","MH8137","MH390")))
+
+# In the calculations we don't account for multiple mutations. 
+# This only happens in 1 codon in the entire
+# data set so the approximation holds.
+qual %>% group_by(SPECID,chr,AA_pos) %>% 
+  summarize(mutations = length(mutation)) %>% 
+  filter(mutations>1)
 
 qual_OR<- qual %>% select(Class,OR) %>% rowwise%>% mutate(Class = gsub("'","",Class),
                                                  Class = gsub("[","",Class,fixed = T),
