@@ -1,0 +1,71 @@
+# --------------------- Secondary Processing ---------------------
+.PHONY: figures 
+
+secondary_analysis: ./data/processed/secondary/community_pairs.freq.csv ./data/processed/secondary/community_pairs_freq.poly.donor.csv \
+./data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv ./data/processed/secondary/no_cut_trans_freq.csv \
+./data/processed/secondary/transmission_pairs_freq.poly.donor.csv ./data/processed/secondary/trans_freq.csv \
+./data/processed/secondary/Intrahost_initially_present.csv ./data/processed/secondary/Intrahost_pairs.csv \
+./data/processed/secondary/Intrahost_all.csv \
+./data/processed/secondary/possible.pairs.dist.csv ./data/processed/secondary/transmission_pairs.csv \
+./data/processed/secondary/qual.snv.csv ./data/processed/secondary/no_freq_cut.qual.snv.csv \
+./data/processed/secondary/average_coverages.csv
+	echo "Done with secondary analysis"
+
+./data/processed/secondary/community_pairs.freq.csv ./data/processed/secondary/community_pairs_freq.poly.donor.csv \
+./data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv ./data/processed/secondary/no_cut_trans_freq.csv \
+./data/processed/secondary/transmission_pairs_freq.poly.donor.csv ./data/processed/secondary/trans_freq.csv : transmission.setup.intermediate
+	#Empty recipe to propagate "newness" from the intermediate to final targets
+.INTERMEDIATE: transmission.setup.intermediate
+transmission.setup.intermediate: ./data/processed/secondary/qual.snv.csv ./data/processed/secondary/no_freq_cut.qual.snv.csv \
+./data/processed/secondary/transmission_pairs.csv
+	Rscript ./scripts/secondary_analysis/processing/settingup_transmission.R
+
+
+./data/processed/secondary/Intrahost_initially_present.csv ./data/processed/secondary/Intrahost_pairs.csv \
+./data/processed/secondary/Intrahost_all.csv: intrahost.setup.intermediate
+	# Empty recipe to propagate "newness" from the intermediate to final targets
+.INTERMEDIATE: intrahost.setup.intermediate
+intrahost.setup.intermediate: ./data/processed/secondary/qual.snv.csv ./data/reference/all_meta.sequence_success.csv 
+	Rscript ./scripts/secondary_analysis/processing/Intrahost_setup.R
+
+./data/processed/secondary/possible.pairs.dist.csv ./data/processed/secondary/transmission_pairs.csv: distance.intermediate
+	# Empty recipe to propagate "newness" from the intermediate to final targets
+
+.INTERMEDIATE: distance.intermediate
+distance.intermediate: ./data/processed/secondary/qual.snv.csv 
+	Rscript ./scripts/secondary_analysis/processing/L1_norm.R
+
+
+./data/processed/secondary/qual.snv.csv ./data/processed/secondary/no_freq_cut.qual.snv.csv ./data/reference/all_meta.sequence_success.csv: qual.intermediate
+	# Empty recipe to propagate "newness" from the intermediate to final targets
+	
+.INTERMEDIATE: qual.intermediate
+qual.intermediate: ./data/processed/secondary/average_coverages.csv \
+./data/processed/HK_1/all.variants.csv ./data/processed/HK_2/all.variants.csv ./data/processed/HK_6/all.variants.csv \
+./data/processed/HK_7/all.variants.csv ./data/processed/HK_8/all.variants.csv ./data/processed/cali09/all.variants.csv \
+./data/processed/cali09_2/all.variants.csv ./data/processed/victoria/all.variants.csv ./data/processed/victoria_2/all.variants.csv \
+./data/processed/perth/all.variants.csv ./data/processed/perth_2/all.variants.csv ./data/reference/all_meta.csv
+	Rscript ./scripts/secondary_analysis/processing/processing_snv.R
+
+
+# Empty targes for the all.varaint files - These are made by the variant_calling_pipeline and not by the make file
+./data/processed/HK_1/all.variants.csv: ;
+./data/processed/HK_2/all.variants.csv: ;
+./data/processed/HK_6/all.variants.csv: ;
+./data/processed/HK_7/all.variants.csv: ;
+./data/processed/HK_8/all.variants.csv: ;
+./data/processed/cali09/all.variants.csv: ;
+./data/processed/cali09_2/all.variants.csv: ;
+./data/processed/victoria/all.variants.csv: ;
+./data/processed/victoria_2/all.variants.csv: ;
+./data/processed/perth/all.variants.csv: ;
+./data/processed/perth_2/all.variants.csv: ;
+./data/reference/all_meta.csv: ;
+
+
+
+./data/processed/secondary/average_coverages.csv: ./data/processed/HK_1/all.coverage.csv ./data/processed/HK_2/all.coverage.csv \
+./data/processed/HK_6/all.coverage.csv ./data/processed/HK_7/all.coverage.csv ./data/processed/HK_8/all.coverage.csv \
+./data/processed/cali09/all.coverage.csv ./data/processed/cali09_2/all.coverage.csv ./data/processed/victoria/all.coverage.csv \
+./data/processed/victoria_2/all.coverage.csv ./data/processed/perth/all.coverage.csv ./data/processed/perth_2/all.coverage.csv
+	Rscript ./scripts/secondary_analysis/processing/processing_coverage.R
