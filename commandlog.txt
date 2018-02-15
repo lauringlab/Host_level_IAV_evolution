@@ -2811,3 +2811,60 @@ python /Users/jt/variant_pipeline/scripts/concat_all.py /Users/jt/Documents/Anal
 mv ./fasta.config.groovy /Users/jt/Documents/Analysis/HIVE/data/processed/HK_8/parsed_fa/../fasta.config.groovy
 # ################ Finished at Fri Jun 30 12:41:49 EDT 2017 Duration = 26.389 seconds ################
 
+
+####################################################################################################
+# Starting pipeline at Thu Feb 15 09:31:18 EST 2018
+# Input files:  null
+# Output Log:  .bpipe/logs/18632.log
+# Stage download [HS1536_B]
+# Stage download [HS1448_B]
+# Stage download [MH8586_A]
+# Stage download [HS1525_B]
+# Stage download [HS1518_B]
+# Stage download [HS1567_B]
+# Stage download [HS1409_B]
+# Stage download [HS1579_B]
+# Stage download [HS1530_B]
+# Stage download [HS1417_B]
+# Stage download [HS1427_B]
+# Stage download [HS1421_B]
+# Stage download [MH9045_A]
+# Stage download [HS1402_B]
+# Stage download [HS1425_B]
+# Stage download [HS1519_B]
+# Stage download [HS1416_B]
+# Stage download [HS1487_B]
+# Stage download [HS1573_B]
+# Stage download [HS1294_B]
+# Stage download [HS1455_B]
+# Stage download [HS1535_B]
+# Stage download [HS1516_B]
+# Stage download [PC1A]
+# Stage download [HS1484_B]
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121622/SRR6121622.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121275/SRR6121275.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121414/SRR6121414.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121380/SRR6121380.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121307/SRR6121307.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121299/SRR6121299.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121346/SRR6121346.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121385/SRR6121385.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121382/SRR6121382.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121294/SRR6121294.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121488/SRR6121488.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121387/SRR6121387.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121305/SRR6121305.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121628/SRR6121628.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121302/SRR6121302.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121409/SRR6121409.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121449/SRR6121449.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121221/SRR6121221.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121375/SRR6121375.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121407/SRR6121407.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121277/SRR6121277.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121411/SRR6121411.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121220/SRR6121220.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121296/SRR6121296.sra
+wget -r -np -nd -k -P /Users/jt/Documents/Analysis/Host_level_IAV_evolution/data/raw/HK_1 ftp://ftp-trace.ncbi.nih.gov/sra/sra-instant/reads/ByRun/sra/SRR/SRR612/SRR6121417/SRR6121417.sra
+# ################ Finished at Thu Feb 15 09:31:19 EST 2018 Duration = 0.559 seconds #################
+

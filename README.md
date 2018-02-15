@@ -94,15 +94,24 @@ python PATH/TO/VARIANT_CALLING_PIPELINE/bin/variantPipeline.py ./scripts/primary
 
 ## Secondary analysis
 
-The secondary analysis is broken up into 2 separate stages. The first finalizes variant calls and runs the time and memory intensive steps. The second make the figures. These stages can be run using the Makefile located in the make directory. Some of the processing steps are memory and time intensive. They also process some of the steps in parrallel so those parts of the code may need to be updated to reflect your setup.
-
+The secondary analysis is broken up into 2 separate stages. The first finalizes variant calls and runs the time and memory intensive steps. The second make the figures. These stages can be run using the Makefile located in the make directory. Some of the processing steps are memory and time intensive. They also process some of the steps in parrallel so those parts of the code may need to be updated to reflect your setup. Note that the secondary analysis requires the raw iSNV calls to create the qual.snv.csv file (The file that contains all final iSNV calls - both minor and major allele). Those files must be generated from the steps above; they are not included here. You can comment out that rule if you wish to run any of the other rules in the secondary analysis.
 
 
 ```
 make secondary_analysis
 ```
 
+Here is a rough map of dependencies for this analysis made using [make2graph] (https://github.com/lindenb/makefile2graph)
+
+![alt text](./secondary.png)
+
+Reproducing the figures is easier as all the dependent files are included.
+
 ```
 make figures
 ```
 
+![alt text](./figures.png)
+
+
+_Currently there is an issue with save.plot from cowplot and using arial fonts. The current work around is to redownload cowplot before running each rule._
