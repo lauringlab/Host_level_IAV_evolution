@@ -1,5 +1,5 @@
 # Influenza evolution within and between naturally occuring acute infections
-This repository holds the analysis used in *citation,2018* it relies heavily on our other repository [variant_pipeline](https://github.com/lauringlab/variant_pipeline).
+This repository holds the analysis used in *citation,2018* it relies heavily on our other repository [variant_pipeline](https://github.com/lauringlab/variant_pipeline) and the [HIVEr R package] (https://github.com/jtmccr1/HIVEr).
 
 #Overview
 --------
@@ -47,7 +47,9 @@ Also the R analysis relies heavily on the package HIVEr which contains functions
 
 # Reproducing the analysis
 
-We can use the commands in the Makefile to do everyhing from downloading the fastq files from the SRA all the way through making the figures. There are 4 stages to the analysis. 1) Downloading the fastq files from the SRA, 2) Primary analsysis - Calling iSNV in each sample using the variant_pipeline repository referenced above, 3) Secondary analysis - maniputating the data and running the models 4) making the figures. All the intermediate files needed to run the secondary analysis are included in this repository. In most cases the interesting analysis will done by the last stage.
+Reproducing the analysis involves 4 steps. 1) Downloading the fastq files from the SRA 2) Primary analsysis - Calling iSNV in each sample using the variant_pipeline repository referenced above, 3) Secondary analysis - maniputating the data and running the models 4) making the figures. All the intermediate files needed to run the secondary analysis are included in this repository. The Makefile can be used to run the secondary analysis. 
+
+Due to space limitations, the raw fastq files and intermediate bam files are not included here but can be remade using the commands below.
 
 Please note that in many places we refer to the genomic segment "NA" as "NR". This is to avoid complications in R as "NA" is a special term. 
 
@@ -56,31 +58,51 @@ Please note that in many places we refer to the genomic segment "NA" as "NR". Th
 
 ## Downloading raw data
 
-Becasue we use a plasmid control to estimate the lane specific error rates used to identify iSNV it is important that the fastq files from the SRA are split into separate directories for each Hiseq lane. This stage makes a file list for each run (if needed) and then downloads the .sra files using wget. The sra files are then converted to fastq files and are renamed to match the sample names used in the rest of the analysis. All of this is achieved by running the "download" phony target.
+Becasue we use a plasmid control to estimate the lane specific error rates used to identify iSNV it is important that the fastq files from the SRA are split into separate directories for each Hiseq lane. We can download these files using the download pipeling present in the variant_calling_pipeline repository and the SRR.*.csv files located in data/raw/SRR_files. 
+
+There is a help option that gives useful information regarding this pipeline
+```
+python PATH/TO/VARIANT_CALLING_PIPELINE/bin/download.fastq.pipe.py -h
+```
+
+
+Below is an an example of how to download the fastq files from the HK_1 lane
 
 ```
-make download
+python PATH/TO/VARIANT_CALLING_PIPELINE/bin/download.fastq.pipe.py data/raw/SRR_files/SRR.HK_1.csv SRR.HK_1.branches ./data/raw/HK_1/
 ```
+
 
 
 ## Processing the raw data
 
-The following command launches the analyis pipeline from https://github.com/lauringlab/variant_pipeline. This pipeline is based in [bpipe](http://bpipe-test-documentation.readthedocs.io/en/latest/) and is smart enough to remember what commands have been run in the event of failure. It also logs the commands that were run("./data/processed/\*/commandlog.txt"). These steps are time and memory intensive. These commands output a number of large intermediate files. The important files that are used in down stream analysis are the concatenated variant calls "./data/processed/\*/all.sum.csv". The concatenated coverage files "./data/processed/\*/all.coverage.csv", and the consensus sequences "./data/processed/\*/parsed_fa/\*.fa". This stage of the analysis can be run using the "primary" phony target, and requires that the fastq files are downloaded and named appropriately.
+The commands used to process the data from fastq format to preliminary iSNV identification can be found in the PBS scripts and option files located in scripts/primary_analysis/. (Note paths in the files may need to be updated.)These commands launch the analyis pipeline from https://github.com/lauringlab/variant_pipeline. This pipeline is based in [bpipe](http://bpipe-test-documentation.readthedocs.io/en/latest/) and is smart enough to remember what commands have been run in the event of failure. It also logs the commands that were run("./data/processed/\*/commandlog.txt"). These steps are time and memory intensive. These commands output a number of large intermediate files. The important files that are used in down stream analysis are the concatenated variant calls "./data/processed/\*/all.sum.csv". The concatenated coverage files "./data/processed/\*/all.coverage.csv", and the consensus sequences "./data/processed/\*/parsed_fa/\*.fa". The -bam option in some of the pbs scripts starts the analysis after the samples have been aligned, sorted, and duplicate reads removed. To run from fastq files simply delete this option. More information regarding the pipeline can be found by running the command below or reading the more about the pipeline [here](https://github.com/lauringlab/variant_pipeline)
+
+
 ```
-make primary
+python PATH/TO/VARIANT_CALLING_PIPELINE/bin/variantPipeline.py -h
 ```
+
+Here is an example of the command for processing files from the HK_1 hiseq lane.
+
+```
+python PATH/TO/VARIANT_CALLING_PIPELINE/bin/variantPipeline.py ./scripts/primary_analysis/HK_1.options.yaml 
+```
+
+
 
 
 ## Secondary analysis
 
-The secondary analysis is broken up into 2 separate stages. The first finalizes variant calls and runs the time and memory intensive steps. The second make the figures.
+The secondary analysis is broken up into 2 separate stages. The first finalizes variant calls and runs the time and memory intensive steps. The second make the figures. These stages can be run using the Makefile located in the make directory. Some of the processing steps are memory and time intensive. They also process some of the steps in parrallel so those parts of the code may need to be updated to reflect your setup.
 
 
+
 ```
-make secondary_proceessing
+make secondary_analysis
 ```
 
 ```
-make secondary_figures
+make figures
 ```
 
