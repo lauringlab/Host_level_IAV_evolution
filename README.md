@@ -54,8 +54,6 @@ Due to space limitations, the raw fastq files and intermediate bam files are not
 Please note that in many places we refer to the genomic segment "NA" as "NR". This is to avoid complications in R as "NA" is a special term. 
 
 
-# NOTE : WORK ADDING THESE STEPS TO THE MAKEFILE IS CURRENTLY IN PROGRESS - (2/14/2018)
-
 ## Downloading raw data
 
 Becasue we use a plasmid control to estimate the lane specific error rates used to identify iSNV it is important that the fastq files from the SRA are split into separate directories for each Hiseq lane. We can download these files using the download pipeling present in the variant_calling_pipeline repository and the SRR.*.csv files located in data/raw/SRR_files. 
