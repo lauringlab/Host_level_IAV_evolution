@@ -1,0 +1,202 @@
+---
+title: "Intrahost model"
+author: "JT McCrone"
+date: "4/18/2017"
+output: github_document
+---
+
+```{r,echo=F}
+# Set up packages
+require(knitr)
+require(ggplot2)
+require(magrittr)
+require(tidyverse)
+if(!("package:tidyverse" %in% search())){
+  require(dplyr)
+  require(tidyr)
+  require(purrr)
+  require(readr)
+  require(rlang)
+}
+require(HIVEr)
+require(extrafont)
+require(wesanderson)
+require(grid)
+require(ggbeeswarm)
+set.seed(42) # Set seed so randomization is reproducible
+
+# Set up figures
+opts_chunk$set(fig.align="center",warning=TRUE,tidy=T,cache = T,echo=F)
+theme_set(new = theme_classic()+ theme(
+axis.line.x = element_line(colour = 'black', size=0.5, linetype='solid'),
+axis.line.y = element_line(colour ='black',size=0.5,linetype='solid'),
+text=element_text(family="Arial",size = 18))) # to make nice plots
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbPalette<-wes_palette("Zissou")
+# Get widely used functions
+#source("../scripts/useful_functions.R")
+require(doMC)
+doMC::registerDoMC(cores=4)
+
+####### Write to summary results file ######
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results.table.tsv")
+}
+require(cowplot)
+```
+
+```{r}
+
+meta<-read_csv("../data/reference/all_meta.sequence_success.csv")
+intra<-read_csv("../data/processed/secondary/Intrahost_initially_present.csv")
+
+
+intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
+intra<-subset(intra,freq1<0.5) # Just to make sure
+
+
+intra %>% group_by(ENROLLID) %>% 
+  summarize(onset = unique(onset),
+            within_host_time = unique(within_host_time),
+            DPS1 = unique(DPS1),
+            DPS2 = unique(DPS2)) -> intra_meta
+
+intra_meta<-intra_meta[order(intra_meta$DPS1,decreasing = T),]
+intra_meta %>% mutate(DPS2 = ifelse(DPS1==DPS2,yes = DPS2+0.3,no = DPS2)) ->intra_meta
+intra_meta$sort_order<-1:nrow(intra_meta)
+fig_2A<-ggplot(intra_meta,aes(x = DPS1,xend=DPS2,y = sort_order,yend=sort_order))+geom_segment(color = cbPalette[1])+ylab("")+xlab("Day post symptom onset")+ theme(axis.line.y=element_blank(),axis.ticks.y = element_blank(),axis.text.y = element_blank())+geom_point(aes(y=sort_order,x = DPS1),color=cbPalette[1])+geom_point(aes(y = sort_order,x = DPS2),color=cbPalette[1]) + scale_x_continuous(breaks = -2:6) 
+
+fig_2A
+
+save_plot("./Figures/Figure2A.pdf", fig_2A,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Figure2A.pdf")
+
+write.csv(rename(intra_meta,day.post.sympotom.onset1=DPS1,
+                 day.post.sympotom.onset2=DPS2,),"./Figures/data/Figure2A.csv")
+```
+
+```{r}
+same_day<-subset(intra,within_host_time==0 & freq1<0.5)
+Sup_6<-ggplot(same_day,aes(x=freq1,y=freq2))+geom_point()+
+  xlab("Frequency in home isolate") + ylab("Frequency in clinic isolate") + 
+  scale_x_continuous(limits = c(0,0.5))+scale_y_continuous(limits = c(0,0.5))
+Sup_6
+
+lm_fit<-lm(freq2~freq1,same_day)
+summary(lm_fit)->sum_fit
+sum_fit
+
+write_to_summary("R2 samples same day:",sum_fit$r.squared)
+save_plot("./Figures/Supplemental_Figure6.pdf", Sup_6,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Supplemental_Figure6.pdf")
+
+write.csv(select(same_day,SPECID1,SPECID2,collect1,collect2,chr,pos,ref,var,freq1,freq2),
+          "./Figures/data/Supplemental_Figure6.csv")
+```
+
+
+## Within host dynamics
+```{r}
+
+
+
+stat_sum_df <- function(fun, geom="crossbar", ...) {
+  stat_summary(fun.data = fun, geom = geom, width = 0.2, ...)
+}
+
+iqr_min <-function(x) quantile(x,probs = 0.25)
+iqr_max <-function(x) quantile(x,probs = 0.75)
+
+intra.plot<-ggplot(intra,aes(x=as.factor(within_host_time),y=freq2-freq1,fill=donor_class))+xlab("Time within host (days)")+ylab("Change in frequency")+
+  scale_fill_manual(labels  =c( "Nonsynonymous","Synonymous"),
+                    name="",values=cbPalette[c(1,4)])+
+  geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 0.02,dotsize = 0.6,
+               position=position_dodge(width = 0.95))+
+  #stat_summary(fun.y = "median",fun.ymin =  "iqr_min",fun.ymax = "iqr_max",  geom = "crossbar",
+  #             position = position_dodge(width = 1,preserve = 'single'),
+  #             aes(color = donor_class,fill=NA))+
+  #scale_color_manual(labels  ="",name="",values=cbPalette[c(1,4)])+
+  theme(legend.position = 'none')
+
+  
+intra.plot
+save_plot("./Figures/Figure2B.pdf", intra.plot,
+          base_aspect_ratio = 1.3)
+
+embed_fonts("./Figures/Figure2B.pdf")
+write.csv(select(intra,days.betweeen.sampling=within_host_time,SPECID1,SPECID2,chr,pos,ref,var,
+                 freq1,freq2,mutational.class=donor_class),"./Figures/data/Figure2B.csv")
+
+intra %>% subset(within_host_time==1) %>% .$ENROLLID %>% unique() %>% length()->one_day_isnv
+intra %>% subset(within_host_time>0) %>% .$ENROLLID %>% unique() %>% length()->at_least_day_isnv
+
+
+write_to_summary("Samples exactly 1 day apart:",one_day_isnv)
+write_to_summary("Samples at least 1 day apart:",at_least_day_isnv)
+```
+
+
+# Within host classes
+
+```{r,fig.width=10}
+intra_all<-read_csv("../data/processed/secondary/Intrahost_all.csv",col_types = cols(ENROLLID=col_character()))
+# Remove mixed infections.
+intra_all<- intra_all %>% filter(!(SPECID2 %in% c("HS1530","MH8137","MH8390")) & !(SPECID1 %in% c("HS1530","MH8137","MH8390")))
+
+intra_all %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra_all
+intra_all<-filter(intra_all,freq1<0.5) # Just to make sure
+
+intra_all<-intra_all %>% mutate(Endpoint="Persistent") %>%
+  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
+  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
+
+intra_all$Endpoint<-factor(intra_all$Endpoint,levels = c("Persistent","Arisen","Lost"),ordered = T)
+
+intra.plot<-ggplot(intra_all,aes(x=as.factor(within_host_time),
+                             y=freq2-freq1,
+                   fill = Endpoint))+
+  xlab("Time within host (days)")+ylab("Change in frequency")+
+  geom_quasirandom(pch=21,color='black',size=2)+scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+facet_wrap(~class)
+intra.plot
+
+pdf("./Figures/Figure2B_2.pdf",width = 10,height = 7)
+intra.plot
+dev.off()
+
+
+
+# save_plot("./Figures/Figure2B_2.pdf", intra.plot,
+# #          base_aspect_ratio = 1.3,
+#           base_width = )
+
+embed_fonts("./Figures/Figure2B_2.pdf")
+```
+
+
+## Antigenic
+
+```{r}
+HA_nonsyn<-read_csv("../data/processed/secondary/minor_nonsynom.csv",col_types = cols(ENROLLID=col_character()))
+HA_nonsyn<- HA_nonsyn %>% select(mutation,ENROLLID,mutation,H3_name,Antigenic,H1_name)
+
+intra_all<-left_join(intra_all,HA_nonsyn)  %>% distinct()# add HA classification
+
+HA_NS<-filter(intra_all,chr=="HA",(!is.na(H3_name)|!(is.na(H1_name))))
+HA_NS <-mutate(HA_NS, class = ifelse(is.na(Antigenic),
+                                     "Nonantigenic",
+                                     "Antigenic"))
+HA_NS.p<-ggplot(HA_NS,aes(x=as.factor(within_host_time),
+                             y=freq2-freq1,
+                   fill = Endpoint))+
+  xlab("Time within host (days)")+ylab("Change in frequency")+
+  geom_point(pch=21,color='black',size=2)+scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+facet_wrap(~class)
+HA_NS.p
+
+```
+

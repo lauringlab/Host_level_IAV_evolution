@@ -5,20 +5,30 @@ JT McCrone
 
     ## Loading required package: knitr
 
+    ## Warning: package 'knitr' was built under R version 3.4.1
+
     ## Loading required package: ggplot2
 
     ## Loading required package: magrittr
 
     ## Loading required package: tidyverse
 
-    ## ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+    ## Warning: package 'tidyverse' was built under R version 3.4.2
+
+    ## ── Attaching packages ───────────────────────────────────── tidyverse 1.2.0 ──
 
     ## ✔ tibble  1.3.4     ✔ purrr   0.2.4
     ## ✔ tidyr   0.7.2     ✔ dplyr   0.7.4
     ## ✔ readr   1.1.1     ✔ stringr 1.2.0
     ## ✔ tibble  1.3.4     ✔ forcats 0.2.0
 
-    ## ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+    ## Warning: package 'tibble' was built under R version 3.4.1
+
+    ## Warning: package 'purrr' was built under R version 3.4.2
+
+    ## Warning: package 'dplyr' was built under R version 3.4.2
+
+    ## ── Conflicts ──────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ tidyr::extract()   masks magrittr::extract()
     ## ✖ dplyr::filter()    masks stats::filter()
     ## ✖ dplyr::lag()       masks stats::lag()
@@ -87,14 +97,14 @@ How many H3N2 and H1N1 did we sequence
 
 Take the meta and split by strain and season.
 
-|pcr\_result|2010-2011|2011-2012|2012-2013|2013-2014|2014-2015|
-|:----------|--------:|--------:|--------:|--------:|--------:|
-|A/H1N1|26|1|3|47|0|
-|A/H3N2|58|22|66|1|166|
+| pcr\_result |  2010-2011|  2011-2012|  2012-2013|  2013-2014|  2014-2015|
+|:------------|----------:|----------:|----------:|----------:|----------:|
+| A/H1N1      |         26|          1|          3|         47|          0|
+| A/H3N2      |         58|         22|         66|          1|        166|
 
 ### Transmission rules.
 
-These apply to all cases where 2 individuals are sick within the same household within a week of eachtoher (difference in date of onset \<= 7 days).
+These apply to all cases where 2 individuals are sick within the same household within a week of eachtoher (difference in date of onset &lt;= 7 days).
 
 In the event of multiple possible donors we assume the donor is the individual with symptom onset nearest to the recipeient.
 
@@ -161,7 +171,7 @@ This yields 185 possible pairs. And 124 valid pairs
 Summary table of transmission events
 ------------------------------------
 
-However, we did not sequence every sample and every sample we sequenced did not yeild usable SNV data. We handeled 493 samples. We sequenced 367 samples or 74% of the samples. 255 samples (52%) had titers \> 1000 genomes/ul and were sequenced.
+However, we did not sequence every sample and every sample we sequenced did not yeild usable SNV data. We handeled 493 samples. We sequenced 367 samples or 74% of the samples. 255 samples (52%) had titers &gt; 1000 genomes/ul and were sequenced.
 
 We had samples from 390 inidividuals. We sequenced samples from 298 or 76% of the individuals.
 
@@ -201,29 +211,29 @@ Now we will make all possible pair comparisions within a season and strain. Note
 
 <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
 
-|L1\_norm|threshold|valid\_pairs|
-|-------:|--------:|-----------:|
-|0.00000|0.00|0|
-|15.98791|0.05|47|
-|22.13775|0.10|47|
-|32.09874|0.15|47|
-|45.40643|0.20|48|
-|66.70239|0.25|48|
-|70.45920|0.30|48|
-|73.13025|0.35|48|
-|75.71780|0.40|48|
-|77.82552|0.45|50|
-|79.13835|0.50|51|
-|80.76210|0.55|51|
-|82.55170|0.60|51|
-|84.48883|0.65|52|
-|86.79044|0.70|52|
-|89.03344|0.75|52|
-|92.04885|0.80|52|
-|96.47817|0.85|52|
-|162.17490|0.90|52|
-|293.94104|0.95|52|
-|544.45895|1.00|52|
+|   L1\_norm|  threshold|  valid\_pairs|
+|----------:|----------:|-------------:|
+|    0.00000|       0.00|             0|
+|   15.98791|       0.05|            47|
+|   22.13775|       0.10|            47|
+|   32.09874|       0.15|            47|
+|   45.40643|       0.20|            48|
+|   66.70239|       0.25|            48|
+|   70.45920|       0.30|            48|
+|   73.13025|       0.35|            48|
+|   75.71780|       0.40|            48|
+|   77.82552|       0.45|            50|
+|   79.13835|       0.50|            51|
+|   80.76210|       0.55|            51|
+|   82.55170|       0.60|            51|
+|   84.48883|       0.65|            52|
+|   86.79044|       0.70|            52|
+|   89.03344|       0.75|            52|
+|   92.04885|       0.80|            52|
+|   96.47817|       0.85|            52|
+|  162.17490|       0.90|            52|
+|  293.94104|       0.95|            52|
+|  544.45895|       1.00|            52|
 
 <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-2.png" style="display: block; margin: auto;" />
 
@@ -236,28 +246,28 @@ Now we will make all possible pair comparisions within a season and strain. Note
 Overall Summary
 ---------------
 
-|Class|All.Samples|Sequenced.samples|Titers1e3|SNV.sequenced|
-|:----|----------:|----------------:|--------:|:------------|
-|Households|240|191|135|133|
-|Isolates|493|367|255|249|
-|Individuals|390|298|205|200|
-|Transmission pairs|124|87|53|52 (47)|
-|Households with potential pairs|85|64|39|38|
-|Longitudinal sampling|103|69|50|49|
+| Class                           |  All.Samples|  Sequenced.samples|  Titers1e3| SNV.sequenced |
+|:--------------------------------|------------:|------------------:|----------:|:--------------|
+| Households                      |          240|                191|        135| 133           |
+| Isolates                        |          493|                367|        255| 249           |
+| Individuals                     |          390|                298|        205| 200           |
+| Transmission pairs              |          124|                 87|         53| 52 (47)       |
+| Households with potential pairs |           85|                 64|         39| 38            |
+| Longitudinal sampling           |          103|                 69|         50| 49            |
 
-|Individuals|2010-2011|2011-2012|2012-2013|2013-2014|2014-2015|
-|----------:|--------:|--------:|--------:|--------:|--------:|
-|2|13|2|9|7|23|
-|3|5|2|3|3|11|
-|4|NA|NA|1|2|4|
-|\#\# Looking at|transmission|||||
+|      Individuals|     2010-2011|  2011-2012|  2012-2013|  2013-2014|  2014-2015|
+|----------------:|-------------:|----------:|----------:|----------:|----------:|
+|                2|            13|          2|          9|          7|         23|
+|                3|             5|          2|          3|          3|         11|
+|                4|            NA|         NA|          1|          2|          4|
+|  \#\# Looking at|  transmission|           |           |           |           |
 
 Here are the functions used for plotting.
 
 Valid pairs
 ===========
 
-Transmission rules. These apply to all cases where 2 individuals are sick within the same household within a week of eachtoher (difference in date of onset \<= 7 days).
+Transmission rules. These apply to all cases where 2 individuals are sick within the same household within a week of eachtoher (difference in date of onset &lt;= 7 days).
 
 In the event of multiple possible donors we assume the donor is the individual with symptom onset neast to the recipeient
 
@@ -316,6 +326,8 @@ Here is a final summary table. These are the valid pairs
 SNV summary
 ===========
 
+    ## Warning: package 'dplyr' was built under R version 3.4.2
+
     ## 
     ## Attaching package: 'dplyr'
 
@@ -344,30 +356,43 @@ There are two samples here with NA DPI, I believe we don't have meta data on whe
 
 <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/all_titers-1.png" style="display: block; margin: auto;" /> There are warning messages for 13 samples we did not get usable numbers back from the qPCR. They have NA in the log\_copy\_num column but R gives them 0 in the gc\_ul. These are removed on the log scale.
 
-### Frequency distribution
+### Distibution of isnv in samples
 
-|class\_factor|mutations|
-|:------------|--------:|
-|Nonsynonymous|277|
-|Synonymous|434|
+### Diversity in samples
+
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/snv_sample-1.png" style="display: block; margin: auto;" />
+
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-2.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-3.png" style="display: block; margin: auto;" /> \#\#\# Frequency distribution
+
+| class\_factor |  mutations|
+|:--------------|----------:|
+| Nonsynonymous |        249|
+| Synonymous    |        330|
 
 <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/frequency_distribution-1.png" style="display: block; margin: auto;" />
 
     ## # A tibble: 10 x 2
     ##      bin     ratio
     ##    <int>     <dbl>
-    ##  1     1 0.6776860
-    ##  2     2 1.0000000
-    ##  3     3 0.7368421
+    ##  1     1 0.7027027
+    ##  2     2 1.1290323
+    ##  3     3 0.8750000
     ##  4     4 0.9230769
-    ##  5     5 0.3750000
-    ##  6     6 0.5454545
-    ##  7     7 1.0000000
-    ##  8     8 0.2608696
-    ##  9     9 0.2592593
+    ##  5     5 0.4545455
+    ##  6     6 0.6000000
+    ##  7     7 1.5000000
+    ##  8     8 1.0000000
+    ##  9     9 0.3750000
     ## 10    10 0.5000000
 
-0.6104079
+    ## 
+    ##  Two-sample Kolmogorov-Smirnov test
+    ## 
+    ## data:  min.qual$freq.var[min.qual$class_factor == "Nonsynonymous"] and min.qual$freq.var[min.qual$class_factor == "Synonymous"]
+    ## D = 0.063271, p-value = 0.6209
+    ## alternative hypothesis: two-sided
+
+0.5699482
 
 ### Distribution across the genome
 
@@ -375,35 +400,42 @@ There are two samples here with NA DPI, I believe we don't have meta data on whe
 
 ### Distribution across Individuals - using every sample
 
-These will need to be rare in mulitple individuals to show up here at \>1
+These will need to be rare in mulitple individuals to show up here at &gt;1
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
     ## Warning: Transformation introduced infinite values in continuous y-axis
 
-    ## Warning: Removed 26 rows containing missing values (geom_text).
+    ## Warning: Removed 28 rows containing missing values (geom_text).
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/mutations_per_sample-1.png" style="display: block; margin: auto;" /> These are the mutations found in multiple individuals <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-19-2.png" style="display: block; margin: auto;" /> These counts don't sum to the total above, but that is because this is looking at individuals above is looking at all sequenced samples (multiple/person) sometimes. If I sum these counts over SPECID then the sums are equal.
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/mutations_per_sample-1.png" style="display: block; margin: auto;" /> These are the mutations found in multiple individuals <img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-20-2.png" style="display: block; margin: auto;" /> These counts don't sum to the total above, but that is because this is looking at individuals above is looking at all sequenced samples (multiple/person) sometimes. If I sum these counts over SPECID then the sums are equal.
 
-### Diversity in samples
+### Diversity in by vaccination
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/snv_sample-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/snv_sample1-1.png" style="display: block; margin: auto;" />
 
 ### Distribution of snv in samples (Could be multiple samples/person)
 
     ##   0%  25%  50%  75% 100% 
-    ##    0    1    2    3   57
+    ##    0    1    2    3   22
 
-    ## [1] 2.855422
+    ## [1] 2.325301
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-21-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-1.png" style="display: block; margin: auto;" />
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-2.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-22-3.png" style="display: block; margin: auto;" />
+Codon pos
+---------
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-23-1.png" style="display: block; margin: auto;" />
 
 Figure 1
 ========
 
     ## Loading required package: cowplot
+
+    ## Warning: package 'cowplot' was built under R version 3.4.1
 
     ## 
     ## Attaching package: 'cowplot'
@@ -420,7 +452,7 @@ Figure 1
 
     ## notch went outside hinges. Try setting notch=FALSE.
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-23-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-24-1.png" style="display: block; margin: auto;" />
 
 Separate Panels
 
@@ -434,12 +466,12 @@ Separate Panels
 Figure 3
 ========
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-25-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-26-1.png" style="display: block; margin: auto;" />
 
 Supplemental Figure 4
 =====================
 
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-27-1.png" style="display: block; margin: auto;" />
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-28-1.png" style="display: block; margin: auto;" />
 
 Looking at the outliers
 =======================
@@ -448,15 +480,4 @@ Let's take a look at the samples with many snv.
 
     ## Loading required package: ggjoy
 
-    ## Loading required package: ggridges
-
-    ## The ggjoy package has been deprecated. Please switch over to the
-    ## ggridges package, which provides the same functionality. Porting
-    ## guidelines can be found here:
-    ## https://github.com/clauswilke/ggjoy/blob/master/README.md
-
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-29-1.png" style="display: block; margin: auto;" />
-
-    ## Picking joint bandwidth of 0.00905
-
-<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-29-2.png" style="display: block; margin: auto;" /> This looks like mixed infections. We find many mutations at similar frequencies.
+<img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /><img src="Summary_stats_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-30-2.png" style="display: block; margin: auto;" /> This looks like mixed infections. We find many mutations at similar frequencies.

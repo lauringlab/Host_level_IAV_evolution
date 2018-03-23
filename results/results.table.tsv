@@ -5,24 +5,24 @@ H1N1 cases:	77
 High quality isolates:	249
 High quality individuals:	200
 -------iSNV Summary Statistics-------
-SPECID <10 iSNV:	243
-SPECID more 10 iSNV:	6
+SPECID <10 iSNV:	246
+SPECID more 10 iSNV:	3
 SPECID mixed:	
 Median iSNV:	2
 IQR iSNV:	1 3
-Ns/S:	0.638248847926267
-Ns/S:	0.638248847926267
-unique iSNV %:	0.950949367088608
-unique iSNV n:	601
-twice iSNV %:	0.0474683544303797
-thrice iSNV %:	0.00158227848101266
-multiple isolates iSNV n:	31
-NS mulitple isolates iSNV n:	PB1_G202A, NS_G441A, PB2_G1099A, PB1_G650A, PB1_G650G
-NS HA n:	37
-Antigenic iSNV n:	18
+Ns/S:	0.754545454545455
+Ns/S:	0.754545454545455
+unique iSNV %:	0.976923076923077
+unique iSNV n:	508
+twice iSNV %:	0.0230769230769231
+thrice iSNV %:	0
+multiple isolates iSNV n:	12
+NS mulitple isolates iSNV n:	PB1_G202A, NS_G441A, PB2_G1099A
+NS HA n:	33
+Antigenic iSNV n:	16
 Antigenic p:	0.000607986687045
-Antigenic iSNV %:	Proportion of snv in antigenic sites 0.025316 - 0.009845
-Antigenic infection n:	Propotion of infections with antigenic sites 0.080000 - 0.035000 
+Antigenic iSNV %:	Proportion of snv in antigenic sites 0.027634 - 0.010363
+Antigenic infection n:	Propotion of infections with antigenic sites 0.071066 - 0.030457 
 ------Effective population size------
 Samples at least 1 day apart:	29
 R2 samples same day:	0.985960082289121

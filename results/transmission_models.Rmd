@@ -23,6 +23,7 @@ require(extrafont)
 require(wesanderson)
 require(grid)
 require(ggplot2)
+require(lubridate)
 
 set.seed(42) # Set seed so randomization is reproducible
 
@@ -100,11 +101,6 @@ In this fit we take the minority frequency to the correct and set the major freq
 
 ```{r}
 
-pa_Nb<-trans_fit(trans_freq.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA",
-                 threshold=NULL,acc=NULL,
-                 pair_id)
-  
-pa_Nb_sum<- pa_Nb %>% group_by(pair_id) %>% do(model_summary(.) )
 pa_total_fit<-trans_fit(trans_freq.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA",
                  threshold=NULL,acc=NULL)
 pa_fit_sum<-model_summary(pa_total_fit)
@@ -133,18 +129,56 @@ require(cowplot)
 ### Fits by pair
  For fun
 ```{r,fig.height=6}
-pa_Nb_sum<-pa_Nb_sum[order(pa_Nb_sum$mean_Nb,decreasing = T),]
+
+pa_Nb<-trans_fit(trans_freq.comp,l=NULL,Nb_max=100,model="PA-straight",
+                 threshold=NULL,acc=NULL,
+                 pair_id)
+  
+straight_sum <-function(data,max_nb){
+  Nb<-data$Nb[which(data$LL==max(data$LL))] # Get the  max lambda
+  good_range<-subset(data,LL> (max(LL)-1.92)) # get the bottlenecks that fall in this region the 95% confidence intereval
+  lower<-good_range$Nb[1]
+  upper <- good_range$Nb[nrow(good_range)]
+  if(length(Nb)>1){
+    Nb=max(Nb)
+  }
+  if(Nb==max_nb){
+    return(tibble(Nb=NA,lower_95=NA,
+                upper_95=NA))
+  }else{
+    return(tibble(Nb=Nb,lower_95=lower,
+                upper_95=upper))
+    }
+}
+
+pa_Nb_sum<- pa_Nb %>% group_by(pair_id) %>% do(straight_sum(.,100))
+pa_Nb_sum<-pa_Nb_sum[order(pa_Nb_sum$Nb,decreasing = T),]
 pa_Nb_sum$y = 1:nrow(pa_Nb_sum)
 
-ggplot()+geom_point(data=pa_Nb_sum,aes(y=y,x=lambda_to_mean(lower_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=pa_Nb_sum,aes(y=y,x=lambda_to_mean(upper_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=pa_Nb_sum,aes(y=y,x=mean_Nb),shape=108,size=5,color=cbPalette[5])+
-  geom_segment(data=pa_Nb_sum,aes(x=lambda_to_mean(lower_95),xend=lambda_to_mean(upper_95),y=y,yend=y),color=cbPalette[2])+
+ggplot()+geom_point(data=pa_Nb_sum,aes(y=y,x=lower_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=pa_Nb_sum,aes(y=y,x=upper_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=pa_Nb_sum,aes(y=y,x=Nb),shape=108,size=5,color=cbPalette[5])+
+  geom_segment(data=pa_Nb_sum,aes(x=lower_95,xend=upper_95,y=y,yend=y),color=cbPalette[2])+
   theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
-  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")+
-  scale_x_continuous(limits = c(0,10.1))
+  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")
 ```
 
+By pair table
+
+```{r}
+pa_t<-pa_Nb_sum %>% mutate(
+  CI = paste0(lower_95,"-",upper_95),
+  lambda = paste0(Nb," (",CI,")")
+  ) %>%
+  select(pair_id,Nb,pair_id)
+pa_t<-left_join(pa_t,
+                select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
+                       collect1,collect2,transmission))%>%
+        distinct(pair_id, .keep_all = TRUE) %>%
+        dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) %>% select(-pair_id,-ENROLLID1,-ENROLLID2)
+
+write.csv(pa_t,"./pa_bottlenecks_by_pair.csv")
+```
 ### Simulation
 
 
@@ -195,50 +229,45 @@ write.csv(rename(sim_trans_pa,frequency.in.donor=freq1,
 pa_sim_plot
 ```
 
-# all transmitted >10%
+# Power to detect larger bottlenecks
 
-What if all variants above 10% were transmitted? What would the bottleneck size be?
-
+What if the bottleneck was 10.
 ```{r}
-very_good.comp<-trans_freq.comp
-very_good.comp$found[very_good.comp$freq1>=0.1] <- TRUE
-logit<-glm(formula =found~freq1,family=binomial(logit),data=very_good.comp ) # get the data trend line
- very_good.comp$prob<-logit$fitted.values 
-ggplot()+ ylab("Probability transmitted")+
-  geom_point(data=very_good.comp,aes(x=freq1,y=as.numeric(found)),alpha=0.1)+
-  geom_line(data=very_good.comp,aes(x=freq1,y=prob))+xlab("Frequency in donor")
- 
- 
-```
-
-
-```{r}
-
-vg_total_fit<-trans_fit(very_good.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA",
+test_power<-function(data=trans_freq.comp,lambda){
+   #simulate
+  sim<-data %>% group_by(pair_id) %>%
+    do(pa_sim(.,lambda)) 
+  # fit
+  fit<-trans_fit(sim,l=seq(0.1,lambda*2,1),Nb_max=lambda*2.2,model="PA",
                  threshold=NULL,acc=NULL)
-vg_fit_sum<-model_summary(vg_total_fit)
-vg_fit_sum
+  return(model_summary(fit))
+}
+
+
+ 
+```
+
+```{r,message=FALSE}
+sims<-tibble(trial=rep(1:20,times=3),lambda=rep(c(10,50,100),each=20))
+test <- sims %>% mutate(out_put=purrr::map(lambda,~test_power(trans_freq.comp,.))) %>%
+  unnest(out_put)
 
 ```
 
 ```{r}
-ggplot(filter(vg_total_fit,lambda>3,lambda<10),aes(x=lambda_to_mean(lambda),y=LL))+geom_point()+ylab("Log Likelihood")+xlab("Average Bottleneck size")+scale_x_continuous(breaks=c(1:10))
 
+plot.median <- function(x) {
+  m <- median(x)
+  c(y = m, ymin = m, ymax = m)
+}
+ggplot(test,aes(x=as.factor(lambda),y=lambda1))+
+  geom_quasirandom(method = "smiley")+
+  stat_summary(fun.data="plot.median", geom="errorbar",
+               colour="black", width=0.95, size=0.5)+
+  xlab("Input lambda")+ylab("Output lambda")+
+  scale_y_continuous(breaks = c(10,50,100,150))
 ```
 
-```{r,eval=T}
-vg_sim_trans_pa<-suppressWarnings(simulations(data=very_good.comp,runs = 10,lambda = vg_fit_sum$lambda,
-                          pa_sim,threshold = NULL,acc = NULL,pair_id))
-
-```
-
-```{r}
-vg_sim_plot<-sim_plot(very_good.comp,vg_sim_trans_pa)
-
-#write.csv(sim_trans_pa,"Figures/data/Figure4B.area.csv")
-vg_sim_plot
-```
-This sort of makes sense. If there was a larger bottleneck then we would expect the low - frequency variants would have higher probabilities of transmission as well.
 
 # No frequency cut off
 ```{r}
@@ -428,21 +457,104 @@ require(cowplot)
 
 ```
 
-### Fitting by person
+### Fits by pair
+```{r,fig.height=6}
 
-```{r}
-beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$mean_Nb,decreasing = T),]
+beta_Nb<-trans_fit(subset(trans_freq.comp,freq1<0.5),
+                   l=NULL,Nb_max=100, model="BetaBin-straight",
+                 threshold=0.02,acc=accuracy_stringent,
+                 pair_id)
+  
+
+beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,100))
+beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$Nb,decreasing = T),]
 beta_Nb_sum$y = 1:nrow(beta_Nb_sum)
 
-ggplot()+geom_point(data=beta_Nb_sum,aes(y=y,x=lambda_to_mean(lower_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=beta_Nb_sum,aes(y=y,x=lambda_to_mean(upper_95)),shape=108,size=4,color=cbPalette[2])+
-  geom_point(data=beta_Nb_sum,aes(y=y,x=mean_Nb),shape=108,size=5,color=cbPalette[5])+
-  geom_segment(data=beta_Nb_sum,aes(x=lambda_to_mean(lower_95),xend=lambda_to_mean(upper_95),y=y,yend=y),color=cbPalette[2])+
+ggplot()+geom_point(data=beta_Nb_sum,aes(y=y,x=lower_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=beta_Nb_sum,aes(y=y,x=upper_95),shape=108,size=4,color=cbPalette[2])+
+  geom_point(data=beta_Nb_sum,aes(y=y,x=Nb),shape=108,size=5,color=cbPalette[5])+
+  geom_segment(data=beta_Nb_sum,aes(x=lower_95,xend=upper_95,y=y,yend=y),color=cbPalette[2])+
   theme(axis.ticks.y =element_blank(),axis.line.y=element_blank())+
-  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")+
-  scale_x_continuous(limits = c(0,10.1))
+  scale_y_continuous(breaks=c())+ylab("Transmission pair")+xlab("Bottleneck")
+```
+
+The one outlier. This sample has 2 variants present at almost identicle frequencies.
+
+```{r}
+
+outlier<-trans_fit(filter(trans_freq.comp,pair_id==137,freq1<0.5),l=NULL,Nb_max=20000,
+                 model="BetaBin-straight",
+                 threshold=0.02,acc=accuracy_stringent,
+                 pair_id)
+straight_sum(outlier,20000)
+ggplot(outlier,aes(x=Nb,y=LL))+geom_point()+scale_x_continuous(limits = c(500,20000))+scale_y_continuous(limits = c(4,7))
+
 
 ```
+
+By pair table
+
+```{r}
+beta_t<-beta_Nb_sum %>% mutate(
+  CI = paste0(lower_95,"-",upper_95),
+  lambda = paste0(Nb," (",CI,")")
+  ) %>%
+  select(pair_id,Nb,pair_id)
+beta_t<-left_join(beta_t,
+                select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
+                       collect1,collect2,transmission))%>%
+        distinct(pair_id, .keep_all = TRUE) %>%
+        dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) 
+
+snv_data<- trans_freq.comp %>% group_by(pair_id,pcr_result) %>%
+  summarize(minority_isnv=length(which(freq1<0.5)),
+            transmitted_minority_isnv =length(which(freq1<0.5&found==T)))
+beta_t<-left_join(beta_t,snv_data)
+beta_t <- mutate(beta_t,
+                 within_host_time=abs(donor_sample-estimated_transmission_date)+
+                   abs(estimated_transmission_date-recipient_sample),
+                 proportion_transmitted = transmitted_minority_isnv/minority_isnv)
+
+# Adding the ages. 
+ages<- read_csv("../data/reference/HIVE_ages_by_season.csv",
+                col_types = cols(STUDY_ID=col_character()))%>%
+  mutate(DOB = parse_date_time(DOB,c("db!y","%m/%d/%Y"))) %>%
+  mutate(DOB=if_else(condition = (as.numeric(as.POSIXct(today())-DOB)/365)<AGEYR,
+                     true = DOB-years(100),false=DOB))
+  
+
+beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID")) %>% 
+  mutate(Donor_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
+  select(-DOB) %>%
+  left_join(.,select(ages,STUDY_ID,DOB),by=c("ENROLLID2"="STUDY_ID")) %>%
+  mutate(Recipient_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
+  select(-DOB)
+out_beta_t<-beta_t %>% ungroup() %>%
+  select(Nb,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2)
+out_beta_t$Nb[is.na(out_beta_t$Nb)]<-">200"
+write.csv(out_beta_t,"../data/processed/secondary/beta_bottlenecks_by_pair.csv")
+```
+
+
+
+```{r}
+lm(proportion_transmitted~within_host_time,beta_t)->lm_model
+summary(lm_model)
+```
+
+```{r}
+
+ggplot(beta_t,aes(x=within_host_time,y=proportion_transmitted))+
+  geom_point()+geom_jitter()+
+  xlab("Withinhost time between samples (days)")+
+  ylab("Proportion of minority variants transmitted")+
+  geom_line(data=data.frame(within_host_time=beta_t$within_host_time,
+                            proportion_transmitted= lm_model$fitted.values),
+            aes(x=within_host_time,y=proportion_transmitted))
+```
+
 
 ## Simulations
 

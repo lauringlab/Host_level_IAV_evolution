@@ -512,6 +512,9 @@ write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T,
                   onset1,onset2,quality_distance,double)),
           "Figures/data/Figure3B.csv")
 
+write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T),
+          "Figures/data/Figure3B_all.csv")
+
 ```
 This is the in set figure for some talks.
 
@@ -578,11 +581,11 @@ titer.p<-ggplot(figure1A_data,aes(x=as.factor(days.post.symptom.onset),
   scale_y_log10()+xlab("Days post symptom onset")
 titer.p
 
-write.csv(figure1A_data,"./Figures/data/Figure1A.csv")
+# write.csv(figure1A_data,"./Figures/data/Figure1A.csv")
 ```
 There are warning messages for 13 samples we did not get usable numbers back from the qPCR. They have NA in the log_copy_num column but R gives them 0 in the gc_ul. These are removed on the log scale.
 
-
+### Distibution of isnv in samples
 
 ```{r,titer_over_time,eval=F}
 intra_titers<-subset(all.intra,!(is.na(DPI)) & DPI>=0 & gc_ul>0) # See text above
@@ -590,9 +593,51 @@ intra_titers<-subset(all.intra,!(is.na(DPI)) & DPI>=0 & gc_ul>0) # See text abov
 #ggplot(intra_titers,aes(x=as.factor(DPI),y=gc_ul,group=ENROLLID))+geom_line()+geom_point()+ylab(expression(paste(genomes,"/" ,mu,L)))+scale_y_log10()+xlab("Days post symptom onset")#+geom_point(position = "jitter")
 ```
 
+
+### Diversity in samples
+
+```{r,snv_sample}
+min.qual.o<-subset(qual,freq.var<0.5) # only looking at minor alleles original - includes all samples
+min.qual<-subset(min.qual.o,!(SPECID %in% c("HS1530","MH8137","MH8390"))) # remove mixed infections
+
+min.count.sample.o<-min.qual.o %>% group_by(SPECID) %>%
+  dplyr::summarize(iSNV=length(unique(mutation)),HA_iSNV=length(which(chr=="HA"))) # How many rare mutations in the sample (SPECID)
+
+snv_qual_meta.o<-subset(meta,snv_qualified==T)
+snv_qual_meta.o<-merge(snv_qual_meta.o,min.count.sample.o,by="SPECID",all.x=T)
+
+snv_qual_meta.o$iSNV[is.na(snv_qual_meta.o$iSNV)]<-0 # these are the ones with no diversity
+snv_qual_meta.o$HA_iSNV[is.na(snv_qual_meta.o$HA_iSNV)]<-0
+
+plot.median <- function(x) {
+  m <- median(x)
+  c(y = m, ymin = m, ymax = m)
+}
+
+ggplot(snv_qual_meta.o,aes(y=iSNV,x=as.factor(vaccination_status)))+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)+scale_x_discrete(labels=c("Not Vaccinated","Vaccinated"))+xlab("")
+
+#wilcox.test(snv_qual_meta.o$iSNV~snv_qual_meta.o$vaccination_status) 
+```
+
+```{r}
+figure1B_data<-snv_qual_meta.o %>% select(days.post.symptom.onset=DPI,iSNV)
+isnv_by_day.p<-ggplot(snv_qual_meta.o,aes(x=as.factor(DPI),y=iSNV))+geom_boxplot()+xlab("Day post symptom onset")#+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)
+write.csv(figure1B_data,"./Figures/data/Figure1B.csv")
+isnv_by_day.p
+
+isnv_by_isolate.p<-ggplot(snv_qual_meta.o,aes(x=iSNV))+geom_histogram(color="white",binwidth = 1)+xlab("iSNV in isolate") +ylab("Isolates")
+
+
+
+ggplot(snv_qual_meta.o,aes(x=as.factor(pcr_result),y=iSNV))+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)+xlab("Strain")
+
+isnv_titer<-ggplot(snv_qual_meta.o,aes(x=gc_ul,y=iSNV))+geom_point()+scale_x_log10()+xlab(expression(paste(Genomes,"/" ,mu,L)))
+isnv_titer
+```
 ### Frequency distribution
 ```{r,frequency_distribution}
-min.qual<-subset(qual,freq.var<0.5) # only looking at minor alleles
+
+
 classes<-min.qual %>% group_by(class_factor) %>%
   dplyr::summarize(mutations=length(mutation)) # class factor is is Nonsym if in any open reading frame the mutation is Nonsym.
 kable(classes)
@@ -622,6 +667,9 @@ bin_ratio<- bins %>% group_by(bin) %>%
 bin_ratio
 
 write_to_summary("Max Ns/S:",max(bin_ratio$ratio))
+
+ks.test(min.qual$freq.var[min.qual$class_factor=="Nonsynonymous"],
+        min.qual$freq.var[min.qual$class_factor=="Synonymous"])
 
 ```
 
@@ -674,8 +722,8 @@ write_to_summary("multiple isolates iSNV n:",only_twice+only_thrice)
 ```
 These are the mutations found in multiple individuals
 ```{r}
-min.qual<-mutate(min.qual,scratch = paste(chr,pos,chr,season,pcr_result,sep="."))
-min.count <-mutate(min.count,scratch = paste(chr,pos,chr,season,pcr_result,sep="."))
+min.qual<-mutate(min.qual,scratch = paste(chr,pos,chr,var,season,pcr_result,sep="."))
+min.count <-mutate(min.count,scratch = paste(chr,pos,var,chr,season,pcr_result,sep="."))
 multiple<-subset(min.qual,scratch %in% min.count$scratch[min.count$counts>1])
 
 min.qual<-subset(min.qual,select=-c(scratch))
@@ -693,9 +741,9 @@ genome_loc.p.dots
 ```
 These counts don't sum to the total above, but that is because this is looking at individuals above is looking at all sequenced samples (multiple/person) sometimes. If I sum these counts over SPECID then the sums are equal.
 
-### Diversity in samples
+### Diversity in by vaccination
 
-```{r,snv_sample}
+```{r,snv_sample1}
 min.count.sample<-min.qual %>% group_by(SPECID) %>%
   dplyr::summarize(iSNV=length(unique(mutation)),HA_iSNV=length(which(chr=="HA"))) # How many rare mutations in the sample (SPECID)
 
@@ -739,17 +787,39 @@ isnv_vaccination
 
 ```
 
+## Codon pos
+
 ```{r}
-figure1B_data<-snv_qual_meta %>% select(days.post.symptom.onset=DPI,iSNV)
-isnv_by_day.p<-ggplot(snv_qual_meta,aes(x=as.factor(DPI),y=iSNV))+geom_boxplot()+xlab("Day post symptom onset")#+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)
-write.csv(figure1B_data,"./Figures/data/Figure1B.csv")
-
-isnv_by_day.p
-ggplot(snv_qual_meta,aes(x=as.factor(pcr_result),y=iSNV))+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)+xlab("Strain")
-
-isnv_titer<-ggplot(snv_qual_meta,aes(x=gc_ul,y=iSNV))+geom_point()+scale_x_log10()+xlab(expression(paste(Genomes,"/" ,mu,L)))
-isnv_titer
+codon_pos<- min.qual %>% select(ENROLLID,SPECID,season,onset,pcr_result,chr,mutation,freq.var,
+                                OR,coding_pos,Ref_AA,Var_AA) %>%
+          mutate(OR = gsub("\\[","",OR),
+                 coding_pos = gsub("\\[","",coding_pos),
+                 Ref_AA = gsub("\\[","",Ref_AA),
+                 Var_AA = gsub("\\[","",Var_AA))%>%
+            mutate(OR = gsub("\\]","",OR),
+                 coding_pos = gsub("\\]","",coding_pos),
+                 Ref_AA = gsub("\\]","",Ref_AA),
+                 Var_AA = gsub("\\]","",Var_AA))%>%
+            mutate(OR = gsub("'","",OR),
+                 coding_pos = gsub("'","",coding_pos),
+                 Ref_AA = gsub("'","",Ref_AA),
+                 Var_AA = gsub("'","",Var_AA))%>%
+  # split the multiple open reading frames 
+            separate(coding_pos,c("coding1","coding2"),sep=",",extra = "merge",fill="right") %>%
+            separate(OR,c("OR1","OR2"),sep=",",extra = "merge",fill="right")%>%
+            separate(Ref_AA,c("Ref_AA1","Ref_AA2"),sep=",",extra = "merge",fill="right") %>%
+            separate(Var_AA,c("Var_AA1","Var_AA2"),sep=",",extra = "merge",fill="right") %>%
+  
+  # Bring it back together on different lines
+    # calucate codon_pos
+    mutate(codon_pos= as.numeric(coding1) %% 3,
+           codon_pos= ifelse(codon_pos==0,yes = 3,no = codon_pos))
+  
+ggplot(codon_pos,aes(x=codon_pos))+geom_histogram()+scale_x_continuous(breaks=c(1:3))+
+  xlab("Position in codon")+ylab("iSNV")#+facet_wrap(~chr)
 ```
+
+
 
 # Figure 1
 
@@ -758,69 +828,70 @@ require(cowplot)
 
 fig_1<-plot_grid(titer.p,isnv_by_day.p,freq_hist.p, genome_loc.p, labels = c("A", "B", "C", "D"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
 
-save_plot("./Figures/Figure1.pdf", fig_1,
-          ncol = 2, # we're saving a grid plot of 2 columns
-          nrow = 2, # and 2 rows
-          # each individual subplot should have an aspect ratio of 1.3
-          base_aspect_ratio = 1.3
-          )
-embed_fonts("./Figures/Figure1.pdf")
-fig_1
+# save_plot("./Figures/Figure1.pdf", fig_1,
+#           ncol = 2, # we're saving a grid plot of 2 columns
+#           nrow = 2, # and 2 rows
+#           # each individual subplot should have an aspect ratio of 1.3
+#           base_aspect_ratio = 1.3
+#           )
+# embed_fonts("./Figures/Figure1.pdf")
+# fig_1
 ```
 
 
 Separate Panels
 
 ```{r}
-save_plot("./Figures/Figure1A.pdf", titer.p,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure1A.pdf")
-#titer.pg<-ggplot_build(titer.p)
-
-save_plot("./Figures/Figure1B.pdf", isnv_by_day.p,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure1B.pdf")
-
-save_plot("./Figures/Figure1C.pdf", freq_hist.p,
-          base_aspect_ratio = 1.3)
-
-embed_fonts("./Figures/Figure1C.pdf")
-save_plot("./Figures/Figure1D.pdf", genome_loc.p,
-          base_aspect_ratio = 1.3)
-
-save_plot("./Figures/Figure1D2.pdf", genome_loc.p.dots,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure1D2.pdf")
-
+# save_plot("./Figures/Figure1A.pdf", titer.p,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure1A.pdf")
+# #titer.pg<-ggplot_build(titer.p)
+# 
+# save_plot("./Figures/Figure1B.pdf", isnv_by_day.p,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure1B.pdf")
+# 
+# save_plot("./Figures/Figure1C.pdf", freq_hist.p,
+#           base_aspect_ratio = 1.3)
+# 
+# embed_fonts("./Figures/Figure1C.pdf")
+# save_plot("./Figures/Figure1D.pdf", genome_loc.p,
+#           base_aspect_ratio = 1.3)
+# 
+# save_plot("./Figures/Figure1D2.pdf", genome_loc.p.dots,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure1D2.pdf")
+# save_plot("./Figures/isnv_by_isolate.pdf", isnv_by_isolate.p,
+#           base_aspect_ratio = 1.3)
 ```
 
 
 # Figure 3
 ```{r}
-fig_3<-plot_grid(l1norm.p_tp,all_seasons_useful , labels = c("A", "B"), ncol = 1,align = c("h"),rel_heights=c(1,3))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
-
-save_plot("./Figures/Figure3.pdf", fig_3,
-          ncol = 1, # we're saving a grid plot of 1 columns
-          nrow = 2, # and 2 rows
-          base_height = 6,
-          # each individual subplot should have an aspect ratio of 1.3
-          base_aspect_ratio = 1.3
-          )
-embed_fonts("./Figures/Figure3.pdf")
-fig_3
+# fig_3<-plot_grid(l1norm.p_tp,all_seasons_useful , labels = c("A", "B"), ncol = 1,align = c("h"),rel_heights=c(1,3))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
+# 
+# save_plot("./Figures/Figure3.pdf", fig_3,
+#           ncol = 1, # we're saving a grid plot of 1 columns
+#           nrow = 2, # and 2 rows
+#           base_height = 6,
+#           # each individual subplot should have an aspect ratio of 1.3
+#           base_aspect_ratio = 1.3
+#           )
+# embed_fonts("./Figures/Figure3.pdf")
+# fig_3
 
 ```
 
 ```{r}
-save_plot("./Figures/Figure3A.pdf", l1norm.p_tp,
-          base_aspect_ratio = 1.3,
-          base_height = 6)
-embed_fonts("./Figures/Figure3A.pdf")
-
-save_plot("./Figures/Figure3B.pdf", all_seasons_useful,
-          base_aspect_ratio = 1.3,
-          base_height = 6)
-embed_fonts("./Figures/Figure3B.pdf")
+# save_plot("./Figures/Figure3A.pdf", l1norm.p_tp,
+#           base_aspect_ratio = 1.3,
+#           base_height = 6)
+# embed_fonts("./Figures/Figure3A.pdf")
+# 
+# save_plot("./Figures/Figure3B.pdf", all_seasons_useful,
+#           base_aspect_ratio = 1.3,
+#           base_height = 6)
+# embed_fonts("./Figures/Figure3B.pdf")
 
 ```
 
@@ -828,20 +899,20 @@ embed_fonts("./Figures/Figure3B.pdf")
 #Supplemental Figure 4
 
 ```{r}
-sup_fig_1<-plot_grid(isnv_titer,isnv_vaccination, labels = c("A", "B"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
-
-save_plot("./Figures/Supplemental_Figure4.pdf", sup_fig_1,
-          ncol = 2, # we're saving a grid plot of 2 columns
-          nrow = 1, # and 1 row
-          # each individual subplot should have an aspect ratio of 1.3
-          base_aspect_ratio = 1.3
-          )
-embed_fonts("./Figures/Supplemental_Figure4.pdf")
-sup_fig_1
+# sup_fig_1<-plot_grid(isnv_titer,isnv_vaccination, labels = c("A", "B"), ncol = 2,align = c("v","h"))#+draw_label("DRAFT!", angle = 45, size = 80, alpha = .2)
+# 
+# save_plot("./Figures/Supplemental_Figure4.pdf", sup_fig_1,
+#           ncol = 2, # we're saving a grid plot of 2 columns
+#           nrow = 1, # and 1 row
+#           # each individual subplot should have an aspect ratio of 1.3
+#           base_aspect_ratio = 1.3
+#           )
+# embed_fonts("./Figures/Supplemental_Figure4.pdf")
+# sup_fig_1
 ```
 
-```{r,eval=F}
-#write.csv(x = snv_qual_meta,"../data/proccessed/meta_snv_qual.csv")
+```{r,eval=T}
+write.csv(x = snv_qual_meta,"../data/processed/secondary/meta_snv_qual.csv")
 ```
 
 # Looking at the outliers
@@ -852,9 +923,9 @@ Let's take a look at the samples with many snv.
 ```{r}
 
 require(ggjoy)
-outliers<-subset(min.count.sample,iSNV>10)
+outliers<-subset(min.count.sample.o,iSNV>10)
 
-outliers.snv<-subset(min.qual,SPECID %in% outliers$SPECID)
+outliers.snv<-subset(min.qual.o,SPECID %in% outliers$SPECID)
 
 ggplot(outliers.snv,aes(x=freq.var))+geom_histogram(aes(fill=SPECID),position='dodge',binwidth = 0.05)#+scale_fill_manual(values=wes_palette("GrandBudapest2"))
 ggplot(outliers.snv,aes(x=freq.var,y= as.factor(SPECID),height = ..density..))+geom_joy(scale = 4)

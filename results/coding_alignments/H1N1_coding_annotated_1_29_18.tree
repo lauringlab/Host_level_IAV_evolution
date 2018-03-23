@@ -1,0 +1,136 @@
+#NEXUS
+begin taxa;
+	dimensions ntax=34;
+	taxlabels
+	H1N1[&ENROLLID="PC",HOUSE_ID="PC",SPECID="H1N1",class="PC",season="PC"]
+	M53523_300557_1130_2010-2011_consensus[&ENROLLID="300557",HOUSE_ID="1130",SPECID="M53523",class="consensus",season="2010-2011"]
+	M54062_301203_1275_2010-2011_consensus[&ENROLLID="301203",HOUSE_ID="1275",SPECID="M54062",class="consensus",season="2010-2011"]
+	M54062_301203_1275_2010-2011_minor[&ENROLLID="301203",HOUSE_ID="1275",SPECID="M54062",class="minor",season="2010-2011"]
+	M54205_300330_1077_2010-2011_consensus[&ENROLLID="300330",HOUSE_ID="1077",SPECID="M54205",class="consensus",season="2010-2011"]
+	M54206_300331_1077_2010-2011_consensus[&ENROLLID="300331",HOUSE_ID="1077",SPECID="M54206",class="consensus",season="2010-2011"]
+	M54207_300332_1077_2010-2011_consensus[&ENROLLID="300332",HOUSE_ID="1077",SPECID="M54207",class="consensus",season="2010-2011"]
+	MH2936_330640_3160_2012-2013_consensus[&ENROLLID="330640",HOUSE_ID="3160",SPECID="MH2936",class="consensus",season="2012-2013"]
+	MH5193_UM41569_4141_2013-2014_consensus[&ENROLLID="UM41569",HOUSE_ID="4141",SPECID="MH5193",class="consensus",season="2013-2014"]
+	MH5194_UM41570_4141_2013-2014_consensus[&ENROLLID="UM41570",HOUSE_ID="4141",SPECID="MH5194",class="consensus",season="2013-2014"]
+	MH5229_UM40245_4062_2013-2014_consensus[&ENROLLID="UM40245",HOUSE_ID="4062",SPECID="MH5229",class="consensus",season="2013-2014"]
+	MH5245_UM40449_4113_2013-2014_consensus[&ENROLLID="UM40449",HOUSE_ID="4113",SPECID="MH5245",class="consensus",season="2013-2014"]
+	MH5295_UM41554_4113_2013-2014_consensus[&ENROLLID="UM41554",HOUSE_ID="4113",SPECID="MH5295",class="consensus",season="2013-2014"]
+	MH5300_UM41553_4113_2013-2014_consensus[&ENROLLID="UM41553",HOUSE_ID="4113",SPECID="MH5300",class="consensus",season="2013-2014"]
+	MH5405_UM40738_4185_2013-2014_consensus[&ENROLLID="UM40738",HOUSE_ID="4185",SPECID="MH5405",class="consensus",season="2013-2014"]
+	MH5499_UM40621_4156_2013-2014_consensus[&ENROLLID="UM40621",HOUSE_ID="4156",SPECID="MH5499",class="consensus",season="2013-2014"]
+	MH5546_UM41567_4140_2013-2014_consensus[&ENROLLID="UM41567",HOUSE_ID="4140",SPECID="MH5546",class="consensus",season="2013-2014"]
+	MH5548_UM40366_4092_2013-2014_consensus[&ENROLLID="UM40366",HOUSE_ID="4092",SPECID="MH5548",class="consensus",season="2013-2014"]
+	MH5549_UM40367_4092_2013-2014_consensus[&ENROLLID="UM40367",HOUSE_ID="4092",SPECID="MH5549",class="consensus",season="2013-2014"]
+	MH5645_UM40457_4115_2013-2014_consensus[&ENROLLID="UM40457",HOUSE_ID="4115",SPECID="MH5645",class="consensus",season="2013-2014"]
+	MH5646_UM40460_4115_2013-2014_consensus[&ENROLLID="UM40460",HOUSE_ID="4115",SPECID="MH5646",class="consensus",season="2013-2014"]
+	MH5651_UM40699_4175_2013-2014_consensus[&ENROLLID="UM40699",HOUSE_ID="4175",SPECID="MH5651",class="consensus",season="2013-2014"]
+	MH5656_UM41575_4157_2013-2014_consensus[&ENROLLID="UM41575",HOUSE_ID="4157",SPECID="MH5656",class="consensus",season="2013-2014"]
+	MH5677_UM40292_4073_2013-2014_consensus[&ENROLLID="UM40292",HOUSE_ID="4073",SPECID="MH5677",class="consensus",season="2013-2014"]
+	MH5679_UM40066_4017_2013-2014_consensus[&ENROLLID="UM40066",HOUSE_ID="4017",SPECID="MH5679",class="consensus",season="2013-2014"]
+	MH5680_UM40093_4024_2013-2014_consensus[&ENROLLID="UM40093",HOUSE_ID="4024",SPECID="MH5680",class="consensus",season="2013-2014"]
+	MH5709_UM40095_4024_2013-2014_consensus[&ENROLLID="UM40095",HOUSE_ID="4024",SPECID="MH5709",class="consensus",season="2013-2014"]
+	MH5712_UM41510_4024_2013-2014_consensus[&ENROLLID="UM41510",HOUSE_ID="4024",SPECID="MH5712",class="consensus",season="2013-2014"]
+	MH5817_UM40062_4016_2013-2014_consensus[&ENROLLID="UM40062",HOUSE_ID="4016",SPECID="MH5817",class="consensus",season="2013-2014"]
+	MH5848_UM41576_4159_2013-2014_consensus[&ENROLLID="UM41576",HOUSE_ID="4159",SPECID="MH5848",class="consensus",season="2013-2014"]
+	MH5849_UM41577_4159_2013-2014_consensus[&ENROLLID="UM41577",HOUSE_ID="4159",SPECID="MH5849",class="consensus",season="2013-2014"]
+	MH6042_UM40439_4110_2013-2014_consensus[&ENROLLID="UM40439",HOUSE_ID="4110",SPECID="MH6042",class="consensus",season="2013-2014"]
+	MH6260_UM40300_4075_2013-2014_consensus[&ENROLLID="UM40300",HOUSE_ID="4075",SPECID="MH6260",class="consensus",season="2013-2014"]
+	MH6262_UM40530_4133_2013-2014_consensus[&ENROLLID="UM40530",HOUSE_ID="4133",SPECID="MH6262",class="consensus",season="2013-2014"]
+;
+end;
+
+begin trees;
+	tree tree_1 = [&R] (MH6042_UM40439_4110_2013-2014_consensus[&!color=#3b9ab2]:4.57E-4,(MH5194_UM41570_4141_2013-2014_consensus[&!color=#3b9ab2]:0.0,MH5193_UM41569_4141_2013-2014_consensus[&!color=#3b9ab2]:0.0)[&!color=#3b9ab2]:1.52E-4,(MH5656_UM41575_4157_2013-2014_consensus[&!color=#3b9ab2]:5.33E-4,(((MH5295_UM41554_4113_2013-2014_consensus[&!color=#3b9ab2]:2.28E-4,((MH5229_UM40245_4062_2013-2014_consensus[&!color=#3b9ab2]:0.0,MH5245_UM40449_4113_2013-2014_consensus[&!color=#3b9ab2]:0.0)[&!color=#3b9ab2]:0.0,MH5300_UM41553_4113_2013-2014_consensus[&!color=#3b9ab2]:7.6E-5)[&ML=0.285,!color=#3b9ab2]:0.0)[&ML=1.0,!color=#3b9ab2]:0.001296,(MH5817_UM40062_4016_2013-2014_consensus[&!color=#3b9ab2]:0.001448,((MH5651_UM40699_4175_2013-2014_consensus[&!color=#3b9ab2]:0.00122,(MH5546_UM41567_4140_2013-2014_consensus[&!color=#3b9ab2]:6.86E-4,(MH5677_UM40292_4073_2013-2014_consensus[&!color=#3b9ab2]:0.001067,(((MH5680_UM40093_4024_2013-2014_consensus[&!color=#3b9ab2]:0.0,MH5709_UM40095_4024_2013-2014_consensus[&!color=#3b9ab2]:0.0)[&!color=#3b9ab2]:0.0,MH5712_UM41510_4024_2013-2014_consensus[&!color=#3b9ab2]:7.6E-5)[&ML=0.984,!color=#3b9ab2]:3.05E-4,(H1N1[&!color=#3b9ab2]:6.86E-4,(MH5849_UM41577_4159_2013-2014_consensus[&!color=#3b9ab2]:7.6E-5,MH5848_UM41576_4159_2013-2014_consensus[&!color=#3b9ab2]:7.6E-5)[&ML=0.969,!color=#3b9ab2]:2.29E-4)[&ML=0.148,!color=#3b9ab2]:0.0)[&ML=0.974,!color=#3b9ab2]:3.81E-4)[&ML=0.911,!color=#3b9ab2]:2.29E-4)[&ML=0.856,!color=#3b9ab2]:1.52E-4)[&ML=0.98,!color=#3b9ab2]:5.34E-4,(MH5405_UM40738_4185_2013-2014_consensus[&!color=#3b9ab2]:0.001753,((MH5549_UM40367_4092_2013-2014_consensus[&!color=#3b9ab2]:7.6E-5,MH5548_UM40366_4092_2013-2014_consensus[&!color=#3b9ab2]:0.0)[&ML=1.0,!color=#3b9ab2]:0.001298,((MH2936_330640_3160_2012-2013_consensus:0.006206,(M53523_300557_1130_2010-2011_consensus[&!color=#ebcc2a]:0.006315,(((M54206_300331_1077_2010-2011_consensus[&!color=#ebcc2a]:0.0,M54205_300330_1077_2010-2011_consensus[&!color=#ebcc2a]:0.0)[&!color=#ebcc2a]:0.0,M54207_300332_1077_2010-2011_consensus[&!color=#ebcc2a]:7.6E-5)[&ML=1.0,!color=#ebcc2a]:0.001762,(M54062_301203_1275_2010-2011_consensus[&!color=#ebcc2a]:0.00159,M54062_301203_1275_2010-2011_minor[&!color=#ebcc2a]:8.7E-5)[&ML=0.985,!color=#ebcc2a]:8.73E-4)[&ML=0.73,!color=#ebcc2a]:2.57E-4)[&ML=1.0,!color=#ebcc2a]:0.002962)[&ML=1.0]:0.005012,(MH6260_UM40300_4075_2013-2014_consensus[&!color=#3b9ab2]:0.003425,((MH5645_UM40457_4115_2013-2014_consensus[&!color=#3b9ab2]:0.0,MH5646_UM40460_4115_2013-2014_consensus[&!color=#3b9ab2]:0.0)[&!color=#3b9ab2]:0.001111,MH6262_UM40530_4133_2013-2014_consensus[&!color=#3b9ab2]:0.001268)[&ML=1.0,!color=#3b9ab2]:0.002526)[&ML=0.628,!color=#3b9ab2]:3.77E-4)[&ML=0.996]:9.0E-4)[&ML=0.914]:2.28E-4)[&ML=0.754,!color=#3b9ab2]:7.7E-5)[&ML=0.753,!color=#3b9ab2]:7.6E-5)[&ML=0.858,!color=#3b9ab2]:1.52E-4)[&ML=0.962,!color=#3b9ab2]:3.81E-4,(MH5499_UM40621_4156_2013-2014_consensus[&!color=#3b9ab2]:4.57E-4,MH5679_UM40066_4017_2013-2014_consensus[&!color=#3b9ab2]:3.81E-4)[&ML=0.0,!color=#3b9ab2]:0.0)[&ML=0.85,!color=#3b9ab2]:7.6E-5)[&ML=0.0,!color=#3b9ab2]:0.0)[&!color=#3b9ab2];
+end;
+
+begin figtree;
+	set appearance.backgroundColorAttribute="Default";
+	set appearance.backgroundColour=#ffffff;
+	set appearance.branchColorAttribute="User selection";
+	set appearance.branchColorGradient=false;
+	set appearance.branchLineWidth=2.0;
+	set appearance.branchMinLineWidth=0.0;
+	set appearance.branchWidthAttribute="Fixed";
+	set appearance.foregroundColour=#000000;
+	set appearance.hilightingGradient=false;
+	set appearance.selectionColour=#2d3680;
+	set branchLabels.colorAttribute="User selection";
+	set branchLabels.displayAttribute="Branch times";
+	set branchLabels.fontName="sansserif";
+	set branchLabels.fontSize=8;
+	set branchLabels.fontStyle=0;
+	set branchLabels.isShown=false;
+	set branchLabels.significantDigits=4;
+	set layout.expansion=0;
+	set layout.layoutType="RECTILINEAR";
+	set layout.zoom=0;
+	set legend.attribute="ML";
+	set legend.fontSize=10.0;
+	set legend.isShown=false;
+	set legend.significantDigits=4;
+	set nodeBars.barWidth=4.0;
+	set nodeBars.displayAttribute=null;
+	set nodeBars.isShown=false;
+	set nodeLabels.colorAttribute="User selection";
+	set nodeLabels.displayAttribute="Node ages";
+	set nodeLabels.fontName="sansserif";
+	set nodeLabels.fontSize=8;
+	set nodeLabels.fontStyle=0;
+	set nodeLabels.isShown=false;
+	set nodeLabels.significantDigits=4;
+	set nodeShapeExternal.colourAttribute="User selection";
+	set nodeShapeExternal.isShown=true;
+	set nodeShapeExternal.minSize=10.0;
+	set nodeShapeExternal.scaleType=Width;
+	set nodeShapeExternal.shapeType=Circle;
+	set nodeShapeExternal.size=4.0;
+	set nodeShapeExternal.sizeAttribute="Fixed";
+	set nodeShapeInternal.colourAttribute="User selection";
+	set nodeShapeInternal.isShown=false;
+	set nodeShapeInternal.minSize=10.0;
+	set nodeShapeInternal.scaleType=Width;
+	set nodeShapeInternal.shapeType=Circle;
+	set nodeShapeInternal.size=4.0;
+	set nodeShapeInternal.sizeAttribute="Fixed";
+	set polarLayout.alignTipLabels=false;
+	set polarLayout.angularRange=0;
+	set polarLayout.rootAngle=0;
+	set polarLayout.rootLength=100;
+	set polarLayout.showRoot=true;
+	set radialLayout.spread=0.0;
+	set rectilinearLayout.alignTipLabels=false;
+	set rectilinearLayout.curvature=0;
+	set rectilinearLayout.rootLength=100;
+	set scale.offsetAge=0.0;
+	set scale.rootAge=1.0;
+	set scale.scaleFactor=1.0;
+	set scale.scaleRoot=false;
+	set scaleAxis.automaticScale=true;
+	set scaleAxis.fontSize=8.0;
+	set scaleAxis.isShown=false;
+	set scaleAxis.lineWidth=1.0;
+	set scaleAxis.majorTicks=1.0;
+	set scaleAxis.minorTicks=0.5;
+	set scaleAxis.origin=0.0;
+	set scaleAxis.reverseAxis=false;
+	set scaleAxis.showGrid=true;
+	set scaleBar.automaticScale=true;
+	set scaleBar.fontSize=10.0;
+	set scaleBar.isShown=true;
+	set scaleBar.lineWidth=1.0;
+	set scaleBar.scaleRange=0.0;
+	set tipLabels.colorAttribute="HOUSE_ID";
+	set tipLabels.displayAttribute="Names";
+	set tipLabels.fontName="sansserif";
+	set tipLabels.fontSize=8;
+	set tipLabels.fontStyle=0;
+	set tipLabels.isShown=true;
+	set tipLabels.significantDigits=4;
+	set trees.order=false;
+	set trees.orderType="increasing";
+	set trees.rooting=false;
+	set trees.rootingType="User Selection";
+	set trees.transform=false;
+	set trees.transformType="cladogram";
+end;
+
