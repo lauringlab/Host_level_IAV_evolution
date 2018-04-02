@@ -1,8 +1,9 @@
 require(tidyverse)
-require(extrafont)
-require(cowplot)
 require(HIVEr)
 cbPalette<-wesanderson::wes_palette("Zissou") # Set up figures
+require(cowplot)
+require(extrafont)
+
 # --------------------------------- Functions ---------------------------------
 write_to_summary<-function(line_pattern,value){
   file = readLines("./results/results.table.tsv")
@@ -379,8 +380,15 @@ window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-  geom_point(data=trans_freq.comp,aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  #geom_point(data=trans_freq.comp,
+  #           aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
   scale_y_continuous(breaks = seq(0,1,0.25))
+
+#save_plot("./results/Figures/Figure3D_nodots.pdf", window_data.p,
+#          base_aspect_ratio = 1.3)
+#embed_fonts("./results/Figures/Figure3D_nodots.pdf")
+
+
 
 save_plot("./results/Figures/Figure3D.pdf", window_data.p,
           base_aspect_ratio = 1.3)
@@ -390,6 +398,29 @@ write.csv(x = select(trans_freq.comp,SPECID1,SPECID2,freq1,freq2),
           "./results/Figures/data/Figure3D_points.csv")
 write.csv(x = model,
           "./results/Figures/data/Figure3D_model.csv")
+#bottle neck of 10
+
+# model_10<-tibble(s = seq(0,1,0.01))
+# model_10<- mutate(model,prob = Pt_PA(s,10,100),
+#                lower = Pt_PA(s,9,100),
+#                upper = Pt_PA(s,11,100))
+# window_data.p_10<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
+#   geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
+#   geom_line(data=model,aes(x=s,y=prob),color=cbPalette[5])+
+#   geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
+#   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
+#   xlab("Frequency in Donor")+ylab("Probability of transmission")+
+#   #geom_point(data=trans_freq.comp,
+#   #           aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+#   scale_y_continuous(breaks = seq(0,1,0.25))+
+#   geom_line(data=model_10,aes(x=s,y=prob),color=cbPalette[1])+
+#   geom_ribbon(data=model_10,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[1])
+# 
+# save_plot("./results/Figures/Figure3D_nodots_10.pdf", window_data.p_10,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./results/Figures/Figure3D_nodots_10.pdf")
+
+
 
 # --------------------------------- Figure 3E ---------------------------------
 #   The fit of the BetaBin transmission model
@@ -423,8 +454,18 @@ window_data_bb.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_ribbon(data=model_betaBin,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-  geom_point(data=trans_freq.comp,aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  #geom_point(data=trans_freq.comp,
+  #           aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
   scale_y_continuous(breaks = seq(0,1,0.25))
+
+save_plot("./results/Figures/Figure3E_nodots.pdf", window_data_bb.p,
+         base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/Figure3E_nodots.pdf")
+
+
+
+
+
 
 save_plot("./results/Figures/Figure3E.pdf", window_data_bb.p,
           base_aspect_ratio = 1.3)

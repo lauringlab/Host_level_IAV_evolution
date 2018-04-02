@@ -100,7 +100,8 @@ window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-  geom_point(data=trans_freq.comp,aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  geom_point(data=trans_freq.comp,
+             aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
   scale_y_continuous(breaks = seq(0,1,0.25))
 
 
