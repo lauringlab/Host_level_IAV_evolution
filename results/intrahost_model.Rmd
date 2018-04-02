@@ -84,6 +84,7 @@ write.csv(rename(intra_meta,day.post.sympotom.onset1=DPS1,
 same_day<-subset(intra,within_host_time==0 & freq1<0.5)
 Sup_6<-ggplot(same_day,aes(x=freq1,y=freq2))+geom_point()+
   xlab("Frequency in home isolate") + ylab("Frequency in clinic isolate") + 
+  geom_abline(slope=1,intercept = 0,lty=2)+
   scale_x_continuous(limits = c(0,0.5))+scale_y_continuous(limits = c(0,0.5))
 Sup_6
 
@@ -92,12 +93,12 @@ summary(lm_fit)->sum_fit
 sum_fit
 
 write_to_summary("R2 samples same day:",sum_fit$r.squared)
-# save_plot("./Figures/Supplemental_Figure6.pdf", Sup_6,
-#           base_aspect_ratio = 1.3)
-# embed_fonts("./Figures/Supplemental_Figure6.pdf")
-# 
-# write.csv(select(same_day,SPECID1,SPECID2,collect1,collect2,chr,pos,ref,var,freq1,freq2),
-#           "./Figures/data/Supplemental_Figure6.csv")
+save_plot("./Figures/Supplemental_Figure6.pdf", Sup_6,
+          base_aspect_ratio = 1.3)
+embed_fonts("./Figures/Supplemental_Figure6.pdf")
+
+write.csv(select(same_day,SPECID1,SPECID2,collect1,collect2,chr,pos,ref,var,freq1,freq2),
+          "./Figures/data/Supplemental_Figure6.csv")
 ```
 
 
