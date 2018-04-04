@@ -7,7 +7,8 @@ figures : ./results/Figures/Figure1A.pdf ./results/Figures/Figure1B.pdf \
 ./results/Figures/Figure2C.pdf ./results/Figures/Figure2D.pdf \
 ./results/Figures/Figure2E.pdf ./results/Figures/Figure3A.pdf \
 ./results/Figures/Figure3B.pdf ./results/Figures/Figure3C.pdf \
-./results/Figures/Figure3D.pdf ./results/Figures/Figure4A.pdf ./results/Figures/Figure4B.pdf
+./results/Figures/Figure3D.pdf ./results/Figures/Figure4A.pdf ./results/Figures/Figure4B.pdf \
+./results/Figures/sequencing_hist.pdf ./results/Figures/sequencing_dot_plot.pdf
 	echo "Figures made"
 ####################### Figure 1 ######################
 
@@ -50,3 +51,14 @@ Figure3.intermediate: ./data/processed/secondary/possible.pairs.dist.csv ./data/
 Figure4.intermediate: ./data/processed/secondary/no_cut_trans_freq.csv \
 ./data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv 
 	Rscript ./scripts/secondary_analysis/Figures/Figure4.R
+
+#################### sequencing figure #################
+
+./results/Figures/sequencing_hist.pdf ./results/Figures/sequencing_dot_plot.pdf: Sequencing.intermediate
+	#Empty recipe to propagate "newness" from the intermediate to final targets
+.INTERMEDIATE: Sequencing.intermediate
+Sequencing.intermediate: ./data/processed/secondary/diverse_sites_isnv.csv \
+./data/reference/segs.csv ./data/processed/secondary/qual.snv.csv ./results/Figures/Figure2E.pdf # The pdf is a proxy for the data file that includes the intrahost frequencies.
+	Rscript ./scripts/secondary_analysis/Figures/Sequencing_accuracy_fig.R
+
+

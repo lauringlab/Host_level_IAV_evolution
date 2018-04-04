@@ -1,8 +1,9 @@
 require(tidyverse)
 require(magrittr)
-require(cowplot)
 require(extrafont)
 require(HIVEr)
+require(cowplot)
+
 cbPalette<-wesanderson::wes_palette("Zissou") # Set up figures
 
 # --------------------------------- Functions ---------------------------------
@@ -39,7 +40,7 @@ qual<-read_csv("./data/processed/secondary/qual.snv.csv", # The  iSNV
                  Id = col_character()
                )) # read in quality variant calls from all
 
-intra<-read_csv("./data/processed/secondary/Intrahost_all.csv")
+intra<-read_csv("./results/Figures/data/Figure2E.csv")
 
 # ----------------------------- data processing ------------------------------
 #  All duplicates were sequenced on separate runs so we will use run as the 
@@ -89,31 +90,31 @@ write.csv(freqs,"./data/processed/secondary/duplicate_sequences.csv")
 
 
 freqs<-read_csv("./data/processed/secondary/duplicate_sequences.csv")
-ggplot(freqs,aes(x=freq1,y=freq2))+
-  geom_point()+geom_abline(slope=1,intercept = 0,lty=2)+
-  #scale_y_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
-  #scale_x_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
-  geom_smooth(data=filter(freqs,freq1>0,freq2>0),method=lm,se=T)+
-  xlab("Frequency in replicate 1")+ ylab("Frequency in replicate 2")
-
-# What's with the odd ones on the axis at >50% in one replicate?
-odd<-freqs %>% filter(freq1>0.5, freq2==0)
-
-odd$chr<-factor(odd$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS")))
-
-chrs$chr<-factor(chrs$chr,levels=levels(odd$chr)) # set factors on the is meta data
-# Plot on genome
-genome_loc.p<-ggplot(odd,aes(x=pos,y=chr))+
-  geom_point(shape=108,size=5)+
-  geom_segment(data=chrs,aes(x = start, y = chr, xend = stop, yend = chr))+
-  ylab("")+
-  xlab("")+
-  scale_color_manual(name="",values=cbPalette[c(1,4)])+
-  theme(axis.ticks =element_blank(),
-        axis.line.x = element_blank(), axis.line.y=element_blank())+
-  scale_x_continuous(breaks=c())+
-  theme(legend.position = "none")
-genome_loc.p
+# ggplot(freqs,aes(x=freq1,y=freq2))+
+#   geom_point()+geom_abline(slope=1,intercept = 0,lty=2)+
+#   #scale_y_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
+#   #scale_x_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
+#   geom_smooth(data=filter(freqs,freq1>0,freq2>0),method=lm,se=T)+
+#   xlab("Frequency in replicate 1")+ ylab("Frequency in replicate 2")
+# 
+# # What's with the odd ones on the axis at >50% in one replicate?
+# odd<-freqs %>% filter(freq1>0.5, freq2==0)
+# 
+# odd$chr<-factor(odd$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS")))
+# 
+# chrs$chr<-factor(chrs$chr,levels=levels(odd$chr)) # set factors on the is meta data
+# # Plot on genome
+# genome_loc.p<-ggplot(odd,aes(x=pos,y=chr))+
+#   geom_point(shape=108,size=5)+
+#   geom_segment(data=chrs,aes(x = start, y = chr, xend = stop, yend = chr))+
+#   ylab("")+
+#   xlab("")+
+#   scale_color_manual(name="",values=cbPalette[c(1,4)])+
+#   theme(axis.ticks =element_blank(),
+#         axis.line.x = element_blank(), axis.line.y=element_blank())+
+#   scale_x_continuous(breaks=c())+
+#   theme(legend.position = "none")
+# genome_loc.p
 
 # They are just on the ends of segements (except for a few in NS. They can be
 # removed by only looking in the OR).
@@ -133,31 +134,54 @@ genome_loc.p
 quality_mut<-paste0(qual$mutation,qual$SPECID)
 
 freqs<-mutate(freqs, mut_specid = paste0(mutation,SPECID_original),
-              used= mut_specid %in% quality_mut,
-              difference = abs(freq1-freq2)/freq1)
+              used= mut_specid %in% quality_mut)
 
+freqs %>% filter(ref!=var) %>%
+  ggplot(aes(x=freq1,y=freq2))+
+    geom_point(aes(color=used))+geom_abline(slope=1,intercept = 0,lty=2)+
+    scale_y_log10()+
+    scale_x_log10()+
+    #geom_smooth(data=filter(freqs,freq1>0,freq2>0),method=lm,se=T)+
+    xlab("Frequency in replicate 1")+ ylab("Frequency in replicate 2")+
+    scale_color_manual(values=c("gray","black"),name="",labels=c("Removed","Used"))
 
-ggplot(freqs,aes(x=freq1,y=freq2))+
-  geom_point(aes(color=used))+geom_abline(slope=1,intercept = 0,lty=2)+
-  scale_y_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
-  scale_x_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
-  geom_smooth(data=filter(freqs,freq1>0,freq2>0),method=lm,se=T)+
+dot_plot<-freqs%>% filter(used==TRUE)%>%
+ggplot(aes(x=freq1,y=freq2))+
+  geom_point(aes(color=log10(gc_ul)))+
+  geom_abline(slope=1,intercept = 0,lty=2)+
+  scale_y_continuous(limits=c(0,0.5))+
+  scale_x_continuous(limits=c(0,0.5))+
   xlab("Frequency in replicate 1")+ ylab("Frequency in replicate 2")+
-  scale_color_manual(values=c("gray","black"),name="",labels=c("Removed","Used"))
+  scale_color_continuous(name="Log(copies/ul)")
+  
+save_plot("./results/Figures/sequencing_dot_plot.pdf", dot_plot,
+          base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/sequencing_dot_plot.pdf")
 
+write.csv(select(filter(freqs,used==T),gc_ul,freq1,freq2),
+          "./results/Figures/data/sequencing_dot_plot.csv")
 
-# Just to make sure
-intra<-filter(intra,freq1<0.5) 
-# Remove duplicate infections
-intra<- intra %>% filter(!(SPECID2 %in% c("HS1530","MH8137","MH8390")) &
-                           !(SPECID1 %in% c("HS1530","MH8137","MH8390")))
-intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
-intra<-intra %>% mutate(Endpoint="Persistent") %>%
-  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
-  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
-# no arisen
-intra <- intra %>% filter(Endpoint !="Arisen") %>% 
-  mutate(difference = abs(freq1-freq2)/freq1)
+dot_plot.discrete<-freqs%>% filter(used==TRUE)%>%
+  ggplot(aes(x=freq1,y=freq2))+
+  geom_point(aes(color=as.factor(floor(log10(gc_ul)))))+
+  geom_abline(slope=1,intercept = 0,lty=2)+
+  scale_y_continuous(limits=c(0,0.5))+
+  scale_x_continuous(limits=c(0,0.5))+
+  xlab("Frequency in replicate 1")+ ylab("Frequency in replicate 2")+
+  scale_color_manual(name="Log(copies/ul)",values=cbPalette[c(4,1)])
+
+dot_plot.discrete
+save_plot("./results/Figures/sequencing_dot_discrete_plot.pdf", dot_plot.discrete,
+          base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/sequencing_dot_discrete_plot.pdf")
+
+intra <- intra %>% 
+  mutate(rel_difference = if_else(freq1!=0,abs(freq1-freq2)/freq1,
+                              abs(freq1-freq2)/freq2),
+         difference = abs(freq1-freq2))
+freqs<- freqs %>%
+  mutate(rel_difference = abs(freq1-freq2)/freq1,
+         difference = abs(freq1-freq2))
 
 difference <- rbind(
   tibble(difference = 
@@ -170,12 +194,23 @@ ggplot(difference,aes(x=difference,y=group))+geom_density_ridges2(scale=6)+
   ylab("")+scale_y_discrete(labels=c("Intrahost dynamics","Measurment Error"))
 
 
-ggplot(difference,aes(x=difference,fill=group))+
+difference_histogram<-ggplot(difference,aes(x=difference,fill=group))+
   geom_histogram(aes(y=..ncount..), position="dodge")+
-  xlab("Relative Frequency difference")+
+  xlab("Frequency difference")+
   ylab("Normalized count")+
-  scale_x_log10()+
-  scale_fill_manual(values = cbPalette[c(1,2)],
+  scale_x_log10(breaks = c(1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1e0,1e1))+
+  scale_fill_manual(values = cbPalette[c(1,5)],
                     labels = c("Intrahost dynamics","Measurment Error"),
                     name="")+
   theme(legend.position = c(0.2,0.5))
+
+save_plot("./results/Figures/sequencing_hist.pdf", difference_histogram,
+          base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/sequencing_hist.pdf")
+
+write.csv(difference,
+          "./results/Figures/data/sequencing_hist.csv")
+
+
+
+
