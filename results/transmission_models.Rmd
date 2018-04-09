@@ -460,13 +460,14 @@ require(cowplot)
 ### Fits by pair
 ```{r,fig.height=6}
 
+max_nb<-500
 beta_Nb<-trans_fit(subset(trans_freq.comp,freq1<0.5),
-                   l=NULL,Nb_max=100, model="BetaBin-straight",
+                   l=NULL,Nb_max=max_nb, model="BetaBin-straight",
                  threshold=0.02,acc=accuracy_stringent,
                  pair_id)
   
 
-beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,100))
+beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,max_nb))
 beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$Nb,decreasing = T),]
 beta_Nb_sum$y = 1:nrow(beta_Nb_sum)
 
@@ -492,6 +493,17 @@ ggplot(outlier,aes(x=Nb,y=LL))+geom_point()+scale_x_continuous(limits = c(500,20
 
 ```
 
+
+### uncertain pairs
+
+```{r}
+uncertain<-beta_Nb_sum%>% filter(upper_95==max_nb)
+
+beta_Nb %>% filter(pair_id %in% uncertain$pair_id) %>%
+  ggplot(aes(group = pair_id,x = Nb,y=LL))+
+  geom_line()
+```
+
 By pair table
 
 ```{r}
@@ -499,7 +511,7 @@ beta_t<-beta_Nb_sum %>% mutate(
   CI = paste0(lower_95,"-",upper_95),
   lambda = paste0(Nb," (",CI,")")
   ) %>%
-  select(pair_id,Nb,pair_id)
+  select(pair_id,Nb,pair_id,CI)
 beta_t<-left_join(beta_t,
                 select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
                        collect1,collect2,transmission))%>%

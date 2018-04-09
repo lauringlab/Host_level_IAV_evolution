@@ -4,7 +4,7 @@ cbPalette<-wesanderson::wes_palette("Zissou") # Set up figures
 require(cowplot)
 require(extrafont)
 require(VGAM)
-
+require(lubridate)
 # --------------------------------- Functions ---------------------------------
 write_to_summary<-function(line_pattern,value){
   file = readLines("./results/results.table.tsv")
@@ -205,7 +205,8 @@ Pt_PA<-function(x,l,max_Nb){
 Pt_BetaBin<-function(x,l,max_Nb){
   s<-0
   for(i in 1:max_Nb){
-    prob_not_T<- L.Nb.beta(v_r=1,v_d=(1-x),Nb=i,gc_ul=1e4,threshold=0.2,accuracy_stringent)
+    prob_not_T<- L.Nb.beta(v_r=1,v_d=(1-x),Nb=i,gc_ul=1e4,
+                           threshold=0.02,accuracy_stringent)
     prob_Nb<-(l^i)/((exp(l)-1)*factorial(i) )
     c<-prob_not_T*prob_Nb
     s<-s+c
@@ -215,6 +216,23 @@ Pt_BetaBin<-function(x,l,max_Nb){
 
 Pt_BetaBin<-Vectorize(Pt_BetaBin,vectorize.args = "x")
 
+
+straight_sum <-function(data,max_nb){
+  Nb<-data$Nb[which(data$LL==max(data$LL))] # Get the  max lambda
+  good_range<-subset(data,LL> (max(LL)-1.92)) # get the bottlenecks that fall in this region the 95% confidence intereval
+  lower<-good_range$Nb[1]
+  upper <- good_range$Nb[nrow(good_range)]
+  if(length(Nb)>1){
+    Nb=max(Nb)
+  }
+  if(Nb==max_nb){
+    return(tibble(Nb=NA,lower_95=NA,
+                  upper_95=NA))
+  }else{
+    return(tibble(Nb=Nb,lower_95=lower,
+                  upper_95=upper))
+  }
+}
 # --------------------------------- Data Files --------------------------------
 #   Read in the csv files used in the data analysis below
 # -----------------------------------------------------------------------------
@@ -231,6 +249,9 @@ meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
 trans_freq.comp<-read_csv("./data/processed/secondary/transmission_pairs_freq.poly.donor.csv")
 #E
 accuracy_stringent<-read.csv("./data/reference/accuracy_stringent.csv",stringsAsFactors = F)
+
+# meta
+meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
 
 
 # --------------------------------- Figure 3A ---------------------------------
@@ -365,37 +386,38 @@ dzpois_model_fit<-bbmle::mle2(minuslogl = zdpois_fit,start = list(lambda = 1),
                 data = list(data = pa_total_fit,
                             weight = counts))
  
-nb_fit<-dist_prob_wrapper("dposnegbin","size,prob")
+# nb_fit<-dist_prob_wrapper("dposnegbin","size,mu")
+# 
+# # Just to get an idea of where the max is.
+# size = seq(1,20,1)
+# mu = seq(0.01,.95,0.05)
+# nsize = rep(size,each = length(mu))
+# nmu = rep(mu,times = length(size))
+# x<-purrr::map2(nsize,nmu,.f = function(x,y) nb_fit(data = pa_total_fit,weight = counts,size = x,mu = y))
+# 
+# nb_output<-tibble(size = nsize,mu = nmu,negLL = unlist(x))
+# 
+# ggplot(nb_output,aes(x = size,y= mu,fill = -negLL,z = -negLL))+
+#   geom_tile()+geom_contour(binwidth = 1)+
+#   geom_point(data = filter(nb_output,negLL ==min(negLL)))
+# 
+# 
+# 
+# nb_model_fit<-bbmle::mle2(minuslogl = nb_fit,start = list(size=100,prob=0.5),
+#                               data = list(data = pa_total_fit,
+#                                           weight = counts),
+#                           method = "Nelder-Mead",
+#                           hessian = TRUE,
+#                           control=list(trace=TRUE))#, maxit=5000))
 
-# Just to get an idea of where the max is.
-size = seq(0.1,50,.1)
-prob = seq(0.1,0.95,0.05)
-nsize = rep(size,each = length(prob))
-nprob = rep(prob,times = length(size))
-x<-purrr::map2(nsize,nprob,.f = function(x,y) nb_fit(data = pa_total_fit,weight = counts,size = x,prob = y))
-
-nb_output<-tibble(size = nsize,prob = nprob,negLL = unlist(x))
-
-ggplot(nb_output,aes(x = size,y= prob,fill = -negLL,z = -negLL))+
-  geom_tile()+geom_contour(binwidth = 1)+
-  geom_point(data = filter(nb_output,negLL ==min(negLL)))
+mean_zpois<-function(l) l/(1-exp(-1*l))
+con_int<-confint(dzpois_model_fit)
+write_to_summary("P-A Nb:",mean_zpois(dzpois_model_fit@coef))
+write_to_summary("P-A lambda:",dzpois_model_fit@coef)
+write_to_summary("P-A CI:",paste(bbmle::confint(dzpois_model_fit),collapse = "-"))
 
 
-
-nb_model_fit<-bbmle::mle2(minuslogl = nb_fit,start = list(size=100,prob=0.5),
-                              data = list(data = pa_total_fit,
-                                          weight = counts),
-                          method = "Nelder-Mead",
-                          hessian = TRUE,
-                          control=list(trace=TRUE))#, maxit=5000))
-
-
-write_to_summary("P-A Nb:",pa_fit_sum$mean_Nb)
-write_to_summary("P-A lambda:",pa_fit_sum$lambda)
-write_to_summary("P-A CI:",paste(pa_fit_sum$lower_95,pa_fit_sum$upper_95,collapse = "-"))
-
-
-prob_above_5 <-1-sum(dzpois(c(1,2,3,4,5),pa_fit_sum$lambda))
+prob_above_5 <-1-sum(dzpois(c(1,2,3,4,5),dzpois_model_fit@coef))
 write_to_summary("P-A prob >5",prob_above_5)
 
 # Plot the fit
@@ -414,9 +436,9 @@ out <- windows %>% rowwise() %>%
          many = iSNV>5)
 
 model<-tibble(s = seq(0,1,0.01))
-model<- mutate(model,prob = Pt_PA(s,pa_fit_sum$lambda,100),
-               lower = Pt_PA(s,pa_fit_sum$lower_95,100),
-               upper = Pt_PA(s,pa_fit_sum$upper_95,100))
+model<- mutate(model,prob = Pt_PA(s,dzpois_model_fit@coef,100),
+               lower = Pt_PA(s,con_int[1],100),
+               upper = Pt_PA(s,con_int[2],100))
 
 window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
@@ -424,8 +446,8 @@ window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-  #geom_point(data=trans_freq.comp,
-  #           aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  geom_point(data=trans_freq.comp,
+             aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
   scale_y_continuous(breaks = seq(0,1,0.25))
 
 #save_plot("./results/Figures/Figure3D_nodots.pdf", window_data.p,
@@ -444,25 +466,21 @@ write.csv(x = model,
           "./results/Figures/data/Figure3D_model.csv")
 #bottle neck of 10
 
-# model_10<-tibble(s = seq(0,1,0.01))
-# model_10<- mutate(model,prob = Pt_PA(s,10,100),
-#                lower = Pt_PA(s,9,100),
-#                upper = Pt_PA(s,11,100))
-# window_data.p_10<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
-#   geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
-#   geom_line(data=model,aes(x=s,y=prob),color=cbPalette[5])+
-#   geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
-#   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
-#   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-#   #geom_point(data=trans_freq.comp,
-#   #           aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
-#   scale_y_continuous(breaks = seq(0,1,0.25))+
-#   geom_line(data=model_10,aes(x=s,y=prob),color=cbPalette[1])+
-#   geom_ribbon(data=model_10,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[1])
-# 
-# save_plot("./results/Figures/Figure3D_nodots_10.pdf", window_data.p_10,
-#           base_aspect_ratio = 1.3)
-# embed_fonts("./results/Figures/Figure3D_nodots_10.pdf")
+model_10<-tibble(s = seq(0,1,0.01))
+model_10<- mutate(model,prob = Pt_PA(s,10,100))
+window_data.p_10<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
+  geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
+  geom_line(data=model,aes(x=s,y=prob),color=cbPalette[5])+
+  geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
+  scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
+  xlab("Frequency in Donor")+ylab("Probability of transmission")+
+  geom_point(data=trans_freq.comp,
+             aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  scale_y_continuous(breaks = seq(0,1,0.25))+
+  geom_line(data=model_10,aes(x=s,y=prob),color=cbPalette[1])
+save_plot("./results/Figures/Figure3D_10.pdf", window_data.p_10,
+          base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/Figure3D_10.pdf")
 
 
 
@@ -473,24 +491,62 @@ write.csv(x = model,
 trans_freq.comp<-mutate(trans_freq.comp,gc_ul1 = meta$gc_ul[match(SPECID1,meta$SPECID)],
                         gc_ul2 = meta$gc_ul[match(SPECID2,meta$SPECID)])
 # Fit the model
-beta_total_fit<-trans_fit(subset(trans_freq.comp,freq1<0.5)
-                          ,l=seq(0.01,10,0.01),Nb_max=100,model="BetaBin",
-                          threshold=0.02,acc=accuracy_stringent)
+beta_total_fit<-trans_fit(subset(trans_freq.comp,freq1<0.5),
+                          Nb_max=100,model="BetaBin",
+                          threshold=0.02,acc=accuracy_stringent,
+                          pair_id)
 
-beta_fit_sum<-model_summary(beta_total_fit)
-print(beta_fit_sum)
+zdpois_fit<-dist_prob_wrapper(ddist = "dzpois",params = "lambda")
+counts<-trans_freq.comp %>% group_by(pair_id) %>%
+  summarize(donor_mutants = length(which(freq1>0 & freq1<0.5))) %>%
+  mutate(weight_factor_kk = max(donor_mutants)/donor_mutants,
+         weight_factor = 1)
 
-write_to_summary("BB Nb:",beta_fit_sum$mean_Nb)
-write_to_summary("BB lambda:",beta_fit_sum$lambda)
-write_to_summary("BB CI:",paste(beta_fit_sum$lower_95,beta_fit_sum$upper_95,collapse = "-"))
+dzpois_model_fit_bb<-bbmle::mle2(minuslogl = zdpois_fit,start = list(lambda = 1),
+                              data = list(data = beta_total_fit,
+                                          weight = counts))
+conf_int_BB<-bbmle::confint(dzpois_model_fit_bb)
+summary(dzpois_model_fit_bb)
+
+
+# nb_fit<-dist_prob_wrapper("dposnegbin","size,prob")
+# 
+# # Just to get an idea of where the max is.
+# size = seq(1,50,2)
+# prob = seq(0.1,.95,0.05)
+# nsize = rep(size,each = length(prob))
+# nprob = rep(prob,times = length(size))
+# x<-purrr::map2(nsize,nprob,.f = function(x,y) nb_fit(data = beta_total_fit,weight = counts,size = x,prob = y))
+# 
+# nb_output<-tibble(size = nsize,prob = nprob,negLL = unlist(x))
+# 
+# ggplot(nb_output,aes(x = size,y= prob,fill = -negLL,z = -negLL))+
+#   geom_tile()+geom_contour(binwidth = 1)+
+#   geom_point(data = filter(nb_output,negLL ==min(negLL)))
+# 
+# 
+# nb_model_fit<-bbmle::mle2(minuslogl = nb_fit,start = list(size=27,prob=0.95),
+#                           data = list(data = beta_total_fit,
+#                                       weight = counts),
+#                           #method = "Nelder-Mead",
+#                           #skip.hessian = FALSE,
+#                           control=list(trace=TRUE))#, maxit=5000))
+# 
+# 
+# summary(nb_model_fit)
+
+write_to_summary("BB Nb:",mean_zpois(dzpois_model_fit_bb@coef))
+write_to_summary("BB lambda:",dzpois_model_fit_bb@coef)
+write_to_summary("BB CI:",paste(conf_int_BB,collapse = "-"))
 
 # Plot the fit
 # Sliding window with window of w step of step from above
 
 model_betaBin<-tibble(s = seq(0,1,0.01))
-model_betaBin<- mutate(model_betaBin,prob = Pt_BetaBin(s,beta_fit_sum$lambda,100),
-               lower = Pt_BetaBin(s,beta_fit_sum$lower_95,100),
-               upper = Pt_BetaBin(s,beta_fit_sum$upper_95,100))
+model_betaBin<- model_betaBin %>% rowwise() %>%
+  mutate(prob = Pt_BetaBin(s,dzpois_model_fit_bb@coef,100),
+               lower = Pt_BetaBin(s,conf_int_BB[1],100),
+               upper = Pt_BetaBin(s,conf_int_BB[2],100))
 
 window_data_bb.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
@@ -498,16 +554,13 @@ window_data_bb.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_ribbon(data=model_betaBin,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-  #geom_point(data=trans_freq.comp,
-  #           aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  geom_point(data=trans_freq.comp,
+             aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
   scale_y_continuous(breaks = seq(0,1,0.25))
 
-save_plot("./results/Figures/Figure3E_nodots.pdf", window_data_bb.p,
-         base_aspect_ratio = 1.3)
-embed_fonts("./results/Figures/Figure3E_nodots.pdf")
-
-
-
+# save_plot("./results/Figures/Figure3E_nodots.pdf", window_data_bb.p,
+#          base_aspect_ratio = 1.3)
+# embed_fonts("./results/Figures/Figure3E_nodots.pdf")
 
 
 
@@ -515,8 +568,98 @@ save_plot("./results/Figures/Figure3E.pdf", window_data_bb.p,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure3E.pdf")
 
+
+
+
+
 write.csv(x = select(trans_freq.comp,SPECID1,SPECID2,freq1,freq2),
           "./results/Figures/data/Figure3E_points.csv")
 write.csv(x = model_betaBin,
           "./results/Figures/data/Figure3E_model.csv")
+
+
+model_10_bb<-tibble(s = seq(0,1,0.01))
+model_10_bb<- model_10_bb%>% rowwise() %>% 
+  mutate(prob = Pt_BetaBin(s,10,100))
+window_data.p_10<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
+  geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
+  geom_line(data=model,aes(x=s,y=prob),color=cbPalette[5])+
+  geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
+  scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
+  xlab("Frequency in Donor")+ylab("Probability of transmission")+
+  geom_point(data=trans_freq.comp,
+             aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
+  scale_y_continuous(breaks = seq(0,1,0.25))+
+  geom_line(data=model_10_bb,aes(x=s,y=prob),color=cbPalette[1])
+
+save_plot("./results/Figures/Figure3E_10.pdf", window_data.p_10,
+          base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/Figure3E_10.pdf")
+
+
+# --------------------------------- Supplemental Table ---------------------------------
+#   The fit of the binomial model for each pair.
+# -----------------------------------------------------------------------------
+
+
+max_nb<-200
+beta_Nb<-trans_fit(subset(trans_freq.comp,freq1<0.5),
+                   Nb_max=max_nb,model="BetaBin",
+                   threshold=0.02,acc=accuracy_stringent,
+                   pair_id)
+
+
+beta_Nb_sum<- beta_Nb %>% group_by(pair_id) %>% do(straight_sum(.,max_nb))
+beta_Nb_sum<-beta_Nb_sum[order(beta_Nb_sum$Nb,decreasing = T),]
+
+
+
+beta_t<-beta_Nb_sum %>% mutate(
+  CI = paste0(lower_95,"-",upper_95),
+  lambda = paste0(Nb," (",CI,")")
+) %>%
+  select(pair_id,Nb,pair_id,CI)
+beta_t<-left_join(beta_t,
+                  select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
+                         collect1,collect2,transmission))%>%
+  distinct(pair_id, .keep_all = TRUE) %>%
+  dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) 
+
+snv_data<- trans_freq.comp %>% group_by(pair_id,pcr_result) %>%
+  summarize(minority_isnv=length(which(freq1<0.5)),
+            transmitted_minority_isnv =length(which(freq1<0.5&found==T)))
+beta_t<-left_join(beta_t,snv_data)
+beta_t <- mutate(beta_t,
+                 within_host_time=abs(donor_sample-estimated_transmission_date)+
+                   abs(estimated_transmission_date-recipient_sample),
+                 proportion_transmitted = transmitted_minority_isnv/minority_isnv)
+
+# Adding the ages. 
+ages<- read_csv("./data/reference/HIVE_ages_by_season.csv",
+                col_types = cols(STUDY_ID=col_character()))%>%
+  mutate(DOB = parse_date_time(DOB,c("db!y","%m/%d/%Y"))) %>%
+  mutate(DOB=if_else(condition = (as.numeric(as.POSIXct(today())-DOB)/365)<AGEYR,
+                     true = DOB-years(100),false=DOB))
+
+
+beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID")) %>% 
+  mutate(Donor_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
+  select(-DOB) %>%
+  left_join(.,select(ages,STUDY_ID,DOB),by=c("ENROLLID2"="STUDY_ID")) %>%
+  mutate(Recipient_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
+  select(-DOB)
+out_beta_t<-beta_t %>% ungroup() %>%
+  select(Nb,CI,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2)
+out_beta_t$Nb[is.na(out_beta_t$Nb)]<-">200"
+write.csv(out_beta_t,"./data/processed/secondary/beta_bottlenecks_by_pair.csv")
+
+
+# --------------------------------- Supplemental Table ---------------------------------
+#   The fit of the binomial model for every possible sample pairing.
+# --------------------------------------------------------------------------------------
+
+
+
 
