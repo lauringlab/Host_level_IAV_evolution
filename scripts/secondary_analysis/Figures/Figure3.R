@@ -3,6 +3,7 @@ require(HIVEr)
 cbPalette<-wesanderson::wes_palette("Zissou") # Set up figures
 require(cowplot)
 require(extrafont)
+require(VGAM)
 
 # --------------------------------- Functions ---------------------------------
 write_to_summary<-function(line_pattern,value){
@@ -341,10 +342,53 @@ write.csv(x = select(trans_freq,SPECID1,SPECID2,freq1,freq2),
 trans_freq.comp<-mutate(trans_freq.comp,gc_ul1 = meta$gc_ul[match(SPECID1,meta$SPECID)],
                         gc_ul2 = meta$gc_ul[match(SPECID2,meta$SPECID)])
 # Fit the model
-pa_total_fit<-trans_fit(trans_freq.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA",
-                        threshold=NULL,acc=NULL)
-pa_fit_sum<-model_summary(pa_total_fit)
-print(pa_fit_sum)
+pa_total_fit<-trans_fit(trans_freq.comp,Nb_max=100,model="PA",
+                        threshold=NULL,acc=NULL,pair_id)
+
+counts<-trans_freq.comp %>% group_by(pair_id) %>%
+  summarize(donor_mutants = length(which(freq1>0 & freq1<0.5))) %>%
+  mutate(weight_factor_kk = max(donor_mutants)/donor_mutants,
+         weight_factor = 1)
+
+#pa_total_fit<-pa_total_fit %>% filter(pair_id!=184)
+require(bbmle)
+
+
+# zero_truncated poisson
+zdpois_fit<-dist_prob_wrapper(ddist = "dzpois",params = "lambda")
+# 
+# Running with LL_D_given_l gives an l of 1.15 which is
+# very close to the 1.12 that was estimated earlier.
+
+
+dzpois_model_fit<-bbmle::mle2(minuslogl = zdpois_fit,start = list(lambda = 1),
+                data = list(data = pa_total_fit,
+                            weight = counts))
+ 
+nb_fit<-dist_prob_wrapper("dposnegbin","size,prob")
+
+# Just to get an idea of where the max is.
+size = seq(0.1,50,.1)
+prob = seq(0.1,0.95,0.05)
+nsize = rep(size,each = length(prob))
+nprob = rep(prob,times = length(size))
+x<-purrr::map2(nsize,nprob,.f = function(x,y) nb_fit(data = pa_total_fit,weight = counts,size = x,prob = y))
+
+nb_output<-tibble(size = nsize,prob = nprob,negLL = unlist(x))
+
+ggplot(nb_output,aes(x = size,y= prob,fill = -negLL,z = -negLL))+
+  geom_tile()+geom_contour(binwidth = 1)+
+  geom_point(data = filter(nb_output,negLL ==min(negLL)))
+
+
+
+nb_model_fit<-bbmle::mle2(minuslogl = nb_fit,start = list(size=100,prob=0.5),
+                              data = list(data = pa_total_fit,
+                                          weight = counts),
+                          method = "Nelder-Mead",
+                          hessian = TRUE,
+                          control=list(trace=TRUE))#, maxit=5000))
+
 
 write_to_summary("P-A Nb:",pa_fit_sum$mean_Nb)
 write_to_summary("P-A lambda:",pa_fit_sum$lambda)
