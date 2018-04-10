@@ -1,8 +1,11 @@
 require(tidyverse)
-require(extrafont)
-require(cowplot)
 require(HIVEr)
 cbPalette<-wesanderson::wes_palette("Zissou") # Set up figures
+
+require(cowplot)
+
+require(extrafont)
+
 # --------------------------------- Functions ---------------------------------
 # PA probability
 Pt_PA<-function(x,l,max_Nb){
@@ -67,13 +70,27 @@ mutate(minor_infer = ifelse(
 )) %>%
   filter(minor_infer==F)
 
-nc_ni.pa_total_fit<-suppressWarnings(trans_fit(no_cut_no_infer.comp,l=seq(0.01,10,0.01),
-                                               Nb_max=100,model="PA",
-                                               threshold=NULL,acc=NULL))
-nc_ni.pa_fit_sum<-model_summary(nc_ni.pa_total_fit)
-print(nc_ni.pa_fit_sum)
+nc_ni.pa_total_fit<-trans_fit(no_cut_no_infer.comp,Nb_max=100,model="PA",
+                        threshold=NULL,acc=NULL,pair_id)
+
+counts<-no_cut_no_infer.comp %>% group_by(pair_id) %>%
+  summarize(donor_mutants = length(which(freq1>0 & freq1<0.5))) %>%
+  mutate(weight_factor_kk = max(donor_mutants)/donor_mutants,
+         weight_factor = 1)
+
+require(bbmle)
 
 
+# zero_truncated poisson
+zdpois_fit<-dist_prob_wrapper(ddist = "dzpois",params = "lambda")
+
+dzpois_model_fit<-bbmle::mle2(minuslogl = zdpois_fit,start = list(lambda = 1),
+                              data = list(data = nc_ni.pa_total_fit,
+                                          weight = counts))
+mean_zpois<-function(l) l/(1-exp(-1*l))
+con_int<-confint(dzpois_model_fit)
+
+summary(dzpois_model_fit)
 # Plot the fit
 # Sliding window with window of w step of step
 w<-0.05
@@ -90,9 +107,9 @@ out <- windows %>% rowwise() %>%
          many = iSNV>5)
 
 model<-tibble(s = seq(0,1,0.01))
-model<- mutate(model,prob = Pt_PA(s,nc_ni.pa_fit_sum$lambda,100),
-               lower = Pt_PA(s,nc_ni.pa_fit_sum$lower_95,100),
-               upper = Pt_PA(s,nc_ni.pa_fit_sum$upper_95,100))
+model<- mutate(model,prob = Pt_PA(s,dzpois_model_fit@coef,100),
+               lower = Pt_PA(s,con_int[1],100),
+               upper = Pt_PA(s,con_int[2],100))
 
 window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_errorbar(data=out,aes(x=freq,ymin=error_bottom,ymax=error_top,alpha=many))+
@@ -100,7 +117,7 @@ window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
   geom_ribbon(data=model,aes(x=s,ymin=lower,ymax=upper),alpha=0.5,fill=cbPalette[5])+
   scale_alpha_manual(values=c(0,1))+theme(legend.position = 'none')+
   xlab("Frequency in Donor")+ylab("Probability of transmission")+
-  geom_point(data=trans_freq.comp,
+  geom_point(data=no_cut_no_infer.comp,
              aes(x=freq1,y=as.numeric(found)+(as.numeric(found)-0.5)/10),alpha=0.5)+
   scale_y_continuous(breaks = seq(0,1,0.25))
 

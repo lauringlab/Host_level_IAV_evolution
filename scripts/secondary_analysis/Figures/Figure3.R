@@ -5,6 +5,9 @@ require(cowplot)
 require(extrafont)
 require(VGAM)
 require(lubridate)
+require(doMC)
+doMC::registerDoMC(cores=4)
+options(warn=1)
 # --------------------------------- Functions ---------------------------------
 write_to_summary<-function(line_pattern,value){
   file = readLines("./results/results.table.tsv")
@@ -250,9 +253,16 @@ trans_freq.comp<-read_csv("./data/processed/secondary/transmission_pairs_freq.po
 #E
 accuracy_stringent<-read.csv("./data/reference/accuracy_stringent.csv",stringsAsFactors = F)
 
-# meta
-meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
 
+# Supplemental
+intra<-read_csv("./data/processed/secondary/Intrahost_all.csv")
+qual<-read_csv("./data/processed/secondary/qual.snv.csv",
+               col_types = list(
+                 ENROLLID= col_character(),
+                 SPECID = col_character(),
+                 LAURING_ID = col_character(),
+                 Id = col_character()
+               ))
 
 # --------------------------------- Figure 3A ---------------------------------
 #   L1 -norm genetic distance between transmission pairs
@@ -482,7 +492,8 @@ save_plot("./results/Figures/Figure3D_10.pdf", window_data.p_10,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure3D_10.pdf")
 
-
+write.csv(x = model_10,
+          "./results/Figures/data/Figure3D_model_10.csv")
 
 # --------------------------------- Figure 3E ---------------------------------
 #   The fit of the BetaBin transmission model
@@ -497,6 +508,7 @@ beta_total_fit<-trans_fit(subset(trans_freq.comp,freq1<0.5),
                           pair_id)
 
 zdpois_fit<-dist_prob_wrapper(ddist = "dzpois",params = "lambda")
+
 counts<-trans_freq.comp %>% group_by(pair_id) %>%
   summarize(donor_mutants = length(which(freq1>0 & freq1<0.5))) %>%
   mutate(weight_factor_kk = max(donor_mutants)/donor_mutants,
@@ -507,33 +519,6 @@ dzpois_model_fit_bb<-bbmle::mle2(minuslogl = zdpois_fit,start = list(lambda = 1)
                                           weight = counts))
 conf_int_BB<-bbmle::confint(dzpois_model_fit_bb)
 summary(dzpois_model_fit_bb)
-
-
-# nb_fit<-dist_prob_wrapper("dposnegbin","size,prob")
-# 
-# # Just to get an idea of where the max is.
-# size = seq(1,50,2)
-# prob = seq(0.1,.95,0.05)
-# nsize = rep(size,each = length(prob))
-# nprob = rep(prob,times = length(size))
-# x<-purrr::map2(nsize,nprob,.f = function(x,y) nb_fit(data = beta_total_fit,weight = counts,size = x,prob = y))
-# 
-# nb_output<-tibble(size = nsize,prob = nprob,negLL = unlist(x))
-# 
-# ggplot(nb_output,aes(x = size,y= prob,fill = -negLL,z = -negLL))+
-#   geom_tile()+geom_contour(binwidth = 1)+
-#   geom_point(data = filter(nb_output,negLL ==min(negLL)))
-# 
-# 
-# nb_model_fit<-bbmle::mle2(minuslogl = nb_fit,start = list(size=27,prob=0.95),
-#                           data = list(data = beta_total_fit,
-#                                       weight = counts),
-#                           #method = "Nelder-Mead",
-#                           #skip.hessian = FALSE,
-#                           control=list(trace=TRUE))#, maxit=5000))
-# 
-# 
-# summary(nb_model_fit)
 
 write_to_summary("BB Nb:",mean_zpois(dzpois_model_fit_bb@coef))
 write_to_summary("BB lambda:",dzpois_model_fit_bb@coef)
@@ -596,6 +581,8 @@ save_plot("./results/Figures/Figure3E_10.pdf", window_data.p_10,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure3E_10.pdf")
 
+write.csv(x = model_10_bb,
+          "./results/Figures/data/Figure3E_model_10.csv")
 
 # --------------------------------- Supplemental Table ---------------------------------
 #   The fit of the binomial model for each pair.
@@ -621,9 +608,10 @@ beta_t<-beta_Nb_sum %>% mutate(
   select(pair_id,Nb,pair_id,CI)
 beta_t<-left_join(beta_t,
                   select(trans_freq.comp,pair_id,ENROLLID1,ENROLLID2,
-                         collect1,collect2,transmission))%>%
+                         collect1,collect2,transmission,SPECID1,SPECID2))%>%
   distinct(pair_id, .keep_all = TRUE) %>%
-  dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) 
+  dplyr::rename(donor_sample = collect1, recipient_sample=collect2,
+                estimated_transmission_date=transmission) 
 
 snv_data<- trans_freq.comp %>% group_by(pair_id,pcr_result) %>%
   summarize(minority_isnv=length(which(freq1<0.5)),
@@ -651,7 +639,8 @@ beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID"))
            as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>% 
   select(-DOB)
 out_beta_t<-beta_t %>% ungroup() %>%
-  select(Nb,CI,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2)
+  select(Nb,CI,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,
+         Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2,SPECID1,SPECID2)
 out_beta_t$Nb[is.na(out_beta_t$Nb)]<-">200"
 write.csv(out_beta_t,"./data/processed/secondary/beta_bottlenecks_by_pair.csv")
 
@@ -661,5 +650,158 @@ write.csv(out_beta_t,"./data/processed/secondary/beta_bottlenecks_by_pair.csv")
 # --------------------------------------------------------------------------------------
 
 
+intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
+intra<-subset(intra,freq1<0.5) # Just to make sure
 
+trans<-trans_freq %>% filter(freq1<0.5) %>%
+  mutate(Endpoint="Persistent") %>%
+  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
+  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
+trans$Endpoint<-factor(trans$Endpoint,levels = c("Persistent","Arisen","Lost"),ordered = T)
+
+
+# Now I will work to get longitudinal pairs for people in the transmission subset. 
+# The first step is to subset the transmission data into just the meta data for each pair
+# and rename the columns according to whom the data comes from. The data starts as 1 row
+# for each mutation so the distinct calapses this.
+
+trans_long<- trans %>% select(HOUSE_ID,Donor_ENROLLID=ENROLLID1,
+                              Recipient_ENROLLID=ENROLLID2,
+                              onset1,onset2,
+                              transmission) %>% distinct()
+
+# Now we will get the SPECID for the donor by joining with the meta data
+# we are only interested in samples that qualified for snv identification.
+# NB : left join includes all combinations so if there are two SPECID in meta, 
+# which is present as two rows, then both are kept, again as two rows. Key columns 
+# added and the SPECID are the spread to 1 row with _home and _clinic columns.
+#  Each time we rename the added SPECID from the meta data according to
+#  whose ENROLLID we are using to join.
+trans_long<-trans_long %>%left_join(filter(meta,snv_qualified==T),
+                                    by=c("Donor_ENROLLID"="ENROLLID"))%>% 
+  select(HOUSE_ID=HOUSE_ID.x,Donor_ENROLLID,
+         Recipient_ENROLLID,
+         onset1,onset2,
+         transmission,Donor_SPECID=SPECID) %>%
+  mutate(Donor_sample=if_else(condition = grepl("HS",Donor_SPECID),
+                              true = "Donor_home",
+                              false = "Donor_clinic")) %>%
+  spread(key = Donor_sample,value = Donor_SPECID)
+
+
+# Now we do the same for the recipient.
+trans_long<- left_join(trans_long,filter(meta,snv_qualified==T),
+                       by=c("Recipient_ENROLLID"="ENROLLID")) %>%
+  select(HOUSE_ID=HOUSE_ID.x,Donor_ENROLLID,
+         Recipient_ENROLLID,
+         onset1,onset2,
+         transmission,Donor_home,Donor_clinic,
+         Recipient_SPECID=SPECID) %>% 
+  mutate(Recipient_sample=if_else(condition = grepl("HS",Recipient_SPECID),
+                                  true = "Recipient_home",
+                                  false = "Recipient_clinic")) %>%
+  spread(key = Recipient_sample,value = Recipient_SPECID)
+
+# Now we really need a long format. We want Donor_ENROLLID Recipient_ENROLLID SPECID1 SPECID2 
+# and key columns for each. Then we can use the get freqs command and fit all the combinations.
+# Doing this as two commands (one for the donor, and one for the recipient) means we get 
+# all combinations Donor clinic - recipeint home donor clinic recipient clinic ect. 
+
+trans_long<- trans_long %>% gather(key = "Donor_location",value = "SPECID1",Donor_home,Donor_clinic) %>%
+  gather(key = "Recipient",value = "SPECID2",Recipient_home,Recipient_clinic) %>%
+  filter(!(is.na(SPECID1) | is.na(SPECID2))) %>% 
+  dplyr::rename("ENROLLID1"="Donor_ENROLLID",
+                "ENROLLID2" = "Recipient_ENROLLID")
+
+trans_long$pair_id<-1:length(trans_long$HOUSE_ID)
+
+# Get the frequencies
+
+all_trans_freq<-plyr::adply(trans_long,1,function(x){
+  get_freqs(c(x$SPECID1,x$SPECID2),qual)},
+  .parallel = T)
+
+# Reduce to sites that are polymorphic in the donor.
+all_trans_freq.comp<-polish_freq(all_trans_freq,freq1,0.02)
+all_trans_freq.comp$found=all_trans_freq.comp$freq2>0.02 # was it found in the second sample
+
+# Add gc_ul
+all_trans_freq.comp <-mutate(all_trans_freq.comp,gc_ul1 = meta$gc_ul[match(SPECID1,meta$SPECID)],
+       gc_ul2 = meta$gc_ul[match(SPECID2,meta$SPECID)])
+# add collection dates
+all_trans_freq.comp <- mutate(all_trans_freq.comp,collect1 = meta$collect[match(SPECID1,meta$SPECID)],
+       collect2 = meta$collect[match(SPECID2,meta$SPECID)])
+
+# Fit beta binomial model
+
+
+max_nb<-200
+beta_Nb_all<-trans_fit(subset(all_trans_freq.comp,freq1<0.5),
+                   Nb_max=max_nb,model="BetaBin",
+                   threshold=0.02,acc=accuracy_stringent,
+                   pair_id)
+
+
+beta_Nb_sum_all<- beta_Nb_all %>% group_by(pair_id) %>% do(straight_sum(.,max_nb))
+beta_Nb_sum_all<-beta_Nb_sum_all[order(beta_Nb_sum_all$Nb,decreasing = T),]
+
+
+
+beta_t_all<-beta_Nb_sum_all %>% mutate(
+  CI = paste0(lower_95,"-",upper_95),
+  lambda = paste0(Nb," (",CI,")")
+) %>%
+  select(pair_id,Nb,pair_id,CI) 
+beta_t_all<-left_join(beta_t_all,
+                  select(all_trans_freq.comp,pair_id,SPECID1,SPECID2,ENROLLID1,ENROLLID2,
+                         collect1,collect2,transmission))%>%
+  distinct(pair_id, .keep_all = TRUE) %>%
+  dplyr::rename(donor_sample = collect1, recipient_sample=collect2,
+                estimated_transmission_date=transmission) 
+
+snv_data<- all_trans_freq.comp %>% group_by(pair_id,pcr_result) %>%
+  summarize(minority_isnv=length(which(freq1<0.5)),
+            transmitted_minority_isnv =length(which(freq1<0.5&found==T)))
+beta_t_all<-left_join(beta_t_all,snv_data)
+
+beta_t_all<-beta_t_all[order(c(beta_t_all$ENROLLID1, beta_t_all$ENROLLID2)),]%>%
+  filter(!is.na(pair_id))
+
+
+# Adding the ages.
+ages<- read_csv("./data/reference/HIVE_ages_by_season.csv",
+                col_types = cols(STUDY_ID=col_character()))%>%
+  mutate(DOB = parse_date_time(DOB,c("db!y","%m/%d/%Y"))) %>%
+  mutate(DOB=if_else(condition = (as.numeric(as.POSIXct(today())-DOB)/365)<AGEYR,
+                     true = DOB-years(100),false=DOB))
+
+beta_t_all<-left_join(beta_t_all,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID")) %>%
+  mutate(Donor_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>%
+  select(-DOB) %>%
+  left_join(.,select(ages,STUDY_ID,DOB),by=c("ENROLLID2"="STUDY_ID")) %>%
+  mutate(Recipient_age=
+           as.numeric(as.POSIXct(estimated_transmission_date)-DOB)/365.2425) %>%
+  select(-DOB)
+out_beta_t_all<-beta_t_all %>% ungroup() %>%
+  select(Nb,CI,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,
+         Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2,
+         SPECID1,SPECID2)
+out_beta_t_all$Nb[is.na(out_beta_t_all$Nb)]<-">200"
+
+# mark which samples were used in the analysis
+out_beta_t_all<- out_beta_t_all %>% mutate(Used = ifelse(paste(SPECID1,SPECID2) %in% paste(out_beta_t$SPECID1,out_beta_t$SPECID2),
+                                                 "X","-"))
+write.csv(out_beta_t_all,"./data/processed/secondary/beta_bottlenecks_by_pair_all_combinations.csv")
+
+
+# Test used samples match the first etimate
+original <-out_beta_t
+used <- select(filter(out_beta_t_all,Used=="X"),-Used)
+
+# for some reason this sorts add NA
+original <- original[order(c(original$SPECID1,original$SPECID2)),] %>% filter(!is.na(SPECID1))
+used <- used[order(c(used$SPECID1,used$SPECID2)),] %>% filter(!is.na(SPECID1))
+
+dim(anti_join(used,original))==c(0,14)
 
