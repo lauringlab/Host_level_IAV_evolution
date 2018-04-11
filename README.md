@@ -20,6 +20,7 @@ This repository holds the analysis used in *citation,2018* it relies heavily on 
     |- results         # all output from workflows and analyses
     |  |- Figures/     #  manuscript figures
     |  |- *.Rmd  # exicutable R markdown file. In many cases these run the same analysis as that in the Figure*.R files but in a more exploritory manner - with more details 
+    |  |- *ipynb and *py    # Python notebooks used to run a few steps of the analysis - identifying antigenic variants, calculating DnDs.
     +- Makefile        # executable Makefile for this study
     
   --------
