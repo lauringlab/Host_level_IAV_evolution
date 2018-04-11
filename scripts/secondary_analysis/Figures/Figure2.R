@@ -47,14 +47,6 @@ minor_HA.ns<-read.csv("./data/processed/secondary/minor_nonsynom.csv",
 #D
 meta<-read_csv("./data/reference/all_meta.sequence_success.csv")
 intra<-read_csv("./data/processed/secondary/Intrahost_all.csv")
-
-no_freq_cut<-read_csv("./data/processed/secondary/no_freq_cut.qual.snv.csv",
-                      col_types = list(
-                        ENROLLID= col_character(),
-                        SPECID = col_character(),
-                        LAURING_ID = col_character(),
-                        Id = col_character()
-                      ))
 # --------------------------------- Data processing ---------------------------
 #   Any data processing beyond the usual data configuration goes here.
 #   In this case this is the analysis used to get a list of HA1 minority 
@@ -201,14 +193,14 @@ save_plot("./results/Figures/Figure2C_legend.pdf", nextflu.p,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure2C_legend.pdf")
 
-
 nextflu.p<-direct.label(nextflu.p,c("last.qp"))+theme(legend.position = "none")
+
 write.csv(nextflu.l,"./results/Figures/data/Figure2C_data_frequency.csv") 
 write.csv(collection_points,"./results/Figures/data/Figure2C_data_collection_times.csv") 
 
-# save_plot("./results/Figures/Figure2C_label.pdf", nextflu.p,
-#           base_aspect_ratio = 1.3)
-# embed_fonts("./results/Figures/Figure2C_label.pdf")
+save_plot("./results/Figures/Figure2C_label.pdf", nextflu.p,
+          base_aspect_ratio = 1.3)
+embed_fonts("./results/Figures/Figure2C_label.pdf")
 
 # --------------------------------- Figure 2D ---------------------------------
 #   The distribution of sampling times for longitudinal sample pairs
@@ -230,16 +222,16 @@ intra_meta<-intra_meta[order(intra_meta$DPS1,intra_meta$DPS2,decreasing = T),]
 intra_meta <- intra_meta %>% 
   mutate(DPS2 = ifelse(DPS1==DPS2,yes = DPS2+0.3,no = DPS2)) 
 intra_meta$sort_order<-1:nrow(intra_meta)
-
 fig_2D<-ggplot(intra_meta,aes(x = DPS1,xend=DPS2,y = sort_order,yend=sort_order))+
-  geom_segment(color = cbPalette[1])+
+  geom_segment(color = cbPalette[1])+ylab("")+
+  xlab("Day post symptom onset")+ 
+  theme(axis.line.y=element_blank(),axis.ticks.y = element_blank(),
+        axis.text.y = element_blank())+
   geom_point(aes(y=sort_order,x = DPS1),color=cbPalette[1])+
   geom_point(aes(y = sort_order,x = DPS2),color=cbPalette[1]) + 
-  #scale_x_continuous(breaks = -2:6) +
-  theme(axis.line.y=element_blank(),axis.ticks.y = element_blank(),
-        axis.text.y = element_blank(),axis.title.y = element_blank(),
-        axis.title.x = element_text("Day post symptom onset"))
-#fig_2D
+  scale_x_continuous(breaks = -2:6) 
+
+fig_2D
 
 save_plot("./results/Figures/Figure2D.pdf", fig_2D,
           base_aspect_ratio = 1.3)
@@ -247,7 +239,6 @@ embed_fonts("./results/Figures/Figure2D.pdf")
 
 write.csv(rename(intra_meta,day.post.sympotom.onset1=DPS1,
                  day.post.sympotom.onset2=DPS2),"./results/Figures/data/Figure2D.csv")
-print("HERE")
 
 # --------------------------------- Figure 2E ---------------------------------
 #   The within host dynamics in longitudinal sample pairs
@@ -256,69 +247,40 @@ print("HERE")
 # Just to make sure
 intra<-filter(intra,freq1<0.5) 
 
-arisen<-intra %>% filter(freq1==0) %>% 
-  rowwise() %>% 
-  mutate(freq_close_look = 
-           ifelse(length(which(no_freq_cut$SPECID==SPECID1 & no_freq_cut$mutation==mutation))==1,
-                  no_freq_cut$freq.var[which(no_freq_cut$SPECID==SPECID1 & no_freq_cut$mutation==mutation)],
-                  0),
-         freq1=freq_close_look) %>%
-  select(-freq_close_look)
-
-lost<-intra %>% filter(freq2==0) %>% 
-  rowwise() %>% 
-  mutate(freq_close_look = 
-           ifelse(length(which(no_freq_cut$SPECID==SPECID2 & no_freq_cut$mutation==mutation))==1,
-                  no_freq_cut$freq.var[which(no_freq_cut$SPECID==SPECID2 & no_freq_cut$mutation==mutation)],
-                  0),
-         freq2=freq_close_look) %>%
-  select(-freq_close_look)
-
-intra_processed<-rbind(arisen,lost,filter(intra,freq1>0,freq2>0))
-
-intra_processed<-intra_processed %>% mutate(Endpoint="Persistent") %>%
+intra<-intra %>% mutate(Endpoint="Persistent") %>%
   mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
   mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
 
-intra_processed$Endpoint<-factor(intra_processed$Endpoint,
-                                 levels = c("Persistent","Arisen","Lost"),ordered = T)
+intra$Endpoint<-factor(intra$Endpoint,levels = c("Persistent","Arisen","Lost"),ordered = T)
 
-intra.plot<-ggplot(intra_processed,aes(x=as.factor(within_host_time),
-                                 y=freq2-freq1))+
-  geom_boxplot()+
-  geom_quasirandom(pch=21,color='black',size=2,aes( fill = Endpoint))+
+intra.plot<-ggplot(intra,aes(x=as.factor(within_host_time),
+                                 y=freq2-freq1,
+                                 fill = Endpoint))+
+  geom_quasirandom(pch=21,color='black',size=2)+
   scale_fill_manual(values=cbPalette[c(1,3,5)],name="")+
   facet_wrap(~class)+
-  theme(axis.title.x = element_text("Time within host (days)"),
-        axis.title.y = element_text("Change in frequency"))
+  xlab("Time within host (days)")+ylab("Change in frequency")
 
-  #intra.plot
+  intra.plot
+
 save_plot("./results/Figures/Figure2E.pdf", intra.plot,
           base_aspect_ratio = 1.3,
           base_width = 10)
 embed_fonts("./results/Figures/Figure2E.pdf")
 
-write.csv(select(intra_processed,mutation,ENROLLID,DPS1,DPS2,freq1,freq2),
+write.csv(select(intra,mutation,ENROLLID,DPS1,DPS2,freq1,freq2),
           "./results/Figures/data/Figure2E.csv")
 # Stats 
+# How many found in the first sample persist.
+# persitant/lost
 intra %>% filter(within_host_time>0,Endpoint!="Arisen") %>% 
   summarize(persistent=length(which(Endpoint=="Persistent")),
             total = length(Endpoint)) %>% 
   mutate(proportion = persistent/total)
-
-intra %>% filter(within_host_time>0) %>% 
+# How many found in the second sample are new
+# arisen/peristant
+intra %>% filter(within_host_time>0,Endpoint!="Lost") %>% 
   summarize(new=length(which(Endpoint=="Arisen")),
             total = length(Endpoint)) %>% 
   mutate(proportion = new/total)
-
-distibution.plot<-ggplot(intra_processed,
-                         aes(y=as.factor(within_host_time),
-                                      x=abs(freq2-freq1)))+
-  geom_density_ridges()+
-  ylab("Time within host (days)")+xlab("Change in frequency")
-
-distibution.plot
-
-
-
 

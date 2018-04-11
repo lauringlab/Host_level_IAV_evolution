@@ -40,7 +40,15 @@ qual<-read_csv("./data/processed/secondary/qual.snv.csv", # The  iSNV
                  Id = col_character()
                )) # read in quality variant calls from all
 
-intra<-read_csv("./results/Figures/data/Figure2E.csv")
+#intra<-read_csv("./results/Figures/data/Figure2E.csv")
+intra<-read_csv("./data/processed/secondary/Intrahost_all.csv")
+no_freq_cut<-read_csv("./data/processed/secondary/no_freq_cut.qual.snv.csv",
+                      col_types = list(
+                        ENROLLID= col_character(),
+                        SPECID = col_character(),
+                        LAURING_ID = col_character(),
+                        Id = col_character()
+                      ))
 
 # ----------------------------- data processing ------------------------------
 #  All duplicates were sequenced on separate runs so we will use run as the 
@@ -79,6 +87,46 @@ freqs<-left_join(freqs,pairs)
 
 write.csv(freqs,"./data/processed/secondary/duplicate_sequences.csv")
 
+
+# -------------------- intra processing 
+# - taken from Figure2.R 1decf3dc6df24c6e2b4d58cd3fdea24652fd46d1
+# Reidenfiy the frequency of lost and arisen mutation using the dataframe
+# that does not include the frequency cut off.
+# ----------------------------------------------------------------
+# Remove mixed infections
+intra<- intra %>% filter(!(SPECID2 %in% c("HS1530","MH8137","MH8390")) &
+                           !(SPECID1 %in% c("HS1530","MH8137","MH8390")))
+intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
+
+intra<-filter(intra,freq1<0.5) 
+
+arisen<-intra %>% filter(freq1==0) %>% 
+  rowwise() %>% 
+  mutate(freq_close_look = 
+           ifelse(length(which(no_freq_cut$SPECID==SPECID1 & no_freq_cut$mutation==mutation))==1,
+                  no_freq_cut$freq.var[which(no_freq_cut$SPECID==SPECID1 & no_freq_cut$mutation==mutation)],
+                  0),
+         freq1=freq_close_look) %>%
+  select(-freq_close_look)
+
+lost<-intra %>% filter(freq2==0) %>% 
+  rowwise() %>% 
+  mutate(freq_close_look = 
+           ifelse(length(which(no_freq_cut$SPECID==SPECID2 & no_freq_cut$mutation==mutation))==1,
+                  no_freq_cut$freq.var[which(no_freq_cut$SPECID==SPECID2 & no_freq_cut$mutation==mutation)],
+                  0),
+         freq2=freq_close_look) %>%
+  select(-freq_close_look)
+
+intra_processed<-rbind(arisen,lost,filter(intra,freq1>0,freq2>0))
+
+intra_processed<-intra_processed %>% mutate(Endpoint="Persistent") %>%
+  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
+  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
+
+intra_processed$Endpoint<-factor(intra_processed$Endpoint,
+                                 levels = c("Persistent","Arisen","Lost"),ordered = T)
+# this was written as the data file for Figure 2e in 1decf3dc6df24c6e2b4d58cd3fdea24652fd46d1
 
 # ---------------------------------- figure ----------------------------------
 #  Read in the csv from above 
@@ -175,6 +223,7 @@ save_plot("./results/Figures/sequencing_dot_discrete_plot.pdf", dot_plot.discret
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/sequencing_dot_discrete_plot.pdf")
 
+intra<-intra_processed
 intra <- intra %>% 
   mutate(rel_difference = if_else(freq1!=0,abs(freq1-freq2)/freq1,
                               abs(freq1-freq2)/freq2),
