@@ -54,3 +54,11 @@ HIVE\.Rproj
 scripts/phaentu-approxwf-fcc7964e7398/
 
 results/appoxWF/ApproxWF_MCMC_output\.txt
+
+SRR\.HK_1\.branches
+
+results/plotting_transmission\.R
+
+download\.fastq\.groovy
+
+download\.config\.groovy
