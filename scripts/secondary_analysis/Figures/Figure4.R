@@ -16,6 +16,15 @@ Pt_PA<-function(x,l,max_Nb){
   }
   return(1-s)
 }
+write_to_summary<-function(line_pattern,value){
+  file = readLines("./results/results.table.tsv")
+  line_pattern_regex = paste0("^",line_pattern)
+  line = grep(line_pattern_regex,file)
+  file[line] = paste0(line_pattern,"\t",value)
+  writeLines(file,"./results/results.table.tsv")
+}
+
+
 # --------------------------------- Data Files --------------------------------
 #   Read in the csv files used in the data analysis below
 # -----------------------------------------------------------------------------
@@ -91,6 +100,12 @@ mean_zpois<-function(l) l/(1-exp(-1*l))
 con_int<-confint(dzpois_model_fit)
 
 summary(dzpois_model_fit)
+
+con_int<-confint(dzpois_model_fit)
+write_to_summary("No cut Nb",mean_zpois(dzpois_model_fit@coef))
+write_to_summary("No cut PA lambda:",dzpois_model_fit@coef)
+write_to_summary("No cut CI:",paste(bbmle::confint(dzpois_model_fit),collapse = "-"))
+
 # Plot the fit
 # Sliding window with window of w step of step
 w<-0.05

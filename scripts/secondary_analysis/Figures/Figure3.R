@@ -426,7 +426,8 @@ write_to_summary("P-A Nb:",mean_zpois(dzpois_model_fit@coef))
 write_to_summary("P-A lambda:",dzpois_model_fit@coef)
 write_to_summary("P-A CI:",paste(bbmle::confint(dzpois_model_fit),collapse = "-"))
 
-
+AIC(dzpois_model_fit)
+summary(dzpois_model_fit)
 prob_above_5 <-1-sum(dzpois(c(1,2,3,4,5),dzpois_model_fit@coef))
 write_to_summary("P-A prob >5",prob_above_5)
 
@@ -519,6 +520,7 @@ dzpois_model_fit_bb<-bbmle::mle2(minuslogl = zdpois_fit,start = list(lambda = 1)
                                           weight = counts))
 conf_int_BB<-bbmle::confint(dzpois_model_fit_bb)
 summary(dzpois_model_fit_bb)
+AIC(dzpois_model_fit_bb)
 
 write_to_summary("BB Nb:",mean_zpois(dzpois_model_fit_bb@coef))
 write_to_summary("BB lambda:",dzpois_model_fit_bb@coef)
@@ -790,8 +792,7 @@ out_beta_t_all<-beta_t_all %>% ungroup() %>%
 out_beta_t_all$Nb[is.na(out_beta_t_all$Nb)]<-">200"
 
 # mark which samples were used in the analysis
-out_beta_t_all<- out_beta_t_all %>% mutate(Used = ifelse(paste(SPECID1,SPECID2) %in% paste(out_beta_t$SPECID1,out_beta_t$SPECID2),
-                                                 "X","-"))
+out_beta_t_all<- out_beta_t_all %>% mutate(Used = (paste(SPECID1,SPECID2) %in% paste(out_beta_t$SPECID1,out_beta_t$SPECID2)))
 write.csv(out_beta_t_all,"./data/processed/secondary/beta_bottlenecks_by_pair_all_combinations.csv")
 
 

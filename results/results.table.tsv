@@ -5,6 +5,7 @@ H1N1 cases:	77
 High quality isolates:	249
 High quality individuals:	200
 -------iSNV Summary Statistics-------
+# the three that are mixed have been removed.
 SPECID <10 iSNV:	246
 SPECID more 10 iSNV:	3
 SPECID mixed:	
@@ -46,6 +47,6 @@ BB lambda:	1.25374131815209
 BB CI:	0.55100063343883-2.28108911148015
 BB AIC:	83.0216140134083
 P-A AIC:	76.692689476426
-No cut PA lambda:
-No cut Nb:
-No cut CI:
+No cut PA lambda:	1.74625886515451
+No cut Nb	2.11520387873291
+No cut CI:	0.874697283082715-2.94678815328589
