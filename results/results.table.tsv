@@ -26,34 +26,6 @@ Antigenic infection n:	Propotion of infections with antigenic sites 0.071066 - 0
 ------Effective population size------
 Samples at least 1 day apart:	29
 R2 samples same day:	0.985960082289121
-Diffusion model (6) Ne:	35
-Diffusion model (6) CI:	[26, 46]
-Diffusion model (12) Ne:	17
-Diffusion model (12) CI:	[13, 23]
-Discrete model 6 Ne:	32
-Discrete model 6 CI:	28 - 41
-Discrete model 12 Ne:	23
-Discrete model 12 CI	23 - 29
-Subset median 6 Ne:	33.0
-Subset IQR 6 Ne:	[32.0,40.0]
-Simulations mean 30:	33.891
-Simulations mean 50:	55.85
-Simulations mean 100:	117.056
-S iSNV n:	36
-S Ne:	37
-S CI:	27 - 54
-NS iSNV n:	27
-NS Ne:	30
-NS CI:	21 - 40
-NS Ne 12:	19
-NS CI 12	19 - 21
-S Ne 12:	27
-S CI 12	22 - 33
-Fraction to increase by 10-fold:	0.746031746031746
-Samples exactly 1 day apart:	16
-iSNV in samples exaclty 1 day apart:	35
-ABC Ne:	69.00414376
-Nonneutral SPECID-iSNV-class:	HA_G638A, PB1_G430A, PB1_G530A, PB1_G1798G, NR_A501G, HA_T524C, NS_T538C
 -------Transmission Bottleneck-------
 Households with concurrent infection:	85
 Putative transmission events:	124
@@ -74,6 +46,6 @@ BB lambda:	1.25374131815209
 BB CI:	0.55100063343883-2.28108911148015
 BB AIC:	83.0216140134083
 P-A AIC:	76.692689476426
------------Mutation rate-----------
-Mu:	4e-06
-Ne_spec:	36
+No cut PA lambda:
+No cut Nb:
+No cut CI:
