@@ -302,7 +302,7 @@ l1norm.p_tp<-ggplot(figure3A_data,
                linetype=2,color=cbPalette[5],size=0.3)
 l1norm.p_tp
 
-write.csv(figure3A_data,"./results/Figures/data/Figure3A.csv")
+write.csv(figure3A_data,"./results/Figures/data/Figure_3-source_data_1.csv")
 
 save_plot("./results/Figures/Figure3A.pdf", l1norm.p_tp,
           base_aspect_ratio = 1.3,
@@ -339,7 +339,7 @@ all_seasons_useful
 write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T,
                  select=c(HOUSE_ID,ENROLLID1,ENROLLID2,
                           onset1,onset2,quality_distance,double)),
-          "./results/Figures/data/Figure3B.csv")
+          "./results/Figures/data/Figure_3-source_data_2.csv")
 
 save_plot("./results/Figures/Figure3B.pdf", all_seasons_useful,
           base_aspect_ratio = 1.3)
@@ -360,7 +360,7 @@ save_plot("./results/Figures/Figure3C.pdf", trans_freq.p,
 embed_fonts("./results/Figures/Figure3C.pdf")
 
 write.csv(x = select(trans_freq,SPECID1,SPECID2,freq1,freq2),
-          "./results/Figures/data/Figure3C.csv")
+          "./results/Figures/data/Figure_3-source_data_3.csv")
 
 # --------------------------------- Figure 3D ---------------------------------
 #   The fit of the PA transmission model
@@ -471,10 +471,12 @@ save_plot("./results/Figures/Figure3D.pdf", window_data.p,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure3D.pdf")
 
-write.csv(x = select(trans_freq.comp,SPECID1,SPECID2,freq1,freq2),
-          "./results/Figures/data/Figure3D_points.csv")
 write.csv(x = model,
-          "./results/Figures/data/Figure3D_model.csv")
+          "./results/Figures/data/Figure_3-source_data_4.csv")
+
+write.csv(x = select(trans_freq.comp,SPECID1,SPECID2,freq1,freq2),
+          "./results/Figures/data/Figure_3-source_data_5.csv")
+
 #bottle neck of 10
 
 model_10<-tibble(s = seq(0,1,0.01))
@@ -493,8 +495,8 @@ save_plot("./results/Figures/Figure3D_10.pdf", window_data.p_10,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure3D_10.pdf")
 
-write.csv(x = model_10,
-          "./results/Figures/data/Figure3D_model_10.csv")
+# write.csv(x = model_10,
+#           "./results/Figures/data/Figure3D_model_10.csv")
 
 # --------------------------------- Figure 3E ---------------------------------
 #   The fit of the BetaBin transmission model
@@ -556,13 +558,8 @@ save_plot("./results/Figures/Figure3E.pdf", window_data_bb.p,
 embed_fonts("./results/Figures/Figure3E.pdf")
 
 
-
-
-
-write.csv(x = select(trans_freq.comp,SPECID1,SPECID2,freq1,freq2),
-          "./results/Figures/data/Figure3E_points.csv")
 write.csv(x = model_betaBin,
-          "./results/Figures/data/Figure3E_model.csv")
+          "./results/Figures/data/Figure_3-source_data_6.csv")
 
 
 model_10_bb<-tibble(s = seq(0,1,0.01))
@@ -794,6 +791,7 @@ out_beta_t_all$Nb[is.na(out_beta_t_all$Nb)]<-">200"
 # mark which samples were used in the analysis
 out_beta_t_all<- out_beta_t_all %>% mutate(Used = (paste(SPECID1,SPECID2) %in% paste(out_beta_t$SPECID1,out_beta_t$SPECID2)))
 write.csv(out_beta_t_all,"./data/processed/secondary/beta_bottlenecks_by_pair_all_combinations.csv")
+write.csv(out_beta_t_all,"./results/Figures/data/Figure_3-source_data_7.csv")
 
 
 # Test used samples match the first etimate
