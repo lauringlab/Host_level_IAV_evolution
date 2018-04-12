@@ -106,13 +106,13 @@ pa_total_fit<-trans_fit(trans_freq.comp,l=seq(0.01,10,0.01),Nb_max=100,model="PA
 pa_fit_sum<-model_summary(pa_total_fit)
 pa_fit_sum
 
-write_to_summary("P-A Nb:",pa_fit_sum$mean_Nb)
-write_to_summary("P-A lambda:",pa_fit_sum$lambda)
-write_to_summary("P-A CI:",paste(pa_fit_sum$lower_95,pa_fit_sum$upper_95,collapse = "-"))
+# write_to_summary("P-A Nb:",pa_fit_sum$mean_Nb)
+# write_to_summary("P-A lambda:",pa_fit_sum$lambda)
+# write_to_summary("P-A CI:",paste(pa_fit_sum$lower_95,pa_fit_sum$upper_95,collapse = "-"))
 
 
 prob_above_5 <-1-sum(dzpois(c(1,2,3,4,5),pa_fit_sum$lambda))
-write_to_summary("P-A prob >5",prob_above_5)
+# write_to_summary("P-A prob >5",prob_above_5)
 ```
 
 ### Log likelihood plot
@@ -177,7 +177,7 @@ pa_t<-left_join(pa_t,
         distinct(pair_id, .keep_all = TRUE) %>%
         dplyr::rename(donor_sample = collect1, recipient_sample=collect2,estimated_transmission_date=transmission) %>% select(-pair_id,-ENROLLID1,-ENROLLID2)
 
-write.csv(pa_t,"./pa_bottlenecks_by_pair.csv")
+# write.csv(pa_t,"./pa_bottlenecks_by_pair.csv")
 ```
 ### Simulation
 
@@ -224,8 +224,8 @@ sim_trans_pa<-simulations(data=trans_freq.comp,runs = 1000,lambda = pa_fit_sum$l
 ```{r}
 pa_sim_plot<-sim_plot(trans_freq.comp,sim_trans_pa)
 
-write.csv(rename(sim_trans_pa,frequency.in.donor=freq1,
-                 probability.of.transmission=prob),"Figures/data/Figure3D.area.csv")
+# write.csv(rename(sim_trans_pa,frequency.in.donor=freq1,
+#                 probability.of.transmission=prob),"Figures/data/Figure3D.area.csv")
 pa_sim_plot
 ```
 
@@ -442,9 +442,9 @@ beta_total_fit<-trans_fit(subset(trans_freq.comp,freq1<0.5)
 beta_fit_sum<-model_summary(beta_total_fit)
 beta_fit_sum
 
-write_to_summary("BB Nb:",beta_fit_sum$mean_Nb)
-write_to_summary("BB lambda:",beta_fit_sum$lambda)
-write_to_summary("BB CI:",paste(beta_fit_sum$lower_95,beta_fit_sum$upper_95,collapse = "-"))
+# write_to_summary("BB Nb:",beta_fit_sum$mean_Nb)
+# write_to_summary("BB lambda:",beta_fit_sum$lambda)
+# write_to_summary("BB CI:",paste(beta_fit_sum$lower_95,beta_fit_sum$upper_95,collapse = "-"))
 
 ```
 ### Loglikelihodd plot
@@ -546,7 +546,7 @@ beta_t<-left_join(beta_t,select(ages,STUDY_ID,DOB),by=c("ENROLLID1"="STUDY_ID"))
 out_beta_t<-beta_t %>% ungroup() %>%
   select(Nb,Subtype=pcr_result,donor_sample,recipient_sample,estimated_transmission_date,Donor_age,Recipient_age,minority_isnv,transmitted_minority_isnv,ENROLLID1,ENROLLID2)
 out_beta_t$Nb[is.na(out_beta_t$Nb)]<-">200"
-write.csv(out_beta_t,"../data/processed/secondary/beta_bottlenecks_by_pair.csv")
+# write.csv(out_beta_t,"../data/processed/secondary/beta_bottlenecks_by_pair.csv")
 ```
 
 
@@ -578,8 +578,8 @@ sim_trans_beta<-simulations(data=trans_freq.comp,runs = 1000,lambda = beta_fit_s
 
 ```{r}
 beta_sim_plot<-sim_plot(trans_freq.comp,sim_trans_beta)
-write.csv(rename(sim_trans_beta,frequency.in.donor=freq1,
-                 probability.of.transmission=prob),"Figures/data/Figure3F.area.csv")
+# write.csv(rename(sim_trans_beta,frequency.in.donor=freq1,
+#                 probability.of.transmission=prob),"Figures/data/Figure3F.area.csv")
 beta_sim_plot
 
 ```
@@ -603,8 +603,8 @@ AIC<-function(df,k){
 }
 kable(data.frame(Model= c("Presence/Absence","BetaBinomial"),AIC = c(AIC(pa_total_fit,1),AIC(beta_total_fit,1))))
 
-write_to_summary("BB AIC:", AIC(beta_total_fit,1))
-write_to_summary("P-A AIC:", AIC(pa_total_fit,1))
+# write_to_summary("BB AIC:", AIC(beta_total_fit,1))
+# write_to_summary("P-A AIC:", AIC(pa_total_fit,1))
 
 final_table<-data.frame(Model=c("Presence Absence","BetaBinomial"))
 final_table<-cbind(final_table,rbind(pa_fit_sum,beta_fit_sum))
@@ -635,25 +635,25 @@ kable(final_table)
 ```
 
 ```{r}
-save_plot("./Figures/Figure3D.pdf", pa_sim_plot,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure3D.pdf")
-
-save_plot("./Figures/Figure3F.pdf", beta_sim_plot,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure3F.pdf")
-
-save_plot("./Figures/Supplemental_Figure7D.pdf", no_cut_pa_sim_plot,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Supplemental_Figure7D.pdf")
-
-save_plot("./Figures/Supplemental_Figure7A.pdf", nc_ni_tv_plot,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Supplemental_Figure7A.pdf")
-
-save_plot("./Figures/Supplemental_Figure7B.pdf", nc_ni.pa_sim_plot,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Supplemental_Figure7B.pdf")
+# save_plot("./Figures/Figure3D.pdf", pa_sim_plot,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure3D.pdf")
+# 
+# save_plot("./Figures/Figure3F.pdf", beta_sim_plot,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure3F.pdf")
+# 
+# save_plot("./Figures/Supplemental_Figure7D.pdf", no_cut_pa_sim_plot,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Supplemental_Figure7D.pdf")
+# 
+# save_plot("./Figures/Supplemental_Figure7A.pdf", nc_ni_tv_plot,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Supplemental_Figure7A.pdf")
+# 
+# save_plot("./Figures/Supplemental_Figure7B.pdf", nc_ni.pa_sim_plot,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Supplemental_Figure7B.pdf")
 
 ```
 

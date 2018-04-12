@@ -251,7 +251,7 @@ write_to_summary("Max household bar:",max(group1$count))
 write_to_summary("Max community bar:",max(group2$count))
 
 
-write.csv(figure3A_data,"./Figures/data/Figure3A.csv")
+# write.csv(figure3A_data,"./Figures/data/Figure3A.csv")
 print(cutoffs$L1_norm[cutoffs$threshold==0.05]) # I moved it 15 because of the bin size 
 ```
 
@@ -507,13 +507,13 @@ all_seasons
 all_seasons_useful<-make_transmission_plot(subset(all_pairs.tp,snv_qualified_pair==T & valid==T),type='valid')
 all_seasons_useful
 
-write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T,
-                 select=c(HOUSE_ID,ENROLLID1,ENROLLID2,
-                  onset1,onset2,quality_distance,double)),
-          "Figures/data/Figure3B.csv")
-
-write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T),
-          "Figures/data/Figure3B_all.csv")
+# # write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T,
+#                  select=c(HOUSE_ID,ENROLLID1,ENROLLID2,
+#                   onset1,onset2,quality_distance,double)),
+#           "Figures/data/Figure3B.csv")
+# 
+# # write.csv(subset(all_pairs.tp,snv_qualified_pair==T & valid==T),
+#           "Figures/data/Figure3B_all.csv")
 
 ```
 This is the in set figure for some talks.
@@ -622,7 +622,7 @@ ggplot(snv_qual_meta.o,aes(y=iSNV,x=as.factor(vaccination_status)))+geom_dotplot
 ```{r}
 figure1B_data<-snv_qual_meta.o %>% select(days.post.symptom.onset=DPI,iSNV)
 isnv_by_day.p<-ggplot(snv_qual_meta.o,aes(x=as.factor(DPI),y=iSNV))+geom_boxplot()+xlab("Day post symptom onset")#+geom_dotplot(stackdir = "center",binaxis = 'y',binwidth = 1,dotsize = 0.5)+stat_summary(fun.data="plot.median", geom="errorbar", colour="black", width=0.95, size=0.5)
-write.csv(figure1B_data,"./Figures/data/Figure1B.csv")
+# write.csv(figure1B_data,"./Figures/data/Figure1B.csv")
 isnv_by_day.p
 
 isnv_by_isolate.p<-ggplot(snv_qual_meta.o,aes(x=iSNV))+geom_histogram(color="white",binwidth = 1)+xlab("iSNV in isolate") +ylab("Isolates")
@@ -655,7 +655,7 @@ freq_hist.p<-ggplot(figure1CD_data,aes(x=freq.var,fill=class_factor))+
 
 freq_hist.p
 
-write.csv(figure1CD_data,"./Figures/data/Figure1C_D.csv")
+# write.csv(figure1CD_data,"./Figures/data/Figure1C_D.csv")
 
 freq_hist.d<-ggplot_build(freq_hist.p)
 freq_hist.d$data[[1]]->bins

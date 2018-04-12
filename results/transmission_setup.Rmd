@@ -82,7 +82,7 @@ trans_freq.p
 #           base_aspect_ratio = 1.3)
 # embed_fonts("./Figures/Figure3C.pdf")
 
-write.csv(x = select(trans_freq,SPECID1,SPECID2,freq1,freq2),"./Figures/data/Figure3C.csv")
+# write.csv(x = select(trans_freq,SPECID1,SPECID2,freq1,freq2),"./Figures/data/Figure3C.csv")
 ```
 It is pecular that there are fixed differences between the donor and recipient. My hunch is that they are near the ends of the segment.
 
@@ -171,9 +171,9 @@ trans_freq %>%  .$pair_id %>% unique()%>% length()->pair_id_whole
 
 trans_freq.comp   %>% .$pair_id %>% unique()%>% length()->pair_id_poly
 
-write_to_summary("No donor iSNV:",pair_id_whole-pair_id_poly)
+# write_to_summary("No donor iSNV:",pair_id_whole-pair_id_poly)
 
-write_to_summary("Final pair count:",pair_id_poly)
+# write_to_summary("Final pair count:",pair_id_poly)
 ```
 
 # Transmitted minority variants
@@ -270,7 +270,7 @@ no_cut.trans_freq.p.log
 #           base_aspect_ratio = 1.3)
 # embed_fonts("./Figures/Supplemental_Figure7C.pdf")
 
-write.csv(x = select(no_cut.trans_freq,SPECID1,SPECID2,freq1,freq2),"./Figures/data/Supplemental_Figure7C.csv")
+# write.csv(x = select(no_cut.trans_freq,SPECID1,SPECID2,freq1,freq2),"./Figures/data/Supplemental_Figure7C.csv")
 
 
 ```
@@ -367,18 +367,18 @@ trans.com.plot.sampled<-ggplot()+
   xlab("")+ylab("Probability transmitted")+
   geom_line(data=trans_freq.comp,aes(x=freq1,y=prob))+xlab("Frequency in Donor")
 
-write.csv(select(community.area_all,frequency.in.donor=freq1,top.95.percentile=high.95,
+# write.csv(select(community.area_all,frequency.in.donor=freq1,top.95.percentile=high.95,
                  bottom.95.percentile=low.95,
                  top.50.percentile=high.50,
                  bottom.50.percentile=low.50),"./Figures/data/Figure3E.area.csv")
-write.csv(select(trans_freq.comp,frequency.in.donor = freq1,probability.of.transmission=prob,transmitted=found),
+# write.csv(select(trans_freq.comp,frequency.in.donor = freq1,probability.of.transmission=prob,transmitted=found),
           "./Figures/data/Figure3DEF.line.csv")
 
 trans.com.plot.sampled
 
-save_plot("./Figures/Figure3E.pdf", trans.com.plot.sampled,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Figure3E.pdf")
+# save_plot("./Figures/Figure3E.pdf", trans.com.plot.sampled,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Figure3E.pdf")
 ```
 
 

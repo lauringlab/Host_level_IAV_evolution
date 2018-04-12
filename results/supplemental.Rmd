@@ -35,8 +35,8 @@ cov_plot(cov,title = "Coverage") ->coverage.plot
 
 require(cowplot)
 
-save_plot("./Figures/Supplemental_1.pdf", coverage.plot,base_width = 15.0,
-          base_aspect_ratio = 1.1)
+# save_plot("./Figures/Supplemental_1.pdf", coverage.plot,base_width = 15.0,
+#           base_aspect_ratio = 1.1)
 
 coverage.plot
 ```
@@ -94,9 +94,9 @@ nextflu.p<-direct.label(nextflu.p,"angled.boxes")
 nextflu.p<-direct.label(nextflu.p,c("last.qp"))
 nextflu.p
 
-save_plot("./Figures/Supplemental_5.pdf", nextflu.p,
-          base_aspect_ratio = 1.3)
-embed_fonts("./Figures/Supplemental_5.pdf")
+# save_plot("./Figures/Supplemental_5.pdf", nextflu.p,
+#           base_aspect_ratio = 1.3)
+# embed_fonts("./Figures/Supplemental_5.pdf")
 
 ```
 

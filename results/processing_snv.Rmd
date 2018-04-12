@@ -45,7 +45,7 @@ cov.sample<-adply(cov.sample,1,function(x){
           x$LAURING_ID=LAURING_ID
           x$dup = dup
           return(x)})
-write.csv(cov.sample,"../data/processed/average_coverages.csv")
+# write.csv(cov.sample,"../data/processed/average_coverages.csv")
 
 ```
 Here are the summary plots from this analysis.
@@ -164,7 +164,7 @@ I will now add a column to the meta file noting which samples are eligible for s
 
 ```{r}
 meta<-mutate(meta,snv_qualified=(gc_ul>1e3 & sequenced==T & !(LAURING_ID %in% poor_coverage_Id$LAURING_ID)))
-write.csv(x = meta,file = "../data/reference/all_meta.sequence_success.csv")
+# write.csv(x = meta,file = "../data/reference/all_meta.sequence_success.csv")
 ```
 
 Up to this point we have filtered snp by the following :
@@ -207,8 +207,8 @@ no_freq.qual<-qual
 qual<-subset(qual,freq.var>0.02)
 qual$freq.var[qual$freq.var>0.98]<-1
 
-write.csv(qual,"../data/processed/qual.snv.csv")
-write.csv(no_freq.qual,"../data/no_freq_cut.qual.snv.csv")
+# write.csv(qual,"../data/processed/qual.snv.csv")
+# write.csv(no_freq.qual,"../data/no_freq_cut.qual.snv.csv")
 ```
 This removes `r nrow(no_freq.qual)- nrow(qual)` snv and `r length(unique(no_freq.qual$SPECID)) - length(unique(qual$SPECID))` isolates from the data set. (They did not contain snv). 
 
