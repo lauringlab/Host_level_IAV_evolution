@@ -40,7 +40,6 @@ qual<-read_csv("./data/processed/secondary/qual.snv.csv", # The  iSNV
                  Id = col_character()
                )) # read in quality variant calls from all
 
-#intra<-read_csv("./results/Figures/data/Figure2E.csv")
 intra<-read_csv("./data/processed/secondary/Intrahost_all.csv")
 no_freq_cut<-read_csv("./data/processed/secondary/no_freq_cut.qual.snv.csv",
                       col_types = list(
@@ -56,39 +55,64 @@ no_freq_cut<-read_csv("./data/processed/secondary/no_freq_cut.qual.snv.csv",
 # ----------------------------------------------------------------------------
 
 
+# sequenced<-var %>%
+#   group_by(SPECID) %>%
+#   summarize(replicates = length(unique(run)))
+# 
+# var<-left_join(var,sequenced) %>% filter(replicates>1)
+# 
+# # This is to ensure the SPECID now refers to the sample and run
+# var <- var %>%
+#   rename("SPECID_original" = "SPECID") %>%
+#   mutate(SPECID=paste(run,SPECID_original,sep="_"))
+# # set up
+# 
+# replicates<-var %>% select(SPECID,SPECID_original,home_collected,collect,
+#                   gc_ul,season,pcr_result)%>% distinct()
+# 
+# dup_col<-c("SPECID")
+# 
+# pairs<- short_pairs(replicates,dup_col,SPECID_original)
+# 
+# 
+# freqs<-pairs %>%
+#   rowwise() %>%
+#   do(get_freqs(c(.$SPECID1,.$SPECID2),var))
+# freqs<-left_join(freqs,pairs)
+# 
+# # write this to limit run time in the future
+# write.csv(freqs,"./data/processed/secondary/duplicate_sequences.csv")
+# 
 
-#var <- filter(var,season=="2010-2011",
-#                    pcr_result=="A/H3N2")
+# ----------------------- Figure1A  -----------------------------
+# Frequency measurements in biological replicates. ie 2 samples
+# from the same person on the same day.
+# ---------------------------------------------------------------
+intra<- intra %>% filter(!(SPECID2 %in% c("HS1530","MH8137","MH8390")) &
+                           !(SPECID1 %in% c("HS1530","MH8137","MH8390")))
+intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
 
-sequenced<-var %>%
-  group_by(SPECID) %>%
-  summarize(replicates = length(unique(run)))
+intra<-filter(intra,freq1<0.5) 
 
-var<-left_join(var,sequenced) %>% filter(replicates>1)
+same_day<-subset(intra,within_host_time==0 & freq1<0.5)
+Sup_6<-ggplot(same_day,aes(x=freq1,y=freq2))+geom_point()+
+  xlab("Frequency in home isolate") + ylab("Frequency in clinic isolate") + 
+  geom_abline(slope=1,intercept = 0,lty=2)+
+  scale_x_continuous(limits = c(0,0.5))+scale_y_continuous(limits = c(0,0.5))
+Sup_6
 
-# This is to ensure the SPECID now refers to the sample and run
-var <- var %>%
-  rename("SPECID_original" = "SPECID") %>%
-  mutate(SPECID=paste(run,SPECID_original,sep="_"))
-# set up
+lm_fit<-lm(freq2~freq1,same_day)
+summary(lm_fit)->sum_fit
+sum_fit
 
-replicates<-var %>% select(SPECID,SPECID_original,home_collected,collect,
-                  gc_ul,season,pcr_result)%>% distinct()
-
-dup_col<-c("SPECID")
-
-pairs<- short_pairs(replicates,dup_col,SPECID_original)
-
-
-freqs<-pairs %>%
-  rowwise() %>%
-  do(get_freqs(c(.$SPECID1,.$SPECID2),var))
-freqs<-left_join(freqs,pairs)
-
-write.csv(freqs,"./data/processed/secondary/duplicate_sequences.csv")
+write_to_summary("R2 samples same day:",sum_fit$r.squared)
+save_plot("./results/Figures/Figure2-figure_supplement1A.pdf", Sup_6,
+          base_aspect_ratio = 1)
+embed_fonts("./results/Figures/Figure2-figure_supplement1A.pdf")
 
 
-# -------------------- intra processing 
+
+# -------------------- intra processing --------------------------
 # - taken from Figure2.R 1decf3dc6df24c6e2b4d58cd3fdea24652fd46d1
 # Reidenfiy the frequency of lost and arisen mutation using the dataframe
 # that does not include the frequency cut off.
@@ -138,46 +162,6 @@ intra_processed$Endpoint<-factor(intra_processed$Endpoint,
 
 
 freqs<-read_csv("./data/processed/secondary/duplicate_sequences.csv")
-# ggplot(freqs,aes(x=freq1,y=freq2))+
-#   geom_point()+geom_abline(slope=1,intercept = 0,lty=2)+
-#   #scale_y_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
-#   #scale_x_log10(breaks=c(0.0001,0.001,0.01,0.1,1))+
-#   geom_smooth(data=filter(freqs,freq1>0,freq2>0),method=lm,se=T)+
-#   xlab("Frequency in replicate 1")+ ylab("Frequency in replicate 2")
-# 
-# # What's with the odd ones on the axis at >50% in one replicate?
-# odd<-freqs %>% filter(freq1>0.5, freq2==0)
-# 
-# odd$chr<-factor(odd$chr,levels = rev(c("PB2","PB1","PA","HA","NP","NR","M","NS")))
-# 
-# chrs$chr<-factor(chrs$chr,levels=levels(odd$chr)) # set factors on the is meta data
-# # Plot on genome
-# genome_loc.p<-ggplot(odd,aes(x=pos,y=chr))+
-#   geom_point(shape=108,size=5)+
-#   geom_segment(data=chrs,aes(x = start, y = chr, xend = stop, yend = chr))+
-#   ylab("")+
-#   xlab("")+
-#   scale_color_manual(name="",values=cbPalette[c(1,4)])+
-#   theme(axis.ticks =element_blank(),
-#         axis.line.x = element_blank(), axis.line.y=element_blank())+
-#   scale_x_continuous(breaks=c())+
-#   theme(legend.position = "none")
-# genome_loc.p
-
-# They are just on the ends of segements (except for a few in NS. They can be
-# removed by only looking in the OR).
-# A few remain. They have very low coverage in the test sample.
-# freqs %>% filter(freq1>0.8, freq2==0)
-# Freq 1 =0
-# var %>% filter(chr=="NS",freq.var>0.95, SPECID=="perth_2_MH1346",
-#  pos %in% c(90,168,263,699)) %>% select(cov.tst.fw,cov.tst.bw,sample_coverage)
-#  4 of these are the inverse of those variants that were only found int replicate1 
-#  in MH1346
-#  The others match cases where there are biases in one sample. These are removed
-#  from the others.
-#  
-#  
-
 
 quality_mut<-paste0(qual$mutation,qual$SPECID)
 
@@ -219,9 +203,9 @@ dot_plot.discrete<-freqs%>% filter(used==TRUE)%>%
   scale_color_manual(name="Log(copies/ul)",values=cbPalette[c(4,1)])
 
 dot_plot.discrete
-save_plot("./results/Figures/sequencing_dot_discrete_plot.pdf", dot_plot.discrete,
+save_plot("./results/Figures/Figure2-figure_supplement1B.pdf", dot_plot.discrete,
           base_aspect_ratio = 1.3)
-embed_fonts("./results/Figures/sequencing_dot_discrete_plot.pdf")
+embed_fonts("./results/Figures/Figure2-figure_supplement1B.pdf")
 
 intra<-intra_processed
 intra <- intra %>% 
@@ -253,12 +237,12 @@ difference_histogram<-ggplot(difference,aes(x=difference,fill=group))+
                     name="")+
   theme(legend.position = c(0.2,0.5))
 
-save_plot("./results/Figures/sequencing_hist.pdf", difference_histogram,
+save_plot("./results/Figures/Figure2-figure_supplement1C.pdf", difference_histogram,
           base_aspect_ratio = 1.3)
-embed_fonts("./results/Figures/sequencing_hist.pdf")
+embed_fonts("./results/Figures/Figure2-figure_supplement1C.pdf")
 
-write.csv(difference,
-          "./results/Figures/data/sequencing_hist.csv")
+# write.csv(difference,
+#           "./results/Figures/data/sequencing_hist.csv")
 
 
 

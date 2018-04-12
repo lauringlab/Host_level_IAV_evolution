@@ -93,7 +93,9 @@ python PATH/TO/VARIANT_CALLING_PIPELINE/bin/variantPipeline.py ./scripts/primary
 
 ## Secondary analysis
 
-The secondary analysis is broken up into 2 separate stages. The first finalizes variant calls and runs the time and memory intensive steps. The second make the figures. These stages can be run using the Makefile located in the make directory. Some of the processing steps are memory and time intensive. They also process some of the steps in parrallel so those parts of the code may need to be updated to reflect your setup. Note that the secondary analysis requires the raw iSNV calls to create the qual.snv.csv file (The file that contains all final iSNV calls - both minor and major allele). Those files must be generated from the steps above; they are not included here. You can comment out that rule if you wish to run any of the other rules in the secondary analysis.
+The secondary analysis is broken up into 2 separate stages. The first finalizes variant calls and runs the time and memory intensive steps. The second make the figures. These stages can be run using the files located in ./scripts/secondary\_analysis. We have also included a Makefile located in the main directory. Note we have renamed file names to match those submitted and the name changes may not be reflected in the make files. We plan to update the names in the Makefile once the paper is accepted and file names are finalized. The most robust way to reproduce the analysis is to run the scripts directly without the Makefile.
+
+Some of the processing steps are memory and time intensive. They also process some of the steps in parrallel so those parts of the code may need to be updated to reflect your setup. Note that the secondary analysis requires the raw iSNV calls to create the qual.snv.csv file (The file that contains all final iSNV calls - both minor and major allele). Those files must be generated from the steps above; they are not included here. You can comment out that rule if you wish to run any of the other rules in the secondary analysis.
 
 
 ```

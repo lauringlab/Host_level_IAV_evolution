@@ -37,7 +37,7 @@ no_cut.trans_freq<-read_csv("./data/processed/secondary/no_cut_trans_freq.csv",
                               SPECID2 = col_character(),
                               pair_id = col_double()))
 no_cut.trans_freq.comp<-read_csv("./data/processed/secondary/no_cut_transmission_pairs_freq.poly.donor.csv")
-# --------------------------------- Figure 4A ---------------------------------
+# --------------------------------- Figure 1A ---------------------------------
 #   The frequency of iSNV between transmission pairs with the original pipeline
 # -----------------------------------------------------------------------------
 
@@ -56,14 +56,14 @@ no_cut_no_infer<- no_cut.trans_freq %>% group_by(SPECID1,SPECID2,pair_id,chr,pos
 nc_ni_tv_plot<-ggplot(no_cut_no_infer,aes(freq1,freq2))+geom_point()
 nc_ni_tv_plot
 
-save_plot("./results/Figures/Figure4A.pdf", nc_ni_tv_plot,
+save_plot("./results/Figures/Figure3-figure_supplement1A.pdf", nc_ni_tv_plot,
           base_aspect_ratio = 1.3)
-embed_fonts("./results/Figures/Figure4A.pdf")
+embed_fonts("./results/Figures/Figure3-figure_supplement1A.pdf")
 
-write.csv(x = select(no_cut_no_infer,SPECID1,SPECID2,freq1,freq2),
-          "./results/Figures/data/Figure4A.csv")
+# write.csv(x = select(no_cut_no_infer,SPECID1,SPECID2,freq1,freq2),
+#           "./results/Figures/data/Figure4A.csv")
 
-# --------------------------------- Figure 4B ---------------------------------
+# --------------------------------- Figure 1B ---------------------------------
 #   The transmission bottleneck in the absence of a frequency threshold.
 # -----------------------------------------------------------------------------
 
@@ -138,13 +138,13 @@ window_data.p<-ggplot()+geom_point(data = out,aes(x=freq,y=prob,alpha=many))+
 
 
 
-save_plot("./results/Figures/Figure4B.pdf", window_data.p,
+save_plot("./results/Figures/Figure3-figure_supplement1B.pdf", window_data.p,
           base_aspect_ratio = 1.3)
-embed_fonts("./results/Figures/Figure4B.pdf")
+embed_fonts("./results/Figures/Figure3-figure_supplement1B.pdf")
 
-write.csv(x = select(no_cut_no_infer.comp,SPECID1,SPECID2,freq1,freq2),
-          "./results/Figures/data/Figure4B_points.csv")
-write.csv(x = model,
-          "./results/Figures/data/Figure4B_model.csv")
+# write.csv(x = select(no_cut_no_infer.comp,SPECID1,SPECID2,freq1,freq2),
+#           "./results/Figures/data/Figure4B_points.csv")
+# write.csv(x = model,
+#           "./results/Figures/data/Figure4B_model.csv")
 
 

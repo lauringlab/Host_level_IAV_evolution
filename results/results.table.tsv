@@ -26,7 +26,7 @@ Antigenic iSNV %:	Proportion of snv in antigenic sites 0.027634 - 0.010363
 Antigenic infection n:	Propotion of infections with antigenic sites 0.071066 - 0.030457 
 ------Effective population size------
 Samples at least 1 day apart:	29
-R2 samples same day:	0.985960082289121
+R2 samples same day:	0.982139616494287
 -------Transmission Bottleneck-------
 Households with concurrent infection:	85
 Putative transmission events:	124
