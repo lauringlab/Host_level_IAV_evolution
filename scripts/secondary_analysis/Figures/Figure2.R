@@ -92,7 +92,7 @@ freq_hist.p<-ggplot(Figure2A_data,aes(x=freq.var,fill=class_factor))+
 
 freq_hist.p
 
-write.csv(Figure2A_data,"./results/Figures/data/Figure2A.csv") 
+write.csv(Figure2A_data,"./results/Figures/data/Figure_2-source_data_1.csv") 
 
 # Getting data from the plot
 freq_hist.d<-ggplot_build(freq_hist.p)
@@ -123,7 +123,7 @@ min.qual$Antigenic[is.na(min.qual$Antigenic)]<-"None"
 Figure2B_data<-filter(min.qual,class_factor=="Nonsynonymous",chr=="HA") %>% 
   select(HOUSE_ID,ENROLLID,SPECID,season,pcr_result,DPI,H3_pos,Ref_AA,Var_AA,Antigenic,freq.var=freq.var.x)
 
-write.csv(Figure2B_data,"./results/Figures/data/Figure2B_data.csv") 
+write.csv(Figure2B_data,"./results/Figures/data/Figure_2-source_data_2.csv") 
 
 
 Figure2B<-ggplot(Figure2B_data, aes(y=freq.var,x=Antigenic=="None"))+
@@ -195,7 +195,7 @@ embed_fonts("./results/Figures/Figure2C_legend.pdf")
 
 nextflu.p<-direct.label(nextflu.p,c("last.qp"))+theme(legend.position = "none")
 
-write.csv(nextflu.l,"./results/Figures/data/Figure2C_data_frequency.csv") 
+write.csv(nextflu.l,"./results/Figures/data/Figure_2-source_data_3.csv") 
 write.csv(collection_points,"./results/Figures/data/Figure2C_data_collection_times.csv") 
 
 save_plot("./results/Figures/Figure2C_label.pdf", nextflu.p,
@@ -238,7 +238,7 @@ save_plot("./results/Figures/Figure2D.pdf", fig_2D,
 embed_fonts("./results/Figures/Figure2D.pdf")
 
 write.csv(rename(intra_meta,day.post.sympotom.onset1=DPS1,
-                 day.post.sympotom.onset2=DPS2),"./results/Figures/data/Figure2D.csv")
+                 day.post.sympotom.onset2=DPS2),"./results/Figures/data/Figure_2-source_data_4.csv")
 
 # --------------------------------- Figure 2E ---------------------------------
 #   The within host dynamics in longitudinal sample pairs
@@ -269,7 +269,7 @@ save_plot("./results/Figures/Figure2E.pdf", intra.plot,
 embed_fonts("./results/Figures/Figure2E.pdf")
 
 write.csv(select(intra,mutation,ENROLLID,DPS1,DPS2,freq1,freq2),
-          "./results/Figures/data/Figure2E.csv")
+          "./results/Figures/data/Figure_2-source_data_5.csv")
 # Stats 
 # How many found in the first sample persist.
 # persitant/lost
