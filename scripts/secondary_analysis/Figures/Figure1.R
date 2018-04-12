@@ -1,9 +1,8 @@
 require(tidyverse)
-require(cowplot)
+require(magrittr)
 require(extrafont)
-loadfonts()
-
 require(HIVEr)
+require(cowplot)
 cbPalette<-wesanderson::wes_palette("Zissou") # Set up figures
 
 # --------------------------------- Functions ---------------------------------
@@ -54,7 +53,7 @@ save_plot("./results/Figures/Figure1A.pdf", titer.p,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure1A.pdf")
 
-write.csv(figure1A_data,"./results/Figures/data/Figure1A.csv")
+write.csv(figure1A_data,"./results/Figures/data/Figure_1-source_data_1.csv")
 
 # --------------------------------- Figure 1B ---------------------------------
 #   The number of iSNV in each isolate stratified by DPI
@@ -77,7 +76,7 @@ isnv_by_day.p<-ggplot(snv_qual_meta.o,aes(x=as.factor(DPI),y=iSNV))+
   #geom_quasirandom()+
   #stat_summary(fun.data="plot.median", geom="errorbar", colour="red", width=0.55, size=0.5)
   geom_boxplot()+xlab("Day post symptom onset")
-write.csv(figure1B_data,"./results/Figures/data/Figure1B.csv")
+write.csv(figure1B_data,"./results/Figures/data/Figure_1-source_data_2.csv")
 
 save_plot("./results/Figures/Figure1B.pdf", isnv_by_day.p,
           base_aspect_ratio = 1.3)
@@ -98,7 +97,7 @@ save_plot("./results/Figures/Figure1C.pdf", isnv_by_vaccination,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure1C.pdf")
 
-write.csv(figure1C_data,"./results/Figures/data/Figure1C.csv")
+write.csv(figure1C_data,"./results/Figures/data/Figure_1-source_data_3.csv")
 
 
 # --------------------------------- Figure 1D ---------------------------------
@@ -142,4 +141,4 @@ save_plot("./results/Figures/Figure1D.pdf", genome_loc.p.dots,
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure1D.pdf")
 figure1D_data<-min.qual %>% select(chr,pos,var,freq.var,class=class_factor,ENROLLID,season,strain = pcr_result)
-write.csv(figure1D_data,"./results/Figures/data/Figure1D.csv")
+write.csv(figure1D_data,"./results/Figures/data/Figure_1-source_data_4.csv")
