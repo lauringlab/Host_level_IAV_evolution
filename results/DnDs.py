@@ -7,7 +7,7 @@
 # 
 # _NB: check http://bioinformatics.cvr.ac.uk/blog/calculating-dnds-for-ngs-datasets/ for reference_
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -29,7 +29,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 
-# In[2]:
+# In[3]:
 
 
 def ReadFASTA(fastafile):
@@ -51,26 +51,26 @@ def ReadFASTA(fastafile):
 
 
 
-# In[3]:
+# In[4]:
 
 
 test= ReadFASTA("../data/reference/NY.OR.main.fa")
 
 
-# In[4]:
+# In[5]:
 
 
 PB2=test[1]
 c = codonalign.CodonSeq(str(PB2.seq))
 
 
-# In[5]:
+# In[6]:
 
 
 c
 
 
-# In[6]:
+# In[7]:
 
 
 cList=codonalign.codonseq._get_codon_list(c)
@@ -104,19 +104,19 @@ codonalign.codonseq._count_site_NG86(cList[:-1],k=1)
 # 
 # This work is much easier for me to do in R so we'll use that here
 
-# In[7]:
+# In[8]:
 
 
 meta = pd.read_csv("../data/processed/secondary/meta_for_ns.s_calc.csv")
 
 
-# In[8]:
+# In[9]:
 
 
 meta = meta.loc[meta.snv_qualified==True]
 
 
-# In[9]:
+# In[10]:
 
 
 sys.path.append("/Users/jt/lauring_lab_repos/variant_pipeline/scripts/")
@@ -234,7 +234,7 @@ def get_NS_s(seqs):
     return(counter,errors)
 
 
-# In[10]:
+# In[11]:
 
 
 sequences = get_seq(meta.SPECID,meta)
@@ -351,4 +351,86 @@ Ns_s_df
 
 
 codonalign.codonseq._count_site_NG86(["CCC"],k=1)
+
+
+# In[12]:
+
+
+330663.333333/88742.666667
+
+
+# In[16]:
+
+
+codonalign.codonseq._count_site_NG86(cList[:-1])
+
+
+# In[22]:
+
+
+codonalign.codonseq._count_site_NG86([cList[1]])
+
+
+# In[30]:
+
+
+HA=test[3]
+
+
+c = codonalign.CodonSeq(str(HA.seq))
+HAcodonList=codonalign.codonseq._get_codon_list(c)
+
+
+
+# In[31]:
+
+
+len(HAcodonList)
+
+
+# In[36]:
+
+
+codonalign.codonseq._count_site_NG86(HAcodonList[:-1],k=1/3.6)
+
+
+# In[33]:
+
+
+1339.666666666669/358.33333333333223
+
+
+# In[37]:
+
+
+.75/3.7
+
+
+# In[59]:
+
+
+HA=test[4]
+
+
+c = codonalign.CodonSeq(str(HA.seq))
+HAcodonList=codonalign.codonseq._get_codon_list(c)
+x = codonalign.codonseq._count_site_NG86(HAcodonList[:-1])
+
+
+# In[60]:
+
+
+x[1]/x[0]
+
+
+# In[61]:
+
+
+HA
+
+
+# In[62]:
+
+
+len(test)
 

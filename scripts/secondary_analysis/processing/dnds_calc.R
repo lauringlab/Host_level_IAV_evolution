@@ -1,4 +1,5 @@
-# Choose sample Ids for each sample in meta_snv_qual and add number of NS and S mutations for each segement.
+# Choose sample Ids for each sample in meta_snv_qual 
+# and add number of NS and S mutations for each segement.
 
 require(magrittr)
 require(tidyverse)
