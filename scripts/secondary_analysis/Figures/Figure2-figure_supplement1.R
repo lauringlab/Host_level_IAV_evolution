@@ -124,45 +124,6 @@ embed_fonts("./results/Figures/Figure2-figure_supplement1A.pdf")
 
 
 
-# -------------------- intra processing --------------------------
-# - taken from Figure2.R 1decf3dc6df24c6e2b4d58cd3fdea24652fd46d1
-# Reidenfiy the frequency of lost and arisen mutation using the dataframe
-# that does not include the frequency cut off.
-# ----------------------------------------------------------------
-# Remove mixed infections
-intra<- intra %>% filter(!(SPECID2 %in% c("HS1530","MH8137","MH8390")) &
-                           !(SPECID1 %in% c("HS1530","MH8137","MH8390")))
-intra %>% mutate(DPS1 = collect1-onset,DPS2 = collect2-onset) ->intra
-
-intra<-filter(intra,freq1<0.5) 
-
-arisen<-intra %>% filter(freq1==0) %>% 
-  rowwise() %>% 
-  mutate(freq_close_look = 
-           ifelse(length(which(no_freq_cut$SPECID==SPECID1 & no_freq_cut$mutation==mutation))==1,
-                  no_freq_cut$freq.var[which(no_freq_cut$SPECID==SPECID1 & no_freq_cut$mutation==mutation)],
-                  0),
-         freq1=freq_close_look) %>%
-  select(-freq_close_look)
-
-lost<-intra %>% filter(freq2==0) %>% 
-  rowwise() %>% 
-  mutate(freq_close_look = 
-           ifelse(length(which(no_freq_cut$SPECID==SPECID2 & no_freq_cut$mutation==mutation))==1,
-                  no_freq_cut$freq.var[which(no_freq_cut$SPECID==SPECID2 & no_freq_cut$mutation==mutation)],
-                  0),
-         freq2=freq_close_look) %>%
-  select(-freq_close_look)
-
-intra_processed<-rbind(arisen,lost,filter(intra,freq1>0,freq2>0))
-
-intra_processed<-intra_processed %>% mutate(Endpoint="Persistent") %>%
-  mutate(Endpoint = if_else(freq1==0,"Arisen",Endpoint)) %>%
-  mutate(Endpoint = if_else(freq2==0,"Lost",Endpoint))
-
-intra_processed$Endpoint<-factor(intra_processed$Endpoint,
-                                 levels = c("Persistent","Arisen","Lost"),ordered = T)
-# this was written as the data file for Figure 2e in 1decf3dc6df24c6e2b4d58cd3fdea24652fd46d1
 
 # ---------------------------------- figure ----------------------------------
 #  Read in the csv from above 
@@ -230,42 +191,7 @@ save_plot("./results/Figures/Figure2-figure_supplement1B.pdf", dot_plot.discrete
           base_aspect_ratio = 1.3)
 embed_fonts("./results/Figures/Figure2-figure_supplement1B.pdf")
 
-intra<-intra_processed
-intra <- intra %>% 
-  mutate(rel_difference = if_else(freq1!=0,abs(freq1-freq2)/freq1,
-                              abs(freq1-freq2)/freq2),
-         difference = abs(freq1-freq2))
-freqs<- freqs %>%
-  mutate(rel_difference = abs(freq1-freq2)/freq1,
-         difference = abs(freq1-freq2))
 
-difference <- rbind(
-  tibble(difference = 
-           freqs$difference[which(freqs$used==T & freqs$freq1<0.5)],
-         group="Measure"),
-  tibble(difference = intra$difference,group="Intrahost"))
-# require(ggridges)
-# ggplot(difference,aes(x=difference,y=group))+geom_density_ridges2(scale=6)+
-#   xlab("Relative difference")+
-#   ylab("")+scale_y_discrete(labels=c("Intrahost dynamics","Measurment Error"))
-
-
-difference_histogram<-ggplot(difference,aes(x=difference,fill=group))+
-  geom_histogram(aes(y= ..ncount..), position="dodge")+
-  xlab("Frequency difference")+
-  ylab("Normalized count")+
-  scale_x_log10(breaks = c(1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1e0,1e1))+
-  scale_fill_manual(values = cbPalette[c(1,5)],
-                    labels = c("Intrahost dynamics","Measurment Error"),
-                    name="")+
-  theme(legend.position = c(0.1,0.5))
-
-save_plot("./results/Figures/Figure2-figure_supplement1C.pdf", difference_histogram,
-          base_aspect_ratio = 1.3)
-embed_fonts("./results/Figures/Figure2-figure_supplement1C.pdf")
-
-# write.csv(difference,
-#           "./results/Figures/data/sequencing_hist.csv")
 
 
 
